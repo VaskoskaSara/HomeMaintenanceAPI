@@ -1,0 +1,335 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\HomeMaintenance\\API\\HomeMaintenanceApp\\HomeMaintenanceApp.Web.csproj": {}
+  },
+  "projects": {
+    "C:\\HomeMaintenance\\API\\homeMaintenance.Application\\homeMaintenance.Application.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\HomeMaintenance\\API\\homeMaintenance.Application\\homeMaintenance.Application.csproj",
+        "projectName": "homeMaintenance.Application",
+        "projectPath": "C:\\HomeMaintenance\\API\\homeMaintenance.Application\\homeMaintenance.Application.csproj",
+        "packagesPath": "C:\\Users\\SaraVaskoska\\.nuget\\packages\\",
+        "outputPath": "C:\\HomeMaintenance\\API\\homeMaintenance.Application\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\SaraVaskoska\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {
+              "C:\\HomeMaintenance\\API\\homeMaintenance.Domain\\homeMaintenance.Domain.csproj": {
+                "projectPath": "C:\\HomeMaintenance\\API\\homeMaintenance.Domain\\homeMaintenance.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "dependencies": {
+            "AWSSDK.Core": {
+              "target": "Package",
+              "version": "[3.7.304.9, )"
+            },
+            "AWSSDK.S3": {
+              "target": "Package",
+              "version": "[3.7.308.7, )"
+            },
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[13.0.1, )"
+            },
+            "MediatR": {
+              "target": "Package",
+              "version": "[11.1.0, )"
+            },
+            "MediatR.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[11.1.0, )"
+            },
+            "Microsoft.AspNetCore.Http.Features": {
+              "target": "Package",
+              "version": "[5.0.17, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\HomeMaintenance\\API\\homeMaintenance.Domain\\homeMaintenance.Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\HomeMaintenance\\API\\homeMaintenance.Domain\\homeMaintenance.Domain.csproj",
+        "projectName": "homeMaintenance.Domain",
+        "projectPath": "C:\\HomeMaintenance\\API\\homeMaintenance.Domain\\homeMaintenance.Domain.csproj",
+        "packagesPath": "C:\\Users\\SaraVaskoska\\.nuget\\packages\\",
+        "outputPath": "C:\\HomeMaintenance\\api\\homeMaintenance.Domain\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\SaraVaskoska\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\HomeMaintenance\\API\\homeMaintenance.Infrastructure\\homeMaintenance.Infrastructure.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\HomeMaintenance\\API\\homeMaintenance.Infrastructure\\homeMaintenance.Infrastructure.csproj",
+        "projectName": "homeMaintenance.Infrastructure",
+        "projectPath": "C:\\HomeMaintenance\\API\\homeMaintenance.Infrastructure\\homeMaintenance.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\SaraVaskoska\\.nuget\\packages\\",
+        "outputPath": "C:\\HomeMaintenance\\API\\homeMaintenance.Infrastructure\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\SaraVaskoska\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {
+              "C:\\HomeMaintenance\\API\\homeMaintenance.Application\\homeMaintenance.Application.csproj": {
+                "projectPath": "C:\\HomeMaintenance\\API\\homeMaintenance.Application\\homeMaintenance.Application.csproj"
+              },
+              "C:\\HomeMaintenance\\API\\homeMaintenance.Domain\\homeMaintenance.Domain.csproj": {
+                "projectPath": "C:\\HomeMaintenance\\API\\homeMaintenance.Domain\\homeMaintenance.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "dependencies": {
+            "Dapper": {
+              "target": "Package",
+              "version": "[2.1.35, )"
+            },
+            "Microsoft.Data.SqlClient": {
+              "target": "Package",
+              "version": "[5.2.0, )"
+            },
+            "Microsoft.Extensions.Configuration.Abstractions": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\HomeMaintenance\\API\\HomeMaintenanceApp\\HomeMaintenanceApp.Web.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\HomeMaintenance\\API\\HomeMaintenanceApp\\HomeMaintenanceApp.Web.csproj",
+        "projectName": "HomeMaintenanceApp.Web",
+        "projectPath": "C:\\HomeMaintenance\\API\\HomeMaintenanceApp\\HomeMaintenanceApp.Web.csproj",
+        "packagesPath": "C:\\Users\\SaraVaskoska\\.nuget\\packages\\",
+        "outputPath": "C:\\HomeMaintenance\\API\\HomeMaintenanceApp\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\SaraVaskoska\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {
+              "C:\\HomeMaintenance\\API\\homeMaintenance.Application\\homeMaintenance.Application.csproj": {
+                "projectPath": "C:\\HomeMaintenance\\API\\homeMaintenance.Application\\homeMaintenance.Application.csproj"
+              },
+              "C:\\HomeMaintenance\\API\\homeMaintenance.Infrastructure\\homeMaintenance.Infrastructure.csproj": {
+                "projectPath": "C:\\HomeMaintenance\\API\\homeMaintenance.Infrastructure\\homeMaintenance.Infrastructure.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "dependencies": {
+            "Evolve": {
+              "target": "Package",
+              "version": "[3.0.0, )"
+            },
+            "MediatR": {
+              "target": "Package",
+              "version": "[11.1.0, )"
+            },
+            "MediatR.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[11.1.0, )"
+            },
+            "Microsoft.AspNetCore.Cors": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.Data.SqlClient": {
+              "target": "Package",
+              "version": "[5.2.0, )"
+            },
+            "Serilog": {
+              "target": "Package",
+              "version": "[3.1.1, )"
+            },
+            "Swashbuckle.AspNetCore.SwaggerGen": {
+              "target": "Package",
+              "version": "[6.5.0, )"
+            },
+            "Swashbuckle.AspNetCore.SwaggerUI": {
+              "target": "Package",
+              "version": "[6.5.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

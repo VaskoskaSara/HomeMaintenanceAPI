@@ -7,17 +7,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="obj\Debug\net7.0\.NETCoreApp,Version=v7.0.AssemblyAttributes.cs" />
-    <Compile Include="obj\Debug\net7.0\HomeMaintenanceApp.AssemblyInfo.cs" />
-    <Compile Include="obj\Debug\net7.0\HomeMaintenanceApp.GlobalUsings.g.cs" />
-    <Compile Include="obj\Debug\net7.0\HomeMaintenanceApp.RazorAssemblyInfo.cs" />
+    <Compile Remove="obj\Debug\net7.0\scopedcss\**" />
+    <Compile Remove="obj\Release\**" />
+    <Content Remove="obj\Debug\net7.0\scopedcss\**" />
+    <Content Remove="obj\Release\**" />
+    <EmbeddedResource Remove="obj\Debug\net7.0\scopedcss\**" />
+    <EmbeddedResource Remove="obj\Release\**" />
+    <None Remove="obj\Debug\net7.0\scopedcss\**" />
+    <None Remove="obj\Release\**" />
+  </ItemGroup>
+
+  <!--<ItemGroup>
+    <Compile Include="obj\Debug\net7.0\.NETCoreApp,Version=v7.0.AssemblyAttributes.cs" EnableDefaultCompile="false" />
     <Compile Include="obj\Debug\net7.0\HomeMaintenanceApp.Web.AssemblyInfo.cs" />
     <Compile Include="obj\Debug\net7.0\HomeMaintenanceApp.Web.GlobalUsings.g.cs" />
     <Compile Include="obj\Debug\net7.0\HomeMaintenanceApp.Web.MvcApplicationPartsAssemblyInfo.cs" />
-    <Compile Include="obj\Release\net7.0\.NETCoreApp,Version=v7.0.AssemblyAttributes.cs" />
-    <Compile Include="obj\Release\net7.0\HomeMaintenanceApp.Web.AssemblyInfo.cs" />
-    <Compile Include="obj\Release\net7.0\HomeMaintenanceApp.Web.GlobalUsings.g.cs" />
-  </ItemGroup>
+  </ItemGroup>-->
 
   <ItemGroup>
     <Content Include="bin\Debug\net7.0\.filenesting.json" />
@@ -27,11 +32,6 @@
     <Content Include="bin\Debug\net7.0\HomeMaintenanceApp.Web.runtimeconfig.json" />
     <Content Include="bin\Debug\net7.0\HomeMaintenanceApp.Web.staticwebassets.runtime.json" />
     <Content Include="obj\Debug\net7.0\HomeMaintenanceApp.Web.csproj.FileListAbsolute.txt" />
-    <Content Include="obj\Debug\net7.0\project.razor.vs.json" />
-    <Content Include="obj\Debug\net7.0\staticwebassets.build.json" />
-    <Content Include="obj\Debug\net7.0\staticwebassets.development.json" />
-    <Content Include="obj\Debug\net7.0\staticwebassets.pack.json" />
-    <Content Include="obj\HomeMaintenanceApp.csproj.nuget.dgspec.json" />
     <Content Include="obj\HomeMaintenanceApp.Web.csproj.nuget.dgspec.json" />
     <Content Include="obj\project.assets.json" />
   </ItemGroup>
@@ -106,37 +106,16 @@
     <None Include="bin\Debug\net7.0\zh-Hans\Microsoft.Data.SqlClient.resources.dll" />
     <None Include="bin\Debug\net7.0\zh-Hant\Microsoft.Data.SqlClient.resources.dll" />
     <None Include="obj\Debug\net7.0\apphost.exe" />
-    <None Include="obj\Debug\net7.0\HomeMaintenanceApp.AssemblyInfoInputs.cache" />
-    <None Include="obj\Debug\net7.0\HomeMaintenanceApp.assets.cache" />
-    <None Include="obj\Debug\net7.0\HomeMaintenanceApp.csproj.AssemblyReference.cache" />
-    <None Include="obj\Debug\net7.0\HomeMaintenanceApp.GeneratedMSBuildEditorConfig.editorconfig" />
-    <None Include="obj\Debug\net7.0\HomeMaintenanceApp.RazorAssemblyInfo.cache" />
     <None Include="obj\Debug\net7.0\HomeMaintenanceApp.Web.AssemblyInfoInputs.cache" />
     <None Include="obj\Debug\net7.0\HomeMaintenanceApp.Web.assets.cache" />
     <None Include="obj\Debug\net7.0\HomeMaintenanceApp.Web.csproj.AssemblyReference.cache" />
     <None Include="obj\Debug\net7.0\HomeMaintenanceApp.Web.csproj.BuildWithSkipAnalyzers" />
-    <None Include="obj\Debug\net7.0\HomeMaintenanceApp.Web.csproj.CopyComplete" />
     <None Include="obj\Debug\net7.0\HomeMaintenanceApp.Web.csproj.CoreCompileInputs.cache" />
-    <None Include="obj\Debug\net7.0\HomeMaintenanceApp.Web.dll" />
     <None Include="obj\Debug\net7.0\HomeMaintenanceApp.Web.GeneratedMSBuildEditorConfig.editorconfig" />
-    <None Include="obj\Debug\net7.0\HomeMaintenanceApp.Web.genruntimeconfig.cache" />
     <None Include="obj\Debug\net7.0\HomeMaintenanceApp.Web.MvcApplicationPartsAssemblyInfo.cache" />
-    <None Include="obj\Debug\net7.0\HomeMaintenanceApp.Web.pdb" />
-    <None Include="obj\Debug\net7.0\refint\HomeMaintenanceApp.Web.dll" />
-    <None Include="obj\Debug\net7.0\ref\HomeMaintenanceApp.Web.dll" />
-    <None Include="obj\Debug\net7.0\staticwebassets\msbuild.build.HomeMaintenanceApp.Web.props" />
-    <None Include="obj\Debug\net7.0\staticwebassets\msbuild.buildMultiTargeting.HomeMaintenanceApp.Web.props" />
-    <None Include="obj\Debug\net7.0\staticwebassets\msbuild.buildTransitive.HomeMaintenanceApp.Web.props" />
-    <None Include="obj\Debug\net7.0\staticwebassets\msbuild.HomeMaintenanceApp.Web.Microsoft.AspNetCore.StaticWebAssets.props" />
-    <None Include="obj\HomeMaintenanceApp.csproj.nuget.g.props" />
-    <None Include="obj\HomeMaintenanceApp.csproj.nuget.g.targets" />
     <None Include="obj\HomeMaintenanceApp.Web.csproj.nuget.g.props" />
     <None Include="obj\HomeMaintenanceApp.Web.csproj.nuget.g.targets" />
     <None Include="obj\project.nuget.cache" />
-    <None Include="obj\Release\net7.0\HomeMaintenanceApp.Web.AssemblyInfoInputs.cache" />
-    <None Include="obj\Release\net7.0\HomeMaintenanceApp.Web.assets.cache" />
-    <None Include="obj\Release\net7.0\HomeMaintenanceApp.Web.csproj.AssemblyReference.cache" />
-    <None Include="obj\Release\net7.0\HomeMaintenanceApp.Web.GeneratedMSBuildEditorConfig.editorconfig" />
   </ItemGroup>
 
   <ItemGroup>
@@ -157,12 +136,9 @@
 
   <ItemGroup>
     <Folder Include="bin\Release\net7.0\" />
-    <Folder Include="obj\Debug\net7.0\scopedcss\bundle\" />
-    <Folder Include="obj\Debug\net7.0\scopedcss\Pages\Shared\" />
-    <Folder Include="obj\Debug\net7.0\scopedcss\projectbundle\" />
-    <Folder Include="obj\Release\net7.0\refint\" />
-    <Folder Include="obj\Release\net7.0\ref\" />
-    <Folder Include="obj\Release\net7.0\staticwebassets\" />
+    <Folder Include="obj\Debug\net7.0\refint\" />
+    <Folder Include="obj\Debug\net7.0\ref\" />
+    <Folder Include="obj\Debug\net7.0\staticwebassets\" />
   </ItemGroup>
 
 </Project>
