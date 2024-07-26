@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\HomeMaintenance\\API\\HomeMaintenanceApp\\HomeMaintenanceApp.Web.csproj": {}
+    "C:\\Users\\user\\Desktop\\HomeMaintenance\\HomeMaintenanceApp\\HomeMaintenanceApp\\HomeMaintenanceApp.Web.csproj": {}
   },
   "projects": {
-    "C:\\HomeMaintenance\\API\\homeMaintenance.Application\\homeMaintenance.Application.csproj": {
+    "C:\\Users\\user\\Desktop\\HomeMaintenance\\HomeMaintenanceApp\\homeMaintenance.Application\\homeMaintenance.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\HomeMaintenance\\API\\homeMaintenance.Application\\homeMaintenance.Application.csproj",
+        "projectUniqueName": "C:\\Users\\user\\Desktop\\HomeMaintenance\\HomeMaintenanceApp\\homeMaintenance.Application\\homeMaintenance.Application.csproj",
         "projectName": "homeMaintenance.Application",
-        "projectPath": "C:\\HomeMaintenance\\API\\homeMaintenance.Application\\homeMaintenance.Application.csproj",
-        "packagesPath": "C:\\Users\\SaraVaskoska\\.nuget\\packages\\",
-        "outputPath": "C:\\HomeMaintenance\\API\\homeMaintenance.Application\\obj\\",
+        "projectPath": "C:\\Users\\user\\Desktop\\HomeMaintenance\\HomeMaintenanceApp\\homeMaintenance.Application\\homeMaintenance.Application.csproj",
+        "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\user\\Desktop\\HomeMaintenance\\HomeMaintenanceApp\\homeMaintenance.Application\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\SaraVaskoska\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -25,14 +25,15 @@
           "net7.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "C:\\HomeMaintenance\\API\\homeMaintenance.Domain\\homeMaintenance.Domain.csproj": {
-                "projectPath": "C:\\HomeMaintenance\\API\\homeMaintenance.Domain\\homeMaintenance.Domain.csproj"
+              "C:\\Users\\user\\Desktop\\HomeMaintenance\\HomeMaintenanceApp\\homeMaintenance.Domain\\homeMaintenance.Domain.csproj": {
+                "projectPath": "C:\\Users\\user\\Desktop\\HomeMaintenance\\HomeMaintenanceApp\\homeMaintenance.Domain\\homeMaintenance.Domain.csproj"
               }
             }
           }
@@ -88,24 +89,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\HomeMaintenance\\API\\homeMaintenance.Domain\\homeMaintenance.Domain.csproj": {
+    "C:\\Users\\user\\Desktop\\HomeMaintenance\\HomeMaintenanceApp\\homeMaintenance.Domain\\homeMaintenance.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\HomeMaintenance\\API\\homeMaintenance.Domain\\homeMaintenance.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\user\\Desktop\\HomeMaintenance\\HomeMaintenanceApp\\homeMaintenance.Domain\\homeMaintenance.Domain.csproj",
         "projectName": "homeMaintenance.Domain",
-        "projectPath": "C:\\HomeMaintenance\\API\\homeMaintenance.Domain\\homeMaintenance.Domain.csproj",
-        "packagesPath": "C:\\Users\\SaraVaskoska\\.nuget\\packages\\",
-        "outputPath": "C:\\HomeMaintenance\\api\\homeMaintenance.Domain\\obj\\",
+        "projectPath": "C:\\Users\\user\\Desktop\\HomeMaintenance\\HomeMaintenanceApp\\homeMaintenance.Domain\\homeMaintenance.Domain.csproj",
+        "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\user\\Desktop\\HomeMaintenance\\HomeMaintenanceApp\\homeMaintenance.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\SaraVaskoska\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -113,6 +114,7 @@
           "net7.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -146,24 +148,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\HomeMaintenance\\API\\homeMaintenance.Infrastructure\\homeMaintenance.Infrastructure.csproj": {
+    "C:\\Users\\user\\Desktop\\HomeMaintenance\\HomeMaintenanceApp\\homeMaintenance.Infrastructure\\homeMaintenance.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\HomeMaintenance\\API\\homeMaintenance.Infrastructure\\homeMaintenance.Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\user\\Desktop\\HomeMaintenance\\HomeMaintenanceApp\\homeMaintenance.Infrastructure\\homeMaintenance.Infrastructure.csproj",
         "projectName": "homeMaintenance.Infrastructure",
-        "projectPath": "C:\\HomeMaintenance\\API\\homeMaintenance.Infrastructure\\homeMaintenance.Infrastructure.csproj",
-        "packagesPath": "C:\\Users\\SaraVaskoska\\.nuget\\packages\\",
-        "outputPath": "C:\\HomeMaintenance\\API\\homeMaintenance.Infrastructure\\obj\\",
+        "projectPath": "C:\\Users\\user\\Desktop\\HomeMaintenance\\HomeMaintenanceApp\\homeMaintenance.Infrastructure\\homeMaintenance.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\user\\Desktop\\HomeMaintenance\\HomeMaintenanceApp\\homeMaintenance.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\SaraVaskoska\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -171,17 +173,18 @@
           "net7.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "C:\\HomeMaintenance\\API\\homeMaintenance.Application\\homeMaintenance.Application.csproj": {
-                "projectPath": "C:\\HomeMaintenance\\API\\homeMaintenance.Application\\homeMaintenance.Application.csproj"
+              "C:\\Users\\user\\Desktop\\HomeMaintenance\\HomeMaintenanceApp\\homeMaintenance.Application\\homeMaintenance.Application.csproj": {
+                "projectPath": "C:\\Users\\user\\Desktop\\HomeMaintenance\\HomeMaintenanceApp\\homeMaintenance.Application\\homeMaintenance.Application.csproj"
               },
-              "C:\\HomeMaintenance\\API\\homeMaintenance.Domain\\homeMaintenance.Domain.csproj": {
-                "projectPath": "C:\\HomeMaintenance\\API\\homeMaintenance.Domain\\homeMaintenance.Domain.csproj"
+              "C:\\Users\\user\\Desktop\\HomeMaintenance\\HomeMaintenanceApp\\homeMaintenance.Domain\\homeMaintenance.Domain.csproj": {
+                "projectPath": "C:\\Users\\user\\Desktop\\HomeMaintenance\\HomeMaintenanceApp\\homeMaintenance.Domain\\homeMaintenance.Domain.csproj"
               }
             }
           }
@@ -225,24 +228,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\HomeMaintenance\\API\\HomeMaintenanceApp\\HomeMaintenanceApp.Web.csproj": {
+    "C:\\Users\\user\\Desktop\\HomeMaintenance\\HomeMaintenanceApp\\HomeMaintenanceApp\\HomeMaintenanceApp.Web.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\HomeMaintenance\\API\\HomeMaintenanceApp\\HomeMaintenanceApp.Web.csproj",
+        "projectUniqueName": "C:\\Users\\user\\Desktop\\HomeMaintenance\\HomeMaintenanceApp\\HomeMaintenanceApp\\HomeMaintenanceApp.Web.csproj",
         "projectName": "HomeMaintenanceApp.Web",
-        "projectPath": "C:\\HomeMaintenance\\API\\HomeMaintenanceApp\\HomeMaintenanceApp.Web.csproj",
-        "packagesPath": "C:\\Users\\SaraVaskoska\\.nuget\\packages\\",
-        "outputPath": "C:\\HomeMaintenance\\API\\HomeMaintenanceApp\\obj\\",
+        "projectPath": "C:\\Users\\user\\Desktop\\HomeMaintenance\\HomeMaintenanceApp\\HomeMaintenanceApp\\HomeMaintenanceApp.Web.csproj",
+        "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\user\\Desktop\\HomeMaintenance\\HomeMaintenanceApp\\HomeMaintenanceApp\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\SaraVaskoska\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -250,17 +253,18 @@
           "net7.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "C:\\HomeMaintenance\\API\\homeMaintenance.Application\\homeMaintenance.Application.csproj": {
-                "projectPath": "C:\\HomeMaintenance\\API\\homeMaintenance.Application\\homeMaintenance.Application.csproj"
+              "C:\\Users\\user\\Desktop\\HomeMaintenance\\HomeMaintenanceApp\\homeMaintenance.Application\\homeMaintenance.Application.csproj": {
+                "projectPath": "C:\\Users\\user\\Desktop\\HomeMaintenance\\HomeMaintenanceApp\\homeMaintenance.Application\\homeMaintenance.Application.csproj"
               },
-              "C:\\HomeMaintenance\\API\\homeMaintenance.Infrastructure\\homeMaintenance.Infrastructure.csproj": {
-                "projectPath": "C:\\HomeMaintenance\\API\\homeMaintenance.Infrastructure\\homeMaintenance.Infrastructure.csproj"
+              "C:\\Users\\user\\Desktop\\HomeMaintenance\\HomeMaintenanceApp\\homeMaintenance.Infrastructure\\homeMaintenance.Infrastructure.csproj": {
+                "projectPath": "C:\\Users\\user\\Desktop\\HomeMaintenance\\HomeMaintenanceApp\\homeMaintenance.Infrastructure\\homeMaintenance.Infrastructure.csproj"
               }
             }
           }
@@ -327,7 +331,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }
