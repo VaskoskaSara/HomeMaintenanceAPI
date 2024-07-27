@@ -1,6 +1,12 @@
 ﻿BEGIN TRANSACTION;
 GO
 
+ALTER TABLE dbo.Users
+ADD PositionId UNIQUEIDENTIFIER NOT NULL;
+
+ALTER TABLE dbo.Users
+ADD CONSTRAINT FK_Users_Positions FOREIGN KEY (PositionId) REFERENCES dbo.Positions(Id);
+
 ALTER TABLE dbo.UserRoles
 DROP COLUMN IsDeleted;
 
@@ -19,7 +25,7 @@ CREATE PROCEDURE InsertUser
 @FullName                     NVARCHAR(50), 
 @PhoneNumber                  NVARCHAR(50), 
 @Email                        NVARCHAR(50), 
-@Password                     NVARCHAR(50), 
+@Password                     NVARCHAR(64), 
 @Address                      NVARCHAR(50), 
 @UserRole                     NVARCHAR(50), 
 @Experience                   FLOAT, 

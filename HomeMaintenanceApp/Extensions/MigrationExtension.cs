@@ -1,6 +1,4 @@
-﻿using System.Data;
-using System.Data.Common;
-using System.Reflection;
+﻿using DbUp;
 
 namespace HomeMaintenanceApp.Web.Extensions
 {
@@ -14,17 +12,35 @@ namespace HomeMaintenanceApp.Web.Extensions
             {
                 var provider = scope.ServiceProvider;
                 var dbMigration = provider.GetRequiredService<IDbConfig>();
-                var scriptsPath = !string.IsNullOrWhiteSpace(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)) ? Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Scripts") : "Scripts";
+                var baseDirectory = @"C:\HomeMaintenance\API\homeMaintenance.Infrastructure";
+                var scriptsFolder = "Scripts";
+                var scriptsPath = Path.Combine(baseDirectory, scriptsFolder);
 
-                var evolve = new Evolve.Evolve((DbConnection)dbMigration.GetConnection())
+                EnsureDatabase.For.SqlDatabase(dbMigration.GetConnectionString());
+
+                var upgrader = DeployChanges.To
+                                .SqlDatabase(dbMigration.GetConnectionString())
+                                .WithScriptsFromFileSystem(scriptsPath)
+                                .LogToConsole()
+                                .Build();
+
+                if (upgrader.IsUpgradeRequired())
                 {
-                    Locations = new[] { "C:\\Users\\user\\Desktop\\HomeMaintenance\\HomeMaintenanceApp\\homeMaintenance.Infrastructure\\Scripts" },
-                    IsEraseDisabled = false,
-                    OutOfOrder = true,
-                    TransactionMode = Evolve.Configuration.TransactionKind.CommitAll
-                };
-                evolve.Repair();
-                evolve.Migrate();
+                    var result = upgrader.PerformUpgrade();
+                    if (!result.Successful)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("ERROR: {0}", result.Error);
+                        Console.ResetColor();
+                        Environment.ExitCode = -1;
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("Database migrations applied successfully!");
+                        Console.ResetColor();
+                    }
+                }
             }
         }
     }

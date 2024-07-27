@@ -60,7 +60,7 @@ namespace HomeMaintenanceApp.Web
                 Password = Password,
                 InitialCatalog = DatabaseName,
                 TrustServerCertificate = true,
-                MultipleActiveResultSets = true,
+                // MultipleActiveResultSets = true,
                 MaxPoolSize = 500,
                 ConnectTimeout = ConnectionTimeout
             };

@@ -9,6 +9,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using Amazon;
+using Amazon.Runtime;
+using Konscious.Security.Cryptography;
 
 namespace homeMaintenance.Application.Services
 {
@@ -36,8 +39,7 @@ namespace homeMaintenance.Application.Services
                 throw new ValidationException("User with that email already exists");
             }
 
-            byte[] salt = GenerateSalt();
-            string hashedPassword = HashPassword(user.Password, salt);
+            string hashedPassword = HashPassword(user.Password, GenerateSalt());
 
             if (string.IsNullOrEmpty(hashedPassword))
             {
@@ -60,7 +62,7 @@ namespace homeMaintenance.Application.Services
 
             return true;
         }
-
+        
         static byte[] GenerateSalt()
         {
             using (var rng = new RNGCryptoServiceProvider())
@@ -78,31 +80,23 @@ namespace homeMaintenance.Application.Services
 
             try
             {
-                byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
-                byte[] saltedPassword = new byte[passwordBytes.Length + salt.Length];
-
-                // Concatenate password and salt
-                Buffer.BlockCopy(passwordBytes, 0, saltedPassword, 0, passwordBytes.Length);
-                Buffer.BlockCopy(salt, 0, saltedPassword, passwordBytes.Length, salt.Length);
-
-                using (SHA256 sha256Hash = SHA256.Create())
+                using var hasher = new Argon2id(Encoding.UTF8.GetBytes(password))
                 {
-                    // Hash the concatenated password and salt
-                    byte[] hashedBytes = sha256Hash.ComputeHash(saltedPassword);
-
-                    // Concatenate the salt and hashed password for storage
-                    byte[] hashedPasswordWithSalt = new byte[hashedBytes.Length + salt.Length];
-                    Buffer.BlockCopy(salt, 0, hashedPasswordWithSalt, 0, salt.Length);
-                    Buffer.BlockCopy(hashedBytes, 0, hashedPasswordWithSalt, salt.Length, hashedBytes.Length);
-
-                    hashedString = Convert.ToBase64String(hashedPasswordWithSalt);
-                }
+                    Salt = salt,
+                    Iterations = 4, 
+                    MemorySize = 8 * 1024,
+                    DegreeOfParallelism = 8
+                };
+                var hashBytes = hasher.GetBytes(32);
+                var saltedHash = new byte[salt.Length + hashBytes.Length];
+                Buffer.BlockCopy(salt, 0, saltedHash, 0, salt.Length);
+                Buffer.BlockCopy(hashBytes, 0, saltedHash, salt.Length, hashBytes.Length);
+                hashedString = Convert.ToBase64String(saltedHash);
             }
             catch(Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-
 
             return hashedString;
         }
@@ -126,7 +120,22 @@ namespace homeMaintenance.Application.Services
 
         private bool VerifyPassword(string password, string passwordHash)
         {
-            return password == passwordHash;
+            var storedHashBytes = Convert.FromBase64String(passwordHash);
+            var salt = new byte[16];
+            var hash = new byte[storedHashBytes.Length - salt.Length];
+
+            Buffer.BlockCopy(storedHashBytes, 0, salt, 0, salt.Length);
+            Buffer.BlockCopy(storedHashBytes, salt.Length, hash, 0, hash.Length);
+
+            using var hasher = new Argon2id(Encoding.UTF8.GetBytes(password))
+            {
+                Salt = salt,
+                Iterations = 4, 
+                MemorySize = 8 * 1024,
+                DegreeOfParallelism = 8
+            };
+            var computedHash = hasher.GetBytes(32);
+            return hash.SequenceEqual(computedHash);
         }
 
         //mozhda postions ne se za vo userRepo
@@ -147,7 +156,8 @@ namespace homeMaintenance.Application.Services
                 throw new FormatException("Only images are accepted");
             }
 
-            AmazonS3Client client = _userRepository.GetAwsClient();
+            var credentials = new BasicAWSCredentials("AKIA2UC26MP7ZI263NKL", "AAZtoZ0Tiuji2qVo39VvOa1I6ut7ddnX6qTyuCIX");
+            AmazonS3Client s3Client = new AmazonS3Client(credentials, RegionEndpoint.USEast1);
 
             byte[] fileBytes = new byte[file.Length];
             file.OpenReadStream().Read(fileBytes, 0, int.Parse(file.Length.ToString()));
@@ -159,14 +169,14 @@ namespace homeMaintenance.Application.Services
             {
                 var request = new PutObjectRequest
                 {
-                    BucketName = "live-demo-bucket821",
+                    BucketName = "homemaintenanceapp",
                     Key = fileName,
                     InputStream = stream,
                     ContentType = file.ContentType,
                     CannedACL = S3CannedACL.NoACL
                 };
 
-                response = await client.PutObjectAsync(request);
+                response = await s3Client.PutObjectAsync(request);
             }
 ;
 
