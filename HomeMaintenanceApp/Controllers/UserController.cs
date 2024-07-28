@@ -46,5 +46,13 @@ namespace HomeMaintenanceApp.Web.Controllers
             var result = await mediator.Send(query).ConfigureAwait(false);
             return Ok(result);
         }
+
+        [HttpGet("employees")]
+        public async Task<IActionResult> GetAllEmployees()
+        {
+            EmployeesQuery query = new();
+            var result = await mediator.Send(query).ConfigureAwait(false);
+            return Ok(result);
+        }
     }
 }

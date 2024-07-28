@@ -42,12 +42,13 @@ namespace homeMaintenance.Infrastructure.Repositories
                     user.PhoneNumber,
                     user.Email,
                     user.Password,
-                    user.Address,
+                    user.City,
                     UserRole = (int)user.UserType,
                     user.Experience,
                     user.Price,
                     user.BirthDate,
-                    PositionId = new Guid(user.PositionId)
+                    user.PositionId,
+                    user.Avatar
                 },
                 commandType: CommandType.StoredProcedure);
             return response;
@@ -56,6 +57,13 @@ namespace homeMaintenance.Infrastructure.Repositories
         public AmazonS3Client GetAwsClient()
         {
             return _awsClient;
+        }
+
+        public async Task<IEnumerable<User>> GetEmployeesAsync()
+        {
+            var response = await _dbConnection.QueryAsync<User>("GetEmployees", commandType: CommandType.StoredProcedure);
+
+            return response;
         }
     }
 }

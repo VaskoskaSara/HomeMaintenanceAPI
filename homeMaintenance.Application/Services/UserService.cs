@@ -12,6 +12,7 @@ using System.Text.RegularExpressions;
 using Amazon;
 using Amazon.Runtime;
 using Konscious.Security.Cryptography;
+using AutoMapper;
 
 namespace homeMaintenance.Application.Services
 {
@@ -19,10 +20,13 @@ namespace homeMaintenance.Application.Services
     {
         private readonly ITransactionWrapper _transactionWrapper;
         private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-        public UserService(ITransactionWrapper transactionWrapper, IUserRepository userRepository)
+
+        public UserService(ITransactionWrapper transactionWrapper, IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         public async Task<long?> RegistrationAsync(User user, CancellationToken cancellationToken = default)
@@ -33,8 +37,8 @@ namespace homeMaintenance.Application.Services
             }
 
             var userByEmail = await _userRepository.GetUserByEmail(user.Email);
-            
-            if(userByEmail != null)
+
+            if (userByEmail != null)
             {
                 throw new ValidationException("User with that email already exists");
             }
@@ -62,7 +66,7 @@ namespace homeMaintenance.Application.Services
 
             return true;
         }
-        
+
         static byte[] GenerateSalt()
         {
             using (var rng = new RNGCryptoServiceProvider())
@@ -83,7 +87,7 @@ namespace homeMaintenance.Application.Services
                 using var hasher = new Argon2id(Encoding.UTF8.GetBytes(password))
                 {
                     Salt = salt,
-                    Iterations = 4, 
+                    Iterations = 4,
                     MemorySize = 8 * 1024,
                     DegreeOfParallelism = 8
                 };
@@ -93,7 +97,7 @@ namespace homeMaintenance.Application.Services
                 Buffer.BlockCopy(hashBytes, 0, saltedHash, salt.Length, hashBytes.Length);
                 hashedString = Convert.ToBase64String(saltedHash);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -130,7 +134,7 @@ namespace homeMaintenance.Application.Services
             using var hasher = new Argon2id(Encoding.UTF8.GetBytes(password))
             {
                 Salt = salt,
-                Iterations = 4, 
+                Iterations = 4,
                 MemorySize = 8 * 1024,
                 DegreeOfParallelism = 8
             };
@@ -141,11 +145,6 @@ namespace homeMaintenance.Application.Services
         //mozhda postions ne se za vo userRepo
         public async Task<IEnumerable<Position>?> GetPositions(CancellationToken cancellationToken = default)
         {
-            // zosho mi e unit of work
-            //IEnumerable<Position>? positions = null;
-            //positions = await _userRepository.GetPositionsAsync();
-
-            //return positions;
             return await _userRepository.GetPositionsAsync();
         }
 
@@ -178,28 +177,38 @@ namespace homeMaintenance.Application.Services
 
                 response = await s3Client.PutObjectAsync(request);
             }
-;
-
-            //if (response.HttpStatusCode == System.Net.HttpStatusCode.OK)
-            //{
-            //    // this model is up to you, i have saved a reference to my database 
-            //    // to connect the images with users etc.
-            //    AddImageReferenceCommand addImageReferenceCommand = new AddImageReferenceCommand
-            //    {
-            //        Bucket = command.Bucket,
-            //        Key = fileName,
-            //        Name = fileName
-            //    };
-            //    // adds the image reference
-            //    imageDto = await _userService.AddImage(addImageReferenceCommand);
-            //}
-            //else
-            //{
-            //    // do some error handling
-            //}
 
             return true;
         }
 
+        public async Task<IEnumerable<EmployeeDto>> GetEmployees(CancellationToken cancellationToken = default)
+        {
+            var response = await _userRepository.GetEmployeesAsync();
+
+            foreach (var employee in response)
+            {
+                employee.Avatar = GetImageFromAws(employee.Avatar); 
+            }
+
+            return _mapper.Map<IEnumerable<EmployeeDto>>(response);
+        }
+
+
+        private string GetImageFromAws (string key)
+        {
+            var credentials = new BasicAWSCredentials("AKIA2UC26MP7ZI263NKL", "AAZtoZ0Tiuji2qVo39VvOa1I6ut7ddnX6qTyuCIX");
+            AmazonS3Client s3Client = new AmazonS3Client(credentials, RegionEndpoint.USEast1);
+
+            var request = new GetPreSignedUrlRequest
+            {
+                BucketName = "homemaintenanceapp",
+                Key = key,
+                Expires = DateTime.UtcNow.AddMinutes(30)
+            };
+
+            string url = s3Client.GetPreSignedURL(request);
+
+            return url;
+        }
     }
 }
