@@ -10,6 +10,7 @@ namespace homeMaintenance.Application.Ports.Out
         Task<UserLoginDto> GetUserByEmail(string email);
         AmazonS3Client GetAwsClient();
         Task<IEnumerable<User>> GetEmployeesAsync();
+        Task<Guid> InsertPosition(string newPosition);
 
     }
 }

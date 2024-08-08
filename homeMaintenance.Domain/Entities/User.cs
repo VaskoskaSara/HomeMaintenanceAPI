@@ -12,9 +12,11 @@ namespace homeMaintenance.Domain.Entities
         public string City { get; set; }
         public DateTime BirthDate { get; set; }
         public string PhoneNumber { get; set; }
-        public float Experience { get; set; }
-        public Guid PositionId { get; set; }
-        public float Price { get; set; }
+        public float? Experience { get; set; }
+        public Guid? PositionId { get; set; }
+        public string? NewPosition { get; set; }
+        public PaymentType? PaymentType { get; set; }
+        public float? Price { get; set; }
         public string Avatar { get; set; }
 
     }

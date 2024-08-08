@@ -13,6 +13,7 @@ using Amazon;
 using Amazon.Runtime;
 using Konscious.Security.Cryptography;
 using AutoMapper;
+using homeMaintenance.Domain.Enum;
 
 namespace homeMaintenance.Application.Services
 {
@@ -51,6 +52,29 @@ namespace homeMaintenance.Application.Services
             }
 
             user.Password = hashedPassword;
+
+            if (user.UserType != UserType.Customer) {
+
+                if (user.PositionId == null)
+                {
+                    if (string.IsNullOrEmpty(user.NewPosition))
+                    {
+                        throw new Exception("Position must be entered");
+                    }
+
+                    else
+                    {
+                        //ako ima so isto ime ne dodavaj
+                        var newPosition = await _userRepository.InsertPosition(user.NewPosition);
+                        user.PositionId = newPosition;
+                    }
+                }
+
+                if (user.PaymentType != PaymentType.ByContract && user.Price == null) {
+
+                    throw new Exception("Price must be entered");
+                }
+            }
 
             var response = await _userRepository.RegisterUser(user);
             return response;

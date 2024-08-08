@@ -48,7 +48,8 @@ namespace homeMaintenance.Infrastructure.Repositories
                     user.Price,
                     user.BirthDate,
                     user.PositionId,
-                    user.Avatar
+                    user.Avatar,
+                    user.PaymentType
                 },
                 commandType: CommandType.StoredProcedure);
             return response;
@@ -62,6 +63,21 @@ namespace homeMaintenance.Infrastructure.Repositories
         public async Task<IEnumerable<User>> GetEmployeesAsync()
         {
             var response = await _dbConnection.QueryAsync<User>("GetEmployees", commandType: CommandType.StoredProcedure);
+
+            return response;
+        }
+
+        public async Task<Guid> InsertPosition(string newPosition)
+        {
+
+            var parameters = new DynamicParameters();
+            parameters.Add("@PositionName", newPosition);
+            parameters.Add("@NewId", dbType: DbType.Guid, direction: ParameterDirection.Output);
+
+
+            await _dbConnection.ExecuteScalarAsync<Guid>("InsertPosition", parameters, commandType: CommandType.StoredProcedure);
+
+            var response = parameters.Get<Guid>("@NewId");
 
             return response;
         }

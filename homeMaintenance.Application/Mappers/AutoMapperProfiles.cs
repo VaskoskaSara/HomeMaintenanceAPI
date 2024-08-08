@@ -14,7 +14,8 @@ namespace homeMaintenance.Application.Mappers
             CreateMap<UserRegistrationCommand, User>()
            .ForMember(dest => dest.BirthDate, opt => opt.MapFrom(src => ParseDate(src.BirthDate)))
            .ForMember(dest => dest.Avatar, opt => opt.MapFrom(src => src.Avatar.FileName))
-           .ReverseMap()
+            .ForMember(dest => dest.PositionId, opt => opt.MapFrom(src => ConvertToGuid(src.PositionId)))
+            .ReverseMap()
            .ForMember(dest => dest.Photos, opt => opt.Ignore());
 
             CreateMap<UserLoginCommand, User>()
@@ -30,9 +31,8 @@ namespace homeMaintenance.Application.Mappers
 
         private DateTime? ParseDate(string dateString)
         {
-            string format = "ddd MMM dd yyyy HH:mm:ss 'GMT'zzz";
-            dateString = dateString.Substring(0, dateString.IndexOf('(')).Trim();
-            
+            string format = "ddd, dd MMM yyyy HH:mm:ss 'GMT'";
+
             DateTimeOffset.TryParseExact(dateString, format, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTimeOffset dateTimeOffset);
             
             DateTime dateTime = dateTimeOffset.DateTime;
@@ -40,6 +40,15 @@ namespace homeMaintenance.Application.Mappers
             Console.WriteLine("DateTime: " + dateTime); // Output: 21/03/1998 00:00:00
 
             return dateTime;
+        }
+
+        private Guid? ConvertToGuid(string positionId)
+        {
+            if (Guid.TryParse(positionId, out Guid parsedGuid))
+            {
+                return parsedGuid;
+            }
+            return null;
         }
     }
 
