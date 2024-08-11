@@ -64,9 +64,14 @@ namespace homeMaintenance.Application.Services
 
                     else
                     {
-                        //ako ima so isto ime ne dodavaj
-                        var newPosition = await _userRepository.InsertPosition(user.NewPosition);
-                        user.PositionId = newPosition;
+                        var positions = await _userRepository.GetPositionsAsync();
+                        bool exists = positions.Any(item => string.Equals(item.PositionName, user.NewPosition, StringComparison.OrdinalIgnoreCase));
+
+                        if (!exists)
+                        {
+                            var newPosition = await _userRepository.InsertPosition(user.NewPosition);
+                            user.PositionId = newPosition;
+                        }
                     }
                 }
 

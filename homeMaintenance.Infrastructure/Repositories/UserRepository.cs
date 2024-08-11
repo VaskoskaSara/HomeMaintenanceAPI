@@ -2,8 +2,10 @@
 using Dapper;
 using homeMaintenance.Application.Ports.Out;
 using homeMaintenance.Domain.Entities;
+using homeMaintenance.Domain.Enum;
 using HomeMaintenanceApp.Web;
 using System.Data;
+using System.Transactions;
 
 namespace homeMaintenance.Infrastructure.Repositories
 {
@@ -52,6 +54,15 @@ namespace homeMaintenance.Infrastructure.Repositories
                     user.PaymentType
                 },
                 commandType: CommandType.StoredProcedure);
+
+            var parameters = user.Photos
+                   .Select(name => new { Image = name, ImageOrigin = ImageOrigin.User })
+            .ToList();
+
+            int rows = await _dbConnection.ExecuteAsync("InsertImages",
+                parameters,
+                commandType: CommandType.StoredProcedure);
+
             return response;
         }
 

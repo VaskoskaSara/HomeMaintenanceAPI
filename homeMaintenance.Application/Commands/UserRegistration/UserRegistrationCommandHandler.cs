@@ -19,12 +19,21 @@ namespace homeMaintenance.Application.Commands.UserRegistration
         public async Task<long?> Handle(UserRegistrationCommand request, CancellationToken cancellationToken)
         {
             var user = _mapper.Map<User>(request);
+            
+            var result = await _serviceContainer.UserService.RegistrationAsync(user, cancellationToken).ConfigureAwait(false);
 
-            if (request.Avatar != null) {
+            if (request.Avatar != null)
+            {
                 await _serviceContainer.UserService.UploadImageToS3(request.Avatar);
             }
 
-            var result = await _serviceContainer.UserService.RegistrationAsync(user, cancellationToken).ConfigureAwait(false);
+            if (request.Photos != null)
+            {
+                request.Photos.ForEach(async photo =>
+                {
+                    await _serviceContainer.UserService.UploadImageToS3(photo);
+                });
+            }
 
             return result;
         }

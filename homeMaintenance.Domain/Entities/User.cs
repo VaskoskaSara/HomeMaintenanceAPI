@@ -18,6 +18,6 @@ namespace homeMaintenance.Domain.Entities
         public PaymentType? PaymentType { get; set; }
         public float? Price { get; set; }
         public string Avatar { get; set; }
-
+        public string[]? Photos { get; set; }
     }
 }
