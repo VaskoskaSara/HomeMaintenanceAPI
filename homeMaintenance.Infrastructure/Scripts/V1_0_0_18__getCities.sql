@@ -1,0 +1,5 @@
+﻿CREATE PROCEDURE GetCities
+AS  
+BEGIN
+	SELECT DISTINCT City FROM dbo.Users   
+END 

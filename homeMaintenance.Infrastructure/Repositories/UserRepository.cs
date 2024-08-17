@@ -71,11 +71,19 @@ namespace homeMaintenance.Infrastructure.Repositories
             return _awsClient;
         }
 
-        public async Task<IEnumerable<User>> GetEmployeesAsync()
+        public async Task<IEnumerable<User>> GetEmployeesAsync(string city, int? price, int? experience, bool? byContract)
         {
-            var response = await _dbConnection.QueryAsync<User>("GetEmployees", commandType: CommandType.StoredProcedure);
+            var response = await _dbConnection.QueryAsync<User>("GetEmployees",
+                new
+                {
+                    city,
+                    price,
+                    experience,
+                    byContract = (byContract == null || byContract == false) ? 0 : 1 
+                },
+                commandType: CommandType.StoredProcedure);
 
-            return response;
+           return response;
         }
 
         public async Task<Guid> InsertPosition(string newPosition)
@@ -90,6 +98,12 @@ namespace homeMaintenance.Infrastructure.Repositories
 
             var response = parameters.Get<Guid>("@NewId");
 
+            return response;
+        }
+
+        public async Task<IEnumerable<string>> GetCitiesAsync()
+        {
+            var response = await _dbConnection.QueryAsync<string>("GetCities", commandType: CommandType.StoredProcedure);
             return response;
         }
     }

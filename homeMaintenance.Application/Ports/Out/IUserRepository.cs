@@ -9,8 +9,9 @@ namespace homeMaintenance.Application.Ports.Out
         Task<long?> RegisterUser(User user);
         Task<UserLoginDto> GetUserByEmail(string email);
         AmazonS3Client GetAwsClient();
-        Task<IEnumerable<User>> GetEmployeesAsync();
+        Task<IEnumerable<User>> GetEmployeesAsync(string city, int? price, int? experience, bool? byContract);
         Task<Guid> InsertPosition(string newPosition);
+        Task<IEnumerable<string>> GetCitiesAsync();
 
     }
 }

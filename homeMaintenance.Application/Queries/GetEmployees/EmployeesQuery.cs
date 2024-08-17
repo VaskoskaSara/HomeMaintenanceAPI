@@ -3,5 +3,5 @@ using MediatR;
 
 namespace homeMaintenance.Application.Queries.GetPositions
 {
-    public record EmployeesQuery : IRequest<IEnumerable<EmployeeDto>>;
+    public record EmployeesQuery(string city, int? price,int? experience, bool? byContract) : IRequest<IEnumerable<EmployeeDto>>;
 }

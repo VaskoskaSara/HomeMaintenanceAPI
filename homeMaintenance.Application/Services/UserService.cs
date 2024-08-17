@@ -210,9 +210,9 @@ namespace homeMaintenance.Application.Services
             return true;
         }
 
-        public async Task<IEnumerable<EmployeeDto>> GetEmployees(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<EmployeeDto>> GetEmployees(string city, int? price, int? experience, bool? byContract, CancellationToken cancellationToken = default)
         {
-            var response = await _userRepository.GetEmployeesAsync();
+            var response = await _userRepository.GetEmployeesAsync(city, price, experience, byContract);
 
             foreach (var employee in response)
             {
@@ -238,6 +238,11 @@ namespace homeMaintenance.Application.Services
             string url = s3Client.GetPreSignedURL(request);
 
             return url;
+        }
+
+        public async Task<IEnumerable<string>?> GetCities(CancellationToken cancellationToken = default)
+        {
+            return await _userRepository.GetCitiesAsync();
         }
     }
 }
