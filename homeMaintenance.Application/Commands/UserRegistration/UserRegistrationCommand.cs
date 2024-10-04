@@ -21,6 +21,8 @@ namespace homeMaintenance.Application.Commands.UserRegistration
         public float? Price { get; set; }
         public IFormFile? Avatar { get; set; }
         public List<IFormFile>? Photos { get; set; }
+        public int? NumberOfEmployees { get; set; }
+        public string? Description { get; set; }
 
 
     }

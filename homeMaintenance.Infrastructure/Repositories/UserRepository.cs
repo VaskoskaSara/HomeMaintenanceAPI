@@ -51,7 +51,9 @@ namespace homeMaintenance.Infrastructure.Repositories
                     user.BirthDate,
                     user.PositionId,
                     user.Avatar,
-                    user.PaymentType
+                    user.PaymentType,
+                    user.NumberOfEmployees,
+                    user.Description
                 },
                 commandType: CommandType.StoredProcedure);
 
@@ -71,15 +73,16 @@ namespace homeMaintenance.Infrastructure.Repositories
             return _awsClient;
         }
 
-        public async Task<IEnumerable<User>> GetEmployeesAsync(string city, int? price, int? experience, bool? byContract)
+        public async Task<IEnumerable<User>> GetEmployeesAsync(string[]? cities, int? price, int? experience, bool? excludeByContract, Guid[] categoryIds)
         {
             var response = await _dbConnection.QueryAsync<User>("GetEmployees",
                 new
                 {
-                    city,
+                    @Cities = (cities != null && cities.Length > 0) ? string.Join(",", cities) : null,
                     price,
                     experience,
-                    byContract = (byContract == null || byContract == false) ? 0 : 1 
+                    excludeByContract = (excludeByContract == null || excludeByContract == false) ? 0 : 1,
+                    @CategoryIds = categoryIds.Length > 0 ? string.Join(",", categoryIds) : null
                 },
                 commandType: CommandType.StoredProcedure);
 

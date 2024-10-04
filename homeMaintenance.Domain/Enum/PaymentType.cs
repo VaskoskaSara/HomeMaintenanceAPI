@@ -4,6 +4,6 @@
     {
         Hourly = 1,
         Overall = 2,
-        ByContract = 3
+        excludeByContract = 3
     }
 }

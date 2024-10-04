@@ -24,6 +24,6 @@ ALTER TABLE dbo.Users
 ADD CONSTRAINT FK_Users_PaymentTypes FOREIGN KEY (PaymentType) REFERENCES dbo.PaymentTypes(Id);
 
 
-INSERT INTO dbo.PaymentTypes (Id, PaymentType) VALUES (1, 'Hourly'), (2, 'Overall'), (3, 'ByContract');
+INSERT INTO dbo.PaymentTypes (Id, PaymentType) VALUES (1, 'Hourly'), (2, 'Overall'), (3, 'excludeByContract');
 
 COMMIT;

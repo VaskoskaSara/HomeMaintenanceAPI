@@ -47,10 +47,10 @@ namespace HomeMaintenanceApp.Web.Controllers
             return Ok(result);
         }
 
-        [HttpGet("employees")]
-        public async Task<IActionResult> GetAllEmployees([FromQuery] string? city, [FromQuery] int? price, [FromQuery] int? experience, [FromQuery] bool? byContract)
+        [HttpPost("employees")]
+        public async Task<IActionResult> GetAllEmployees([FromBody] EmployeeFilterRequest filter)
         {
-            EmployeesQuery query = new(city, price, experience, byContract);
+            EmployeesQuery query = new(filter.Cities, filter.Price, filter.Experience, filter.ExcludeByContract, filter.CategoryIds);
             var result = await mediator.Send(query).ConfigureAwait(false);
             return Ok(result);
         }

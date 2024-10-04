@@ -5,7 +5,6 @@ using homeMaintenance.Application.Ports.Out;
 using homeMaintenance.Domain.Entities;
 using homeMaintenance.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Http;
-using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -14,6 +13,8 @@ using Amazon.Runtime;
 using Konscious.Security.Cryptography;
 using AutoMapper;
 using homeMaintenance.Domain.Enum;
+using homeMaintenance.Domain.Exceptions;
+using System.Net;
 
 namespace homeMaintenance.Application.Services
 {
@@ -34,21 +35,21 @@ namespace homeMaintenance.Application.Services
         {
             if (!IsValidStrongPassword(user.Password))
             {
-                throw new ValidationException("Password is not string enough");
+                throw new CustomException(HttpStatusCode.BadRequest, "Password is not string enough");
             }
 
             var userByEmail = await _userRepository.GetUserByEmail(user.Email);
 
             if (userByEmail != null)
             {
-                throw new ValidationException("User with that email already exists");
+                throw new CustomException(HttpStatusCode.Conflict, "User with that email already exists");
             }
 
             string hashedPassword = HashPassword(user.Password, GenerateSalt());
 
             if (string.IsNullOrEmpty(hashedPassword))
             {
-                throw new Exception("Error was occured while saving password");
+                throw new CustomException(HttpStatusCode.InternalServerError, "Error was occured while saving password");
             }
 
             user.Password = hashedPassword;
@@ -75,7 +76,7 @@ namespace homeMaintenance.Application.Services
                     }
                 }
 
-                if (user.PaymentType != PaymentType.ByContract && user.Price == null) {
+                if (user.PaymentType != PaymentType.excludeByContract && user.Price == null) {
 
                     throw new Exception("Price must be entered");
                 }
@@ -210,13 +211,14 @@ namespace homeMaintenance.Application.Services
             return true;
         }
 
-        public async Task<IEnumerable<EmployeeDto>> GetEmployees(string city, int? price, int? experience, bool? byContract, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<EmployeeDto>> GetEmployees(string[]? cities, int? price, int? experience, bool? excludeByContract, Guid[] categoryIds, CancellationToken cancellationToken = default)
         {
-            var response = await _userRepository.GetEmployeesAsync(city, price, experience, byContract);
+            var response = await _userRepository.GetEmployeesAsync(cities, price, experience, excludeByContract, categoryIds);
 
             foreach (var employee in response)
             {
-                employee.Avatar = GetImageFromAws(employee.Avatar); 
+                var imagePath = GetImageFromAws(employee.Avatar);
+                employee.Avatar = imagePath;
             }
 
             return _mapper.Map<IEnumerable<EmployeeDto>>(response);

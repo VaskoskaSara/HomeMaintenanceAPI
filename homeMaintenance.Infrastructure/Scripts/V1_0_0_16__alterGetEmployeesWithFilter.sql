@@ -2,7 +2,7 @@
 	@City NVARCHAR(100),
     @Experience INT,
     @Price INT,
-    @ByContract BIT = 0
+    @excludeByContract BIT = 0
 AS  
 BEGIN
 	SELECT Id, FullName, City, Experience, Price, PositionId
@@ -12,6 +12,6 @@ BEGIN
 	  (@City IS NULL OR City = @City) AND
       (@Experience IS NULL OR Experience = @Experience) AND
       (@Price IS NULL OR Price = @Price) AND
-      (PaymentType IN (1, 2, 3) OR @ByContract = 1)
+      (PaymentType IN (1, 2, 3) OR @excludeByContract = 1)
 	)
 END 

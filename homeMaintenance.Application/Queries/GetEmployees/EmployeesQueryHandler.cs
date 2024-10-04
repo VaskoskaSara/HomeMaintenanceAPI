@@ -13,7 +13,7 @@ namespace homeMaintenance.Application.Queries.GetPositions
 
         public async Task<IEnumerable<EmployeeDto>> Handle(EmployeesQuery request, CancellationToken cancellationToken)
         {
-            var response = await _serviceContainer.UserService.GetEmployees(request.city, request.price,request.experience, request.byContract).ConfigureAwait(false);
+            var response = await _serviceContainer.UserService.GetEmployees(request.cities, request.price,request.experience, request.excludeByContract, request.categoryIds).ConfigureAwait(false);
             return response;
         }
     }

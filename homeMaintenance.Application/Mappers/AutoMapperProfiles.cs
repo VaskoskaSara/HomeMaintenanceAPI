@@ -16,7 +16,7 @@ namespace homeMaintenance.Application.Mappers
            .ForMember(dest => dest.BirthDate, opt => opt.MapFrom(src => ParseDate(src.BirthDate)))
            .ForMember(dest => dest.Avatar, opt => opt.MapFrom(src => src.Avatar.FileName))
            .ForMember(dest => dest.PositionId, opt => opt.MapFrom(src => ConvertToGuid(src.PositionId)))
-           .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.PaymentType == PaymentType.ByContract ? null : src.Price))
+           .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.PaymentType == PaymentType.excludeByContract ? null : src.Price))
             .ForMember(dest => dest.Photos, opt => opt.MapFrom(src => src.Photos.Select(file => file.FileName).ToList()))
             .ReverseMap();
 

@@ -9,7 +9,7 @@ namespace homeMaintenance.Application.Ports.In
         Task<IEnumerable<Position>?> GetPositions(CancellationToken cancellationToken = default);
         Task<bool> LoginAsync(User user, CancellationToken cancellationToken = default);
         Task<bool?> UploadImageToS3(IFormFile file); 
-        Task<IEnumerable<EmployeeDto>> GetEmployees(string city, int? price, int? experience, bool? byContract, CancellationToken cancellationToken = default);
+        Task<IEnumerable<EmployeeDto>> GetEmployees(string[]? cities, int? price, int? experience, bool? excludeByContract,Guid[] categoryIds, CancellationToken cancellationToken = default);
         Task<IEnumerable<string>?> GetCities(CancellationToken cancellationToken = default);
 
     }

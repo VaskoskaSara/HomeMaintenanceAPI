@@ -19,5 +19,7 @@ namespace homeMaintenance.Domain.Entities
         public float? Price { get; set; }
         public string Avatar { get; set; }
         public string[]? Photos { get; set; }
+        public int? NumberOfEmployees { get; set; }
+        public string? Description { get; set; }
     }
 }
