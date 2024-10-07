@@ -12,6 +12,7 @@ namespace homeMaintenance.Application.Ports.Out
         Task<IEnumerable<User>> GetEmployeesAsync(string[]? city, int? price, int? experience, bool? excludeByContract, Guid[] categoryIds);
         Task<Guid> InsertPosition(string newPosition);
         Task<IEnumerable<string>> GetCitiesAsync();
+        Task<UserDetailsDto?> GetEmployeeById(Guid id);
 
     }
 }

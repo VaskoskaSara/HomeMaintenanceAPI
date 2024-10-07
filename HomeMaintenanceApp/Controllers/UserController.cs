@@ -62,5 +62,13 @@ namespace HomeMaintenanceApp.Web.Controllers
             var result = await mediator.Send(query).ConfigureAwait(false);
             return Ok(result);
         }
+
+        [HttpGet("employee/{id}")]
+        public async Task<IActionResult> GetEmployeeById([FromRoute] Guid id)
+        {
+            EmployeeQuery query = new(id);
+            var result = await mediator.Send(query).ConfigureAwait(false);
+            return Ok(result);
+        }
     }
 }

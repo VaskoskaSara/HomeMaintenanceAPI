@@ -172,7 +172,6 @@ namespace homeMaintenance.Application.Services
             return hash.SequenceEqual(computedHash);
         }
 
-        //mozhda postions ne se za vo userRepo
         public async Task<IEnumerable<Position>?> GetPositions(CancellationToken cancellationToken = default)
         {
             return await _userRepository.GetPositionsAsync();
@@ -217,7 +216,17 @@ namespace homeMaintenance.Application.Services
 
             foreach (var employee in response)
             {
-                var imagePath = GetImageFromAws(employee.Avatar);
+                string imagePath;
+
+                if (employee.Avatar != null)
+                {
+                    imagePath = GetImageFromAws(employee.Avatar);
+                }
+                else
+                {
+                    imagePath = GetImageFromAws("defaultUser.jpg");
+                }
+
                 employee.Avatar = imagePath;
             }
 
@@ -245,6 +254,35 @@ namespace homeMaintenance.Application.Services
         public async Task<IEnumerable<string>?> GetCities(CancellationToken cancellationToken = default)
         {
             return await _userRepository.GetCitiesAsync();
+        }
+
+        public async Task<UserDetails?> GetEmployeeById(Guid id, CancellationToken cancellationToken = default)
+        {
+            var response = await _userRepository.GetEmployeeById(id);
+
+            string imagePath;
+            List<string> images = new List<string>();
+
+            if (response.Avatar != null)
+            {
+                imagePath = GetImageFromAws(response.Avatar);
+            }
+            else
+            {
+                imagePath = GetImageFromAws("defaultUser.jpg");
+            }
+
+            if (response.Photos.Any())
+            {
+                response.Photos.ForEach(x =>
+                {
+                    images.Add(GetImageFromAws(x));
+                });
+            }
+
+            response.Avatar = imagePath;
+            response.Photos = images;
+            return _mapper.Map<UserDetails>(response);
         }
     }
 }

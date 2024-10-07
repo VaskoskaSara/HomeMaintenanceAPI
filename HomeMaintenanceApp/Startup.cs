@@ -3,13 +3,11 @@ using homeMaintenance.Application.Ports.In;
 using homeMaintenance.Application.Ports.Out;
 using homeMaintenance.Application.Queries.GetPositions;
 using homeMaintenance.Application.Services;
-using homeMaintenance.Domain.Entities;
 using homeMaintenance.Infrastructure.Repositories;
 using HomeMaintenanceApp.Web;
 using HomeMaintenanceApp.Web.Extensions;
 using MediatR;
-using System.Reflection;
-using TicketApp;
+using Stripe;
 
 namespace HomeMaintenanceApp
 {
@@ -49,6 +47,7 @@ namespace HomeMaintenanceApp
                                .AllowAnyHeader();
                     });
             });
+            StripeConfiguration.ApiKey = _configuration["Stripe:SecretKey"];
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

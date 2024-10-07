@@ -5,7 +5,6 @@ using homeMaintenance.Domain.Entities;
 using homeMaintenance.Domain.Enum;
 using HomeMaintenanceApp.Web;
 using System.Data;
-using System.Transactions;
 
 namespace homeMaintenance.Infrastructure.Repositories
 {
@@ -57,9 +56,7 @@ namespace homeMaintenance.Infrastructure.Repositories
                 },
                 commandType: CommandType.StoredProcedure);
 
-            var parameters = user.Photos
-                   .Select(name => new { Image = name, ImageOrigin = ImageOrigin.User })
-            .ToList();
+            var parameters = user.Photos?.Select(name => new { Image = name, ImageOrigin = ImageOrigin.User, UserId = user.Id }).ToList();
 
             int rows = await _dbConnection.ExecuteAsync("InsertImages",
                 parameters,
@@ -108,6 +105,29 @@ namespace homeMaintenance.Infrastructure.Repositories
         {
             var response = await _dbConnection.QueryAsync<string>("GetCities", commandType: CommandType.StoredProcedure);
             return response;
+        }
+
+        public async Task<UserDetailsDto?> GetEmployeeById(Guid id)
+        {
+
+            var response = await _dbConnection.QueryMultipleAsync("GetEmployeeById",
+                new
+                {
+                    id
+                },
+                commandType: CommandType.StoredProcedure);
+
+            if(response == null) return null;
+
+            var userDetails = await response.ReadSingleOrDefaultAsync<UserDetailsDto>();
+            var userImages = await response.ReadAsync<UserImage>();
+
+            if (userDetails != null)
+            {
+                userDetails.Photos = userImages.Select(img => img.Image).ToList();
+            }
+
+            return userDetails;
         }
     }
 }
