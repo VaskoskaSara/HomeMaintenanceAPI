@@ -23,14 +23,20 @@ ALTER PROCEDURE InsertUser
 @Avatar						  NVARCHAR(MAX),
 @PaymentType				  INT,
 @NumberOfEmployees			  INT,
-@Description				  NVARCHAR(MAX)
+@Description				  NVARCHAR(MAX),
+@NewId                        UNIQUEIDENTIFIER OUTPUT
 AS 
 BEGIN 
-SET NOCOUNT ON 
+    SET NOCOUNT ON;
 
-INSERT INTO dbo.Users (FullName, PhoneNumber, Email, [Password], City, UserRole, CreatedAt, Experience, Price, BirthDate, PositionId, Avatar, PaymentType, NumberOfEmployees, [Description]) VALUES 
-(@FullName, @PhoneNumber, @Email, @Password, @City, @UserRole, GETUTCDATE(), @Experience, @Price, @BirthDate, @PositionId, @Avatar, @PaymentType, @NumberOfEmployees, @Description);
+    SET @NewId = NEWID();
 
+    INSERT INTO dbo.Users 
+    (Id, FullName, PhoneNumber, Email, [Password], City, UserRole, CreatedAt, Experience, Price, BirthDate, PositionId, Avatar, PaymentType, NumberOfEmployees, [Description]) 
+    VALUES 
+    (@NewId, @FullName, @PhoneNumber, @Email, @Password, @City, @UserRole, GETUTCDATE(), @Experience, @Price, @BirthDate, @PositionId, @Avatar, @PaymentType, @NumberOfEmployees, @Description);
+    
+    SELECT @NewId AS NewUserId;
 END
 GO;
 

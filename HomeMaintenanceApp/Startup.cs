@@ -34,6 +34,8 @@ namespace HomeMaintenanceApp
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITransactionWrapper,TransactionWrapper>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IPaymentRepository, PaymentRepository>();
+            services.AddScoped<IPaymentService, PaymentService>();
             services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();

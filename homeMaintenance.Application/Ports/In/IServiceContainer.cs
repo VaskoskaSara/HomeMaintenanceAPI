@@ -3,5 +3,6 @@
     public interface IServiceContainer
     {
         IUserService UserService { get; }
+        IPaymentService PaymentService { get; }
     }
 }

@@ -31,12 +31,7 @@ namespace HomeMaintenanceApp.Web.Controllers
         {
             var result = await mediator.Send(command).ConfigureAwait(false);
             
-            if(result)
-                return Ok();
-            else
-            {
-                throw new AuthenticationFailedException("Credentials are not valid");
-            }
+            return Ok(result);
         }
 
         [HttpGet("positions")]

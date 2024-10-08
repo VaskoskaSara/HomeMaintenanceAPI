@@ -2,7 +2,7 @@
 {
     public class PaymentRequest
     {
-        public long Amount { get; set; } // Amount in cents
-        public string PaymentMethodId { get; set; } // Stripe Payment Method ID
+        public long Amount { get; set; } 
+        public string? PaymentMethodId { get; set; } 
     }
 }

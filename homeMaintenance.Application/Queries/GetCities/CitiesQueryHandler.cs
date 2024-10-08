@@ -1,5 +1,4 @@
 ﻿using homeMaintenance.Application.Ports.In;
-using homeMaintenance.Domain.Entities;
 using MediatR;
 
 namespace homeMaintenance.Application.Queries.GetPositions

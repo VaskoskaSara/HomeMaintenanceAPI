@@ -15,6 +15,7 @@ using AutoMapper;
 using homeMaintenance.Domain.Enum;
 using homeMaintenance.Domain.Exceptions;
 using System.Net;
+using System.Security.Authentication;
 
 namespace homeMaintenance.Application.Services
 {
@@ -31,7 +32,7 @@ namespace homeMaintenance.Application.Services
             _mapper = mapper;
         }
 
-        public async Task<long?> RegistrationAsync(User user, CancellationToken cancellationToken = default)
+        public async Task<Guid?> RegistrationAsync(User user, CancellationToken cancellationToken = default)
         {
             if (!IsValidStrongPassword(user.Password))
             {
@@ -135,7 +136,7 @@ namespace homeMaintenance.Application.Services
             return hashedString;
         }
 
-        public async Task<bool> LoginAsync(User loginUser, CancellationToken cancellationToken = default)
+        public async Task<Guid> LoginAsync(User loginUser, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrEmpty(loginUser.Email) || string.IsNullOrEmpty(loginUser.Password))
             {
@@ -146,10 +147,10 @@ namespace homeMaintenance.Application.Services
 
             if (user != null && VerifyPassword(loginUser.Password, user.Password))
             {
-                return true;
+                return user.Id;
             }
 
-            return false;
+            throw new InvalidCredentialException();
         }
 
         private bool VerifyPassword(string password, string passwordHash)

@@ -32,6 +32,9 @@ namespace homeMaintenance.Application.Mappers
 
             CreateMap<UserDetails, UserDetailsDto>()
             .ReverseMap();
+
+            CreateMap<TransactionInfoCommand, TransactionInfo>()
+            .ReverseMap();
         }
 
         private DateTime? ParseDate(string dateString)

@@ -34,35 +34,39 @@ namespace homeMaintenance.Infrastructure.Repositories
 
         }
 
-        public async Task<long?> RegisterUser(User user)
+        public async Task<Guid?> RegisterUser(User user)
         {
-            var response = await _dbConnection.ExecuteScalarAsync<long>("InsertUser",
-                new
-                {
-                    user.FullName,
-                    user.PhoneNumber,
-                    user.Email,
-                    user.Password,
-                    user.City,
-                    UserRole = (int)user.UserType,
-                    user.Experience,
-                    user.Price,
-                    user.BirthDate,
-                    user.PositionId,
-                    user.Avatar,
-                    user.PaymentType,
-                    user.NumberOfEmployees,
-                    user.Description
-                },
-                commandType: CommandType.StoredProcedure);
+            var parameters = new DynamicParameters();
 
-            var parameters = user.Photos?.Select(name => new { Image = name, ImageOrigin = ImageOrigin.User, UserId = user.Id }).ToList();
+            parameters.Add("@FullName", user.FullName);
+            parameters.Add("@PhoneNumber", user.PhoneNumber);
+            parameters.Add("@Email", user.Email);
+            parameters.Add("@Password", user.Password);
+            parameters.Add("@City", user.City);
+            parameters.Add("@UserRole", (int)user.UserType);
+            parameters.Add("@Experience", user.Experience);
+            parameters.Add("@Price", user.Price);
+            parameters.Add("@BirthDate", user.BirthDate);
+            parameters.Add("@PositionId", user.PositionId);
+            parameters.Add("@Avatar", user.Avatar);
+            parameters.Add("@PaymentType", user.PaymentType);
+            parameters.Add("@NumberOfEmployees", user.NumberOfEmployees);
+            parameters.Add("@Description", user.Description);
+
+            parameters.Add("@NewId", dbType: DbType.Guid, direction: ParameterDirection.Output);
+
+            await _dbConnection.ExecuteAsync("InsertUser", parameters, commandType: CommandType.StoredProcedure);
+
+            var newUserId = parameters.Get<Guid>("@NewId");
+
+
+            var photoParameters = user.Photos?.Select(name => new { Image = name, ImageOrigin = ImageOrigin.User, UserId = user.Id }).ToList();
 
             int rows = await _dbConnection.ExecuteAsync("InsertImages",
-                parameters,
+                photoParameters,
                 commandType: CommandType.StoredProcedure);
 
-            return response;
+            return newUserId;
         }
 
         public AmazonS3Client GetAwsClient()
