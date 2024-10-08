@@ -133,5 +133,17 @@ namespace homeMaintenance.Infrastructure.Repositories
 
             return userDetails;
         }
+
+        public async Task<IEnumerable<BookingInfoDto?>> GetBookingsByEmployee(Guid id)
+        {
+            var response = await _dbConnection.QueryAsync<BookingInfoDto>("GetBookingsByEmployee",
+               new
+               {
+                   id
+               },
+               commandType: CommandType.StoredProcedure);
+
+            return response;
+        }
     }
 }

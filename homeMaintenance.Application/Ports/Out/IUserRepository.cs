@@ -13,6 +13,7 @@ namespace homeMaintenance.Application.Ports.Out
         Task<Guid> InsertPosition(string newPosition);
         Task<IEnumerable<string>> GetCitiesAsync();
         Task<UserDetailsDto?> GetEmployeeById(Guid id);
+        Task<IEnumerable<BookingInfoDto?>> GetBookingsByEmployee(Guid id);
 
     }
 }

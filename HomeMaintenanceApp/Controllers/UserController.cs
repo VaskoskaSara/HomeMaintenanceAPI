@@ -65,5 +65,14 @@ namespace HomeMaintenanceApp.Web.Controllers
             var result = await mediator.Send(query).ConfigureAwait(false);
             return Ok(result);
         }
+
+
+        [HttpGet("manage-bookings/{id}")]
+        public async Task<IActionResult> GetAllEmployees([FromRoute] Guid id)
+        {
+            BookingsByEmployeeQuery query = new BookingsByEmployeeQuery(id);
+            var result = await mediator.Send(query).ConfigureAwait(false);
+            return Ok(result);
+        }
     }
 }

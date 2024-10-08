@@ -12,6 +12,7 @@ namespace homeMaintenance.Application.Ports.In
         Task<IEnumerable<EmployeeDto>> GetEmployees(string[]? cities, int? price, int? experience, bool? excludeByContract,Guid[] categoryIds, CancellationToken cancellationToken = default);
         Task<IEnumerable<string>?> GetCities(CancellationToken cancellationToken = default);
         Task<UserDetails?> GetEmployeeById(Guid id, CancellationToken cancellationToken = default);
+        Task<IEnumerable<BookingInfo?>> GetBookingsByEmployee(Guid id, CancellationToken cancellationToken = default);
 
     }
 }

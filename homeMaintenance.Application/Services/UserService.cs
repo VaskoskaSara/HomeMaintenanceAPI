@@ -285,5 +285,28 @@ namespace homeMaintenance.Application.Services
             response.Photos = images;
             return _mapper.Map<UserDetails>(response);
         }
+
+        public async Task<IEnumerable<BookingInfo?>> GetBookingsByEmployee(Guid id, CancellationToken cancellationToken = default)
+        {
+            var response = await _userRepository.GetBookingsByEmployee(id);
+
+            string imagePath;
+            List<string> images = new List<string>();
+
+            foreach (var item in response)
+            {
+            if (item.Avatar != null)
+            {
+                imagePath = GetImageFromAws(item.Avatar);
+            }
+            else
+            {
+                imagePath = GetImageFromAws("defaultUser.jpg");
+            }
+                item.Avatar = imagePath;
+            }
+
+            return _mapper.Map<IEnumerable<BookingInfo>>(response);
+        }
     }
 }
