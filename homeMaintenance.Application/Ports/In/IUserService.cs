@@ -13,6 +13,8 @@ namespace homeMaintenance.Application.Ports.In
         Task<IEnumerable<string>?> GetCities(CancellationToken cancellationToken = default);
         Task<UserDetails?> GetEmployeeById(Guid id, CancellationToken cancellationToken = default);
         Task<IEnumerable<BookingInfo?>> GetBookingsByEmployee(Guid id, CancellationToken cancellationToken = default);
-
+        Task<bool> PostAvaliabilty(EmployeeDisableDates employeeDisableDates, CancellationToken cancellationToken = default);
+        Task<List<DateOnly>> GetDisabledDatesByEmployee(Guid id, CancellationToken cancellationToken = default);
+        Task<List<DateTime>> GetBookedDatesByEmployee(Guid id, CancellationToken cancellationToken = default);
     }
 }

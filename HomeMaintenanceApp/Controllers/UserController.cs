@@ -1,5 +1,4 @@
-﻿using Azure.Identity;
-using homeMaintenance.Application.Commands.UserLogin;
+﻿using homeMaintenance.Application.Commands.UserLogin;
 using homeMaintenance.Application.Commands.UserRegistration;
 using homeMaintenance.Application.Queries.GetPositions;
 using MediatR;
@@ -74,5 +73,29 @@ namespace HomeMaintenanceApp.Web.Controllers
             var result = await mediator.Send(query).ConfigureAwait(false);
             return Ok(result);
         }
+
+        [HttpPost("manage-avaliability")]
+        public async Task<IActionResult> PostAvailability([FromBody] EmployeeDisabledDates command)
+        {
+            var result = await mediator.Send(command).ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        [HttpGet("manage-bookings/disabled-dates/{id}")]
+        public async Task<IActionResult> GetDisabledDatesByEmployee([FromRoute] Guid id)
+        {
+            DisabledDatesByEmployee query = new DisabledDatesByEmployee(id);
+            var result = await mediator.Send(query).ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        [HttpGet("manage-bookings/booked-dates/{id}")]
+        public async Task<IActionResult> GetBookedDatesByEmployee([FromRoute] Guid id)
+        {
+            BookedDatesByEmployee query = new BookedDatesByEmployee(id);
+            var result = await mediator.Send(query).ConfigureAwait(false);
+            return Ok(result);
+        }
+
     }
 }

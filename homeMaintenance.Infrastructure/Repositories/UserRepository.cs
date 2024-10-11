@@ -4,7 +4,9 @@ using homeMaintenance.Application.Ports.Out;
 using homeMaintenance.Domain.Entities;
 using homeMaintenance.Domain.Enum;
 using HomeMaintenanceApp.Web;
+using Microsoft.IdentityModel.Tokens;
 using System.Data;
+using System.Globalization;
 
 namespace homeMaintenance.Infrastructure.Repositories
 {
@@ -25,7 +27,7 @@ namespace homeMaintenance.Infrastructure.Repositories
             return response;
         }
 
-        public async Task<UserLoginDto> GetUserByEmail(string email)
+        public async Task<UserLoginDto> GetUserByEmailAsync(string email)
         {
            return await _dbConnection.QueryFirstOrDefaultAsync<UserLoginDto>("GetUserByEmail", new
             {
@@ -111,7 +113,7 @@ namespace homeMaintenance.Infrastructure.Repositories
             return response;
         }
 
-        public async Task<UserDetailsDto?> GetEmployeeById(Guid id)
+        public async Task<UserDetailsDto?> GetEmployeeByIdAsync(Guid id)
         {
 
             var response = await _dbConnection.QueryMultipleAsync("GetEmployeeById",
@@ -134,7 +136,7 @@ namespace homeMaintenance.Infrastructure.Repositories
             return userDetails;
         }
 
-        public async Task<IEnumerable<BookingInfoDto?>> GetBookingsByEmployee(Guid id)
+        public async Task<IEnumerable<BookingInfoDto?>> GetBookingsByEmployeeAsync(Guid id)
         {
             var response = await _dbConnection.QueryAsync<BookingInfoDto>("GetBookingsByEmployee",
                new
@@ -144,6 +146,66 @@ namespace homeMaintenance.Infrastructure.Repositories
                commandType: CommandType.StoredProcedure);
 
             return response;
+        }
+
+        public async Task<bool> PostAvaliability(EmployeeDisableDates employeeDisableDates)
+        {
+            var combinedDistinct = new List<DateTime>{ };
+            var disabledEmployeeByUser = await GetDisabledDatesByEmployeeAsync(employeeDisableDates.UserId);
+
+            if (employeeDisableDates.IsEnabled == true)
+            {
+                combinedDistinct = employeeDisableDates.DisabledDates.ToList();
+            }
+            else
+            {
+                combinedDistinct = employeeDisableDates.DisabledDates
+               .Select(dt => dt)
+               .Concat(disabledEmployeeByUser.Select(it => it.ToDateTime(TimeOnly.MinValue)))
+               .Distinct()
+               .ToList();
+            }
+
+            var response = await _dbConnection.ExecuteAsync("InsertEmployeeDisabledDates",
+              new
+              {
+                  id = employeeDisableDates.UserId,
+                  disabledDates = string.Join(",", combinedDistinct)
+              },
+              commandType: CommandType.StoredProcedure);
+
+            return response == -1;
+        }
+
+        public async Task<List<DateOnly>> GetDisabledDatesByEmployeeAsync(Guid id)
+        {
+            var response = await _dbConnection.QueryFirstOrDefaultAsync<string>("GetDisabledDatesByEmployeeId",
+            new
+            {
+                id
+            },
+            commandType: CommandType.StoredProcedure);
+            var dateList = new List<DateOnly>();
+
+            if (!response.IsNullOrEmpty())
+            {
+                var dateStrings = response.Split(',');
+                var dateFormat = "dd/MM/yyyy HH:mm:ss";
+
+                foreach (var dateString in dateStrings)
+                {
+                    if (DateOnly.TryParseExact(dateString.Trim(), dateFormat,
+                                    CultureInfo.InvariantCulture, DateTimeStyles.None, out DateOnly date))
+                    {
+                        dateList.Add(date);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Invalid date format: {dateString}");
+                    }
+                }
+            }
+            return dateList;
         }
     }
 }

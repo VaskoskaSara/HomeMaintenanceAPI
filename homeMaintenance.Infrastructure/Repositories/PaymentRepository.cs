@@ -16,7 +16,7 @@ namespace homeMaintenance.Infrastructure.Repositories
         }
         public async Task<bool> SaveTransactionAsync(TransactionInfo transaction)
         {
-            var response = await _dbConnection.ExecuteScalarAsync<bool>("InsertTransaction",
+            var response = await _dbConnection.ExecuteAsync("InsertTransaction",
             new
             {
                   userId = transaction.UserId,
@@ -28,7 +28,7 @@ namespace homeMaintenance.Infrastructure.Repositories
             },
             commandType: CommandType.StoredProcedure);
 
-            return response;
+            return response == -1;
         }
     }
 }

@@ -7,13 +7,14 @@ namespace homeMaintenance.Application.Ports.Out
     {
         Task<IEnumerable<Position>> GetPositionsAsync();
         Task<Guid?> RegisterUser(User user);
-        Task<UserLoginDto> GetUserByEmail(string email);
+        Task<UserLoginDto> GetUserByEmailAsync(string email);
         AmazonS3Client GetAwsClient();
         Task<IEnumerable<User>> GetEmployeesAsync(string[]? city, int? price, int? experience, bool? excludeByContract, Guid[] categoryIds);
         Task<Guid> InsertPosition(string newPosition);
         Task<IEnumerable<string>> GetCitiesAsync();
-        Task<UserDetailsDto?> GetEmployeeById(Guid id);
-        Task<IEnumerable<BookingInfoDto?>> GetBookingsByEmployee(Guid id);
-
+        Task<UserDetailsDto?> GetEmployeeByIdAsync(Guid id);
+        Task<IEnumerable<BookingInfoDto?>> GetBookingsByEmployeeAsync(Guid id);
+        Task<bool> PostAvaliability(EmployeeDisableDates employeeDisableDates);
+        Task<List<DateOnly>> GetDisabledDatesByEmployeeAsync(Guid id);
     }
 }

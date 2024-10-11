@@ -39,7 +39,7 @@ namespace homeMaintenance.Application.Services
                 throw new CustomException(HttpStatusCode.BadRequest, "Password is not string enough");
             }
 
-            var userByEmail = await _userRepository.GetUserByEmail(user.Email);
+            var userByEmail = await _userRepository.GetUserByEmailAsync(user.Email);
 
             if (userByEmail != null)
             {
@@ -143,7 +143,7 @@ namespace homeMaintenance.Application.Services
                 throw new ArgumentException("Username and password cannot be empty.");
             }
 
-            var user = await _userRepository.GetUserByEmail(loginUser.Email);
+            var user = await _userRepository.GetUserByEmailAsync(loginUser.Email);
 
             if (user != null && VerifyPassword(loginUser.Password, user.Password))
             {
@@ -259,7 +259,7 @@ namespace homeMaintenance.Application.Services
 
         public async Task<UserDetails?> GetEmployeeById(Guid id, CancellationToken cancellationToken = default)
         {
-            var response = await _userRepository.GetEmployeeById(id);
+            var response = await _userRepository.GetEmployeeByIdAsync(id);
 
             string imagePath;
             List<string> images = new List<string>();
@@ -288,7 +288,7 @@ namespace homeMaintenance.Application.Services
 
         public async Task<IEnumerable<BookingInfo?>> GetBookingsByEmployee(Guid id, CancellationToken cancellationToken = default)
         {
-            var response = await _userRepository.GetBookingsByEmployee(id);
+            var response = await _userRepository.GetBookingsByEmployeeAsync(id);
 
             string imagePath;
             List<string> images = new List<string>();
@@ -308,5 +308,32 @@ namespace homeMaintenance.Application.Services
 
             return _mapper.Map<IEnumerable<BookingInfo>>(response);
         }
+
+        public async Task<bool> PostAvaliabilty(EmployeeDisableDates employeeDisableDates, CancellationToken cancellationToken = default)
+        {
+            var result = await _userRepository.PostAvaliability(employeeDisableDates);
+
+            return result;
+        }
+
+        public async Task<List<DateOnly>> GetDisabledDatesByEmployee(Guid id, CancellationToken cancellationToken = default)
+        {
+            var result = await _userRepository.GetDisabledDatesByEmployeeAsync(id);
+
+            return result;
+        }
+
+        public async Task<List<DateTime>> GetBookedDatesByEmployee(Guid id, CancellationToken cancellationToken = default)
+        {
+            var bookings = await _userRepository.GetBookingsByEmployeeAsync(id);
+
+            var allBookingDates = bookings.Select(c => (c.StartDateTime, c.EndDateTime))
+                        .SelectMany(b => Enumerable.Range(0, (b.EndDateTime - b.StartDateTime).Days + 1).Select(d => b.StartDateTime.AddDays(d)))
+                        .Distinct()
+                        .ToList();
+
+            return allBookingDates;
+        }
+        
     }
 }

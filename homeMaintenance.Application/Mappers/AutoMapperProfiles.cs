@@ -38,6 +38,9 @@ namespace homeMaintenance.Application.Mappers
 
             CreateMap<BookingInfo, BookingInfoDto>()
             .ReverseMap();
+
+            CreateMap<EmployeeDisabledDates, EmployeeDisableDates>()
+           .ReverseMap();
         }
 
         private DateTime? ParseDate(string dateString)
