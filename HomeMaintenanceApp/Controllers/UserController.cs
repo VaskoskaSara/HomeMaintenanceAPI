@@ -97,5 +97,13 @@ namespace HomeMaintenanceApp.Web.Controllers
             return Ok(result);
         }
 
+        [HttpGet("view-bookings/{id}")]
+        public async Task<IActionResult> GetAllBookingsByUser([FromRoute] Guid id)
+        {
+            BookingsByUserQuery query = new BookingsByUserQuery(id);
+            var result = await mediator.Send(query).ConfigureAwait(false);
+            return Ok(result);
+        }
+
     }
 }

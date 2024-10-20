@@ -36,7 +36,7 @@ namespace homeMaintenance.Infrastructure.Repositories
 
         }
 
-        public async Task<Guid?> RegisterUser(User user)
+        public async Task<UserLoginDto?> RegisterUser(User user)
         {
             var parameters = new DynamicParameters();
 
@@ -62,13 +62,18 @@ namespace homeMaintenance.Infrastructure.Repositories
             var newUserId = parameters.Get<Guid>("@NewId");
 
 
-            var photoParameters = user.Photos?.Select(name => new { Image = name, ImageOrigin = ImageOrigin.User, UserId = user.Id }).ToList();
+            var photoParameters = user.Photos?.Select(name => new { Image = name, ImageOrigin = ImageOrigin.User, UserId = newUserId }).ToList();
 
             int rows = await _dbConnection.ExecuteAsync("InsertImages",
                 photoParameters,
                 commandType: CommandType.StoredProcedure);
 
-            return newUserId;
+            return new UserLoginDto
+            {
+                Id = user.Id,
+                UserRole = user.UserType,
+                Avatar = user.Avatar
+            };
         }
 
         public AmazonS3Client GetAwsClient()
@@ -206,6 +211,18 @@ namespace homeMaintenance.Infrastructure.Repositories
                 }
             }
             return dateList;
+        }
+
+        public async Task<IEnumerable<BookingInfoDto?>> GetBookingsByUserAsync(Guid id)
+        {
+            var response = await _dbConnection.QueryAsync<BookingInfoDto>("GetBookingsByUser",
+              new
+              {
+                  id
+              },
+              commandType: CommandType.StoredProcedure);
+
+            return response;
         }
     }
 }

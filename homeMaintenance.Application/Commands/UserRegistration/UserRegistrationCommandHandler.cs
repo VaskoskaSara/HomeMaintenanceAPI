@@ -5,7 +5,7 @@ using MediatR;
 
 namespace homeMaintenance.Application.Commands.UserRegistration
 {
-    public class UserRegistrationCommandHandler : IRequestHandler<UserRegistrationCommand, Guid?>
+    public class UserRegistrationCommandHandler : IRequestHandler<UserRegistrationCommand, LoggedUser?>
     {
         private readonly IServiceContainer _serviceContainer;
         private readonly IMapper _mapper;
@@ -16,7 +16,7 @@ namespace homeMaintenance.Application.Commands.UserRegistration
             _mapper = mapper;
         }
 
-        public async Task<Guid?> Handle(UserRegistrationCommand request, CancellationToken cancellationToken)
+        public async Task<LoggedUser?> Handle(UserRegistrationCommand request, CancellationToken cancellationToken)
         {
             var user = _mapper.Map<User>(request);
             

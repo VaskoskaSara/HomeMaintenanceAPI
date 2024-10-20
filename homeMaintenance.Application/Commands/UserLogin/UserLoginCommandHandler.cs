@@ -5,7 +5,7 @@ using MediatR;
 
 namespace homeMaintenance.Application.Commands.UserLogin
 {
-    public class UserLoginCommandHandler : IRequestHandler<UserLoginCommand, Guid>
+    public class UserLoginCommandHandler : IRequestHandler<UserLoginCommand, LoggedUser>
     {
         private readonly IServiceContainer _serviceContainer;
         private readonly IMapper _mapper;
@@ -16,7 +16,7 @@ namespace homeMaintenance.Application.Commands.UserLogin
             _mapper = mapper;
         }
 
-        public async Task<Guid> Handle(UserLoginCommand request, CancellationToken cancellationToken)
+        public async Task<LoggedUser> Handle(UserLoginCommand request, CancellationToken cancellationToken)
         {
             var user = _mapper.Map<User>(request);
             var result = await _serviceContainer.UserService.LoginAsync(user, cancellationToken).ConfigureAwait(false);

@@ -32,7 +32,7 @@ namespace homeMaintenance.Application.Services
             _mapper = mapper;
         }
 
-        public async Task<Guid?> RegistrationAsync(User user, CancellationToken cancellationToken = default)
+        public async Task<LoggedUser?> RegistrationAsync(User user, CancellationToken cancellationToken = default)
         {
             if (!IsValidStrongPassword(user.Password))
             {
@@ -84,7 +84,24 @@ namespace homeMaintenance.Application.Services
             }
 
             var response = await _userRepository.RegisterUser(user);
-            return response;
+
+            string imagePath;
+
+            if (response.Avatar != null)
+            {
+                imagePath = GetImageFromAws(response.Avatar);
+            }
+            else
+            {
+                imagePath = GetImageFromAws("defaultUser.jpg");
+            }
+
+            return new LoggedUser
+            {
+                Id = response.Id,
+                UserRole = response.UserRole,
+                Avatar = imagePath
+            };
         }
 
         public bool IsValidStrongPassword(string password)
@@ -136,7 +153,7 @@ namespace homeMaintenance.Application.Services
             return hashedString;
         }
 
-        public async Task<Guid> LoginAsync(User loginUser, CancellationToken cancellationToken = default)
+        public async Task<LoggedUser> LoginAsync(User loginUser, CancellationToken cancellationToken = default)
         {
             if (string.IsNullOrEmpty(loginUser.Email) || string.IsNullOrEmpty(loginUser.Password))
             {
@@ -147,7 +164,23 @@ namespace homeMaintenance.Application.Services
 
             if (user != null && VerifyPassword(loginUser.Password, user.Password))
             {
-                return user.Id;
+                string imagePath;
+
+                if (user.Avatar != null)
+                {
+                    imagePath = GetImageFromAws(user.Avatar);
+                }
+                else
+                {
+                    imagePath = GetImageFromAws("defaultUser.jpg");
+                }
+
+                return new LoggedUser
+                {
+                    Id = user.Id,
+                    UserRole = user.UserRole,
+                    Avatar = imagePath
+                };
             }
 
             throw new InvalidCredentialException();
@@ -334,6 +367,28 @@ namespace homeMaintenance.Application.Services
 
             return allBookingDates;
         }
-        
+
+        public async Task<IEnumerable<BookingInfo?>> GetBookingsByUser(Guid id, CancellationToken cancellationToken = default)
+        {
+            var response = await _userRepository.GetBookingsByUserAsync(id);
+
+            string imagePath;
+            List<string> images = new List<string>();
+
+            foreach (var item in response)
+            {
+                if (item.Avatar != null)
+                {
+                    imagePath = GetImageFromAws(item.Avatar);
+                }
+                else
+                {
+                    imagePath = GetImageFromAws("defaultUser.jpg");
+                }
+                item.Avatar = imagePath;
+            }
+
+            return _mapper.Map<IEnumerable<BookingInfo>>(response);
+        }
     }
 }

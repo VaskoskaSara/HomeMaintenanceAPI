@@ -1,6 +1,4 @@
-﻿using System.Numerics;
-
-namespace homeMaintenance.Domain.Entities
+﻿namespace homeMaintenance.Domain.Entities
 {
     public class BookingInfo
     {
