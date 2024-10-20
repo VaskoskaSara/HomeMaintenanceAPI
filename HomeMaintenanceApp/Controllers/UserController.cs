@@ -105,5 +105,13 @@ namespace HomeMaintenanceApp.Web.Controllers
             return Ok(result);
         }
 
+        [HttpPost("submitReview")]
+        public async Task<IActionResult> SubmitAddedReview([FromForm] EmployeeReviewCommand command)
+        {
+            var result = await mediator.Send(command).ConfigureAwait(false);
+
+            return Ok(result);
+        }
+
     }
 }

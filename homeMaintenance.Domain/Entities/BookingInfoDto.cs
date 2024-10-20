@@ -1,6 +1,4 @@
-﻿using System.Numerics;
-
-namespace homeMaintenance.Domain.Entities
+﻿namespace homeMaintenance.Domain.Entities
 {
     public class BookingInfoDto
     {
@@ -9,6 +7,8 @@ namespace homeMaintenance.Domain.Entities
         public long Amount { get; set; }
         public DateTime StartDateTime { get; set; }
         public DateTime EndDateTime { get; set; }
-
+        public bool IsEmployeeReviewed { get; set; }
+        public Guid EmployeeId { get; set; }
+        public string? PaymentId { get; set; }
     }
 }

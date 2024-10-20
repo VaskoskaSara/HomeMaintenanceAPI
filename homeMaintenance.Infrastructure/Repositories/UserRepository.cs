@@ -224,5 +224,28 @@ namespace homeMaintenance.Infrastructure.Repositories
 
             return response;
         }
+
+        public async Task<bool> AddReview(UserReview review)
+        {
+
+            var response = await _dbConnection.ExecuteAsync("InsertReview",
+            new
+            {
+                review.Comment,
+                review.UserId,
+                review.Rating,
+                review.EmployeeId,
+                PaymentId = review.PaymentId == "null" ? null : review.PaymentId,
+              },
+              commandType: CommandType.StoredProcedure);
+
+            var photoParameters = review.Photos?.Select(name => new { Image = name, ImageOrigin = ImageOrigin.Customer, review.UserId, review.EmployeeId }).ToList();
+
+            int rows = await _dbConnection.ExecuteAsync("InsertImages",
+                photoParameters,
+                commandType: CommandType.StoredProcedure);
+
+            return response > 0;
+        }
     }
 }

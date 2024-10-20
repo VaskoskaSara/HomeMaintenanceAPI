@@ -99,8 +99,10 @@ ALTER TABLE dbo.PositionUsers ADD CONSTRAINT
 
 CREATE TABLE dbo.Reviews
 	(
-	Id uniqueidentifier NOT NULL,
+	Id uniqueidentifier DEFAULT NEWID() NOT NULL,
 	Comment nvarchar(4000) NULL,
+	EmployeeId uniqueidentifier NOT NULL,
+	PaymentId varchar(max),
 	UserId uniqueidentifier NOT NULL,
 	Rating decimal(18, 0) NOT NULL,
 	CreatedAt datetime NOT NULL
