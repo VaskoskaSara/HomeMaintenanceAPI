@@ -5,9 +5,9 @@ namespace homeMaintenance.Application.Ports.In
 {
     public interface IUserService
     {
-        Task<Guid?> RegistrationAsync(User user, CancellationToken cancellationToken = default);
+        Task<LoggedUser?> RegistrationAsync(User user, CancellationToken cancellationToken = default);
         Task<IEnumerable<Position>?> GetPositions(CancellationToken cancellationToken = default);
-        Task<Guid> LoginAsync(User user, CancellationToken cancellationToken = default);
+        Task<LoggedUser> LoginAsync(User user, CancellationToken cancellationToken = default);
         Task<bool?> UploadImageToS3(IFormFile file); 
         Task<IEnumerable<EmployeeDto>> GetEmployees(string[]? cities, int? price, int? experience, bool? excludeByContract,Guid[] categoryIds, CancellationToken cancellationToken = default);
         Task<IEnumerable<string>?> GetCities(CancellationToken cancellationToken = default);
@@ -16,5 +16,7 @@ namespace homeMaintenance.Application.Ports.In
         Task<bool> PostAvaliabilty(EmployeeDisableDates employeeDisableDates, CancellationToken cancellationToken = default);
         Task<List<DateOnly>> GetDisabledDatesByEmployee(Guid id, CancellationToken cancellationToken = default);
         Task<List<DateTime>> GetBookedDatesByEmployee(Guid id, CancellationToken cancellationToken = default);
+        Task<IEnumerable<BookingInfo?>> GetBookingsByUser(Guid id, CancellationToken cancellationToken = default);
+        Task<bool> AddReview(UserReview user, CancellationToken cancellationToken = default);
     }
 }

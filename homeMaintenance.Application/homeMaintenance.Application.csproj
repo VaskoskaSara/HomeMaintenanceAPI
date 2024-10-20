@@ -7,7 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="bin\Debug\net7.0\homeMaintenance.Application.deps.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="bin\Debug\net7.0\homeMaintenance.Application.dll" />
+    <None Include="bin\Debug\net7.0\homeMaintenance.Application.pdb" />
+    <None Include="bin\Debug\net7.0\homeMaintenance.Domain.dll" />
+    <None Include="bin\Debug\net7.0\homeMaintenance.Domain.pdb" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,6 +29,7 @@
     <PackageReference Include="MediatR" Version="11.1.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>

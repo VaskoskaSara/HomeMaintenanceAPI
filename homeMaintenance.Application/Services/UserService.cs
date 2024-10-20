@@ -23,13 +23,15 @@ namespace homeMaintenance.Application.Services
     {
         private readonly ITransactionWrapper _transactionWrapper;
         private readonly IUserRepository _userRepository;
+        private readonly INotificationService _notificationService;
         private readonly IMapper _mapper;
 
 
-        public UserService(ITransactionWrapper transactionWrapper, IUserRepository userRepository, IMapper mapper)
+        public UserService(ITransactionWrapper transactionWrapper, IUserRepository userRepository, IMapper mapper, INotificationService notificationService)
         {
             _userRepository = userRepository;
             _mapper = mapper;
+            _notificationService = notificationService;
         }
 
         public async Task<LoggedUser?> RegistrationAsync(User user, CancellationToken cancellationToken = default)
@@ -175,11 +177,23 @@ namespace homeMaintenance.Application.Services
                     imagePath = GetImageFromAws("defaultUser.jpg");
                 }
 
+                var notifications = await _notificationService.GetUnsendNotifications(user.Id);
+
+                if (notifications.Count() > 0)
+                {
+                    foreach (var item in notifications)
+                    {
+                        var employee = await GetEmployeeById(item.EmployeeId);
+                        item.EmployeeName = employee.FullName;
+                    }
+                }
+
                 return new LoggedUser
                 {
                     Id = user.Id,
                     UserRole = user.UserRole,
-                    Avatar = imagePath
+                    Avatar = imagePath,
+                    notifications = notifications
                 };
             }
 
@@ -389,6 +403,13 @@ namespace homeMaintenance.Application.Services
             }
 
             return _mapper.Map<IEnumerable<BookingInfo>>(response);
+        }
+
+        public async Task<bool> AddReview(UserReview user, CancellationToken cancellationToken = default)
+        {
+            var result = await _userRepository.AddReview(user);
+
+            return result;
         }
     }
 }

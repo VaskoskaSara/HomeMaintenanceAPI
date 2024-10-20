@@ -41,6 +41,10 @@ namespace homeMaintenance.Application.Mappers
 
             CreateMap<EmployeeDisabledDates, EmployeeDisableDates>()
            .ReverseMap();
+
+            CreateMap<EmployeeReviewCommand, UserReview>()
+            .ForMember(dest => dest.Photos, opt => opt.MapFrom(src => src.Photos.Select(file => file.FileName).ToList()))
+           .ReverseMap();
         }
 
         private DateTime? ParseDate(string dateString)

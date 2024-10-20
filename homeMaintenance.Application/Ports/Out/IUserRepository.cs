@@ -17,5 +17,7 @@ namespace homeMaintenance.Application.Ports.Out
         Task<bool> PostAvaliability(EmployeeDisableDates employeeDisableDates);
         Task<List<DateOnly>> GetDisabledDatesByEmployeeAsync(Guid id);
         Task<IEnumerable<BookingInfoDto?>> GetBookingsByUserAsync(Guid id);
+        Task<bool> AddReview(UserReview user);
+
     }
 }
