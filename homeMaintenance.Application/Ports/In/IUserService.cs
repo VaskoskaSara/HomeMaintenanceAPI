@@ -18,5 +18,6 @@ namespace homeMaintenance.Application.Ports.In
         Task<List<DateTime>> GetBookedDatesByEmployee(Guid id, CancellationToken cancellationToken = default);
         Task<IEnumerable<BookingInfo?>> GetBookingsByUser(Guid id, CancellationToken cancellationToken = default);
         Task<bool> AddReview(UserReview user, CancellationToken cancellationToken = default);
+        Task<List<UserReviewsDto?>> GetReviewsByUser(Guid id, CancellationToken cancellationToken = default);
     }
 }

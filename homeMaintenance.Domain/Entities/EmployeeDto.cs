@@ -9,5 +9,6 @@
         public Guid PositionId { get; set; }
         public float? Price { get; set; }
         public string Avatar { get; set; }
+        public RatingObject Rating { get; set; }
     }
 }

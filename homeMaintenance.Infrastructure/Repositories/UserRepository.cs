@@ -62,7 +62,7 @@ namespace homeMaintenance.Infrastructure.Repositories
             var newUserId = parameters.Get<Guid>("@NewId");
 
 
-            var photoParameters = user.Photos?.Select(name => new { Image = name, ImageOrigin = ImageOrigin.User, UserId = newUserId }).ToList();
+            var photoParameters = user.Photos?.Select(name => new { Image = name, ImageOrigin = ImageOrigin.User, UserId = newUserId, EmployeeId = (Guid?)null }).ToList();
 
             int rows = await _dbConnection.ExecuteAsync("InsertImages",
                 photoParameters,
@@ -70,7 +70,7 @@ namespace homeMaintenance.Infrastructure.Repositories
 
             return new UserLoginDto
             {
-                Id = user.Id,
+                Id = newUserId,
                 UserRole = user.UserType,
                 Avatar = user.Avatar
             };
@@ -81,7 +81,7 @@ namespace homeMaintenance.Infrastructure.Repositories
             return _awsClient;
         }
 
-        public async Task<IEnumerable<User>> GetEmployeesAsync(string[]? cities, int? price, int? experience, bool? excludeByContract, Guid[] categoryIds)
+        public async Task<IList<User>> GetEmployeesAsync(string[]? cities, int? price, int? experience, bool? excludeByContract, Guid[] categoryIds)
         {
             var response = await _dbConnection.QueryAsync<User>("GetEmployees",
                 new
@@ -94,8 +94,22 @@ namespace homeMaintenance.Infrastructure.Repositories
                 },
                 commandType: CommandType.StoredProcedure);
 
-           return response;
+           return response.ToList();
         }
+
+        public async Task<IEnumerable<int>> GetRatingByEmployeeId(Guid id)
+        {
+            var response = await _dbConnection.QueryAsync<int>("GetRatingsByEmployeeId",
+              new
+              {
+                  @Id = id,
+
+              },
+              commandType: CommandType.StoredProcedure);
+
+            return response;
+        }
+
 
         public async Task<Guid> InsertPosition(string newPosition)
         {
@@ -246,6 +260,30 @@ namespace homeMaintenance.Infrastructure.Repositories
                 commandType: CommandType.StoredProcedure);
 
             return response > 0;
+        }
+
+        public async Task<List<UserReviewsDto?>> GetReviewsByUserAsync(Guid id)
+        {
+           var response = await _dbConnection.QueryAsync<UserReviews>("GetReviewsByUserId",
+           new
+           {
+               id
+           },
+           commandType: CommandType.StoredProcedure);
+
+            var groupedReviews = response
+            .GroupBy(r => new { r.UserId, r.PaymentId, r.Avatar, r.FullName, r.Comment, r.Rating })
+            .Select(g => new UserReviewsDto
+            {
+                UserId = g.Key.UserId,
+                FullName = g.Key.FullName,
+                Avatar = g.Key.Avatar,
+                Comment = g.Key.Comment,
+                Ratings = g.Key.Rating,
+                Photos = g.Any(x => x.Photo != null) ? g.Select(x => x.Photo).ToList() : null,
+            }).ToList();
+
+            return groupedReviews;
         }
     }
 }

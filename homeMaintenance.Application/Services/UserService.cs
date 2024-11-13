@@ -261,8 +261,20 @@ namespace homeMaintenance.Application.Services
         public async Task<IEnumerable<EmployeeDto>> GetEmployees(string[]? cities, int? price, int? experience, bool? excludeByContract, Guid[] categoryIds, CancellationToken cancellationToken = default)
         {
             var response = await _userRepository.GetEmployeesAsync(cities, price, experience, excludeByContract, categoryIds);
+            var employees = _mapper.Map<IEnumerable<EmployeeDto>>(response);
 
-            foreach (var employee in response)
+            foreach (var item in employees)
+            {
+                var ratings = await _userRepository.GetRatingByEmployeeId(item.Id);
+                item.Rating = new RatingObject
+                {
+                    NumberOfReviews = ratings.Count(),
+                    Rating = ratings.Count() > 0 ? (double)ratings.Sum() / ratings.Count() : 0.0
+                };
+
+            }
+
+            foreach (var employee in employees)
             {
                 string imagePath;
 
@@ -278,7 +290,7 @@ namespace homeMaintenance.Application.Services
                 employee.Avatar = imagePath;
             }
 
-            return _mapper.Map<IEnumerable<EmployeeDto>>(response);
+            return employees;
         }
 
 
@@ -308,29 +320,40 @@ namespace homeMaintenance.Application.Services
         {
             var response = await _userRepository.GetEmployeeByIdAsync(id);
 
+            var userDetails = _mapper.Map<UserDetails>(response);
+
+            var ratings = await _userRepository.GetRatingByEmployeeId(id);
+
+            userDetails.Rating = new RatingObject
+            {
+                NumberOfReviews = ratings.Count(),
+                Rating = ratings.Count() > 0 ? (double)ratings.Sum() / ratings.Count() : 0.0
+            };
+
+
             string imagePath;
             List<string> images = new List<string>();
 
-            if (response.Avatar != null)
+            if (userDetails.Avatar != null)
             {
-                imagePath = GetImageFromAws(response.Avatar);
+                imagePath = GetImageFromAws(userDetails.Avatar);
             }
             else
             {
                 imagePath = GetImageFromAws("defaultUser.jpg");
             }
 
-            if (response.Photos.Any())
+            if (userDetails.Photos.Any())
             {
-                response.Photos.ForEach(x =>
+                userDetails.Photos.ForEach(x =>
                 {
                     images.Add(GetImageFromAws(x));
                 });
             }
 
-            response.Avatar = imagePath;
-            response.Photos = images;
-            return _mapper.Map<UserDetails>(response);
+            userDetails.Avatar = imagePath;
+            userDetails.Photos = images;
+            return userDetails;
         }
 
         public async Task<IEnumerable<BookingInfo?>> GetBookingsByEmployee(Guid id, CancellationToken cancellationToken = default)
@@ -410,6 +433,44 @@ namespace homeMaintenance.Application.Services
             var result = await _userRepository.AddReview(user);
 
             return result;
+        }
+
+        public async Task<List<UserReviewsDto?>> GetReviewsByUser(Guid id, CancellationToken cancellationToken = default)
+        {
+            var response = await _userRepository.GetReviewsByUserAsync(id);
+
+            string imagePath = null;
+
+            foreach (var item in response)
+            {
+                if (item.Avatar != null)
+                {
+                    imagePath = GetImageFromAws(item.Avatar);
+                }
+                else
+                {
+                    imagePath = GetImageFromAws("defaultUser.jpg");
+                }
+                item.Avatar = imagePath;
+            }
+
+            var imagePaths = new List<string>();
+
+            foreach (var item in response)
+            {
+                imagePath = null;
+                imagePaths = new List<string>();
+
+                foreach (var photo in item.Photos)
+                {
+                    imagePath = GetImageFromAws(photo);
+                    imagePaths.Add(imagePath);
+                }
+
+                item.Photos = imagePaths;
+            }
+
+            return response;
         }
     }
 }

@@ -113,5 +113,13 @@ namespace HomeMaintenanceApp.Web.Controllers
             return Ok(result);
         }
 
+        [HttpGet("reviews/{id}")]
+        public async Task<IActionResult> GetAllReviewsByUser([FromRoute] Guid id)
+        {
+            ReviewsByUser query = new ReviewsByUser(id);
+            var result = await mediator.Send(query).ConfigureAwait(false);
+            return Ok(result);
+        }
+
     }
 }

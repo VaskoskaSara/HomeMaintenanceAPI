@@ -1,6 +1,4 @@
-﻿using homeMaintenance.Domain.Enum;
-
-namespace homeMaintenance.Domain.Entities
+﻿namespace homeMaintenance.Domain.Entities
 {
     public class UserDetails
     {
@@ -19,6 +17,7 @@ namespace homeMaintenance.Domain.Entities
         public int? NumberOfEmployees { get; set; }
         public string? Description { get; set; }
         public List<string> Photos { get; set; } = new List<string>();
+        public RatingObject Rating { get; set; }
 
     }
 }

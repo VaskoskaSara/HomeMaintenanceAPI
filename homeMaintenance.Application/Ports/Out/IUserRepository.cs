@@ -9,7 +9,7 @@ namespace homeMaintenance.Application.Ports.Out
         Task<UserLoginDto?> RegisterUser(User user);
         Task<UserLoginDto> GetUserByEmailAsync(string email);
         AmazonS3Client GetAwsClient();
-        Task<IEnumerable<User>> GetEmployeesAsync(string[]? city, int? price, int? experience, bool? excludeByContract, Guid[] categoryIds);
+        Task<IList<User>> GetEmployeesAsync(string[]? city, int? price, int? experience, bool? excludeByContract, Guid[] categoryIds);
         Task<Guid> InsertPosition(string newPosition);
         Task<IEnumerable<string>> GetCitiesAsync();
         Task<UserDetailsDto?> GetEmployeeByIdAsync(Guid id);
@@ -18,6 +18,8 @@ namespace homeMaintenance.Application.Ports.Out
         Task<List<DateOnly>> GetDisabledDatesByEmployeeAsync(Guid id);
         Task<IEnumerable<BookingInfoDto?>> GetBookingsByUserAsync(Guid id);
         Task<bool> AddReview(UserReview user);
+        Task<IEnumerable<int>> GetRatingByEmployeeId(Guid id);
+        Task<List<UserReviewsDto?>> GetReviewsByUserAsync(Guid id);
 
     }
 }
