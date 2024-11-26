@@ -11,5 +11,6 @@ namespace homeMaintenance.Application.Commands.UserRegistration
         public int? Rating { get; set; }
         public List<IFormFile>? Photos { get; set; }
         public string? Comment { get; set; }
+        public Guid UserPaymentId { get; set; }
     }
 }

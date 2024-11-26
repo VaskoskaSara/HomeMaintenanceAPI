@@ -461,12 +461,14 @@ namespace homeMaintenance.Application.Services
                 imagePath = null;
                 imagePaths = new List<string>();
 
-                foreach (var photo in item.Photos)
+                if (item.Photos != null)
                 {
-                    imagePath = GetImageFromAws(photo);
-                    imagePaths.Add(imagePath);
+                    foreach (var photo in item.Photos)
+                    {
+                        imagePath = GetImageFromAws(photo);
+                        imagePaths.Add(imagePath);
+                    }
                 }
-
                 item.Photos = imagePaths;
             }
 

@@ -29,7 +29,7 @@ BEGIN
         FROM STRING_SPLIT(@CategoryIds, ','); 
     END
 
-    SELECT Id, FullName, City, Experience, Price, PositionId, Avatar
+    SELECT Id, FullName, City, Experience, Price, PositionId, Avatar, PaymentType
     FROM dbo.Users users
     WHERE (UserRole <> (SELECT Id FROM dbo.UserRoles WHERE RoleName = 'Customer')) 
       AND IsDeleted = 0 

@@ -23,21 +23,22 @@ namespace HomeMaintenanceApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            if(_configuration == null)
+            if (_configuration == null)
             {
                 throw new ArgumentNullException();
             }
             services.AddMediatR(typeof(PositionsQuery).Assembly);
             services.AddAutoMapper(typeof(AutoMapperProfiles));
             services.AddScoped<IServiceContainer, ServiceContainer>();
-            services.AddScoped<IDbConfig, DbConfig>();
+            services.AddSingleton<IDbConfig, DbConfig>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<ITransactionWrapper,TransactionWrapper>();
+            services.AddScoped<ITransactionWrapper, TransactionWrapper>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPaymentRepository, PaymentRepository>();
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<INotificationRepository, NotificationRepository>();
+            services.AddTransient<PositionRepository>();
             services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
@@ -57,7 +58,7 @@ namespace HomeMaintenanceApp
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if(app == null)
+            if (app == null)
             {
                 throw new ArgumentNullException();
             }
@@ -65,15 +66,15 @@ namespace HomeMaintenanceApp
             app.RunApplicationMigrations();
 
             if (env.IsDevelopment())
-                {
-                    app.UseDeveloperExceptionPage();
-                }
-                else
-                {
-                    app.UseExceptionHandler("/Home/Error");
-                    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                    app.UseHsts();
-                }
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -91,6 +92,9 @@ namespace HomeMaintenanceApp
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllers();
             });
+
+            var positionRepository = app.ApplicationServices.GetRequiredService<PositionRepository>();
+            positionRepository.SeedPositions().GetAwaiter().GetResult();
         }
     }
 }

@@ -1,14 +1,6 @@
 ﻿BEGIN TRANSACTION;
 GO
 
-ALTER TABLE dbo.Users
-ADD NumberOfEmployees INT NULL;
-
-ALTER TABLE dbo.Users
-ADD [Description] VARCHAR(MAX) NULL;
-
-GO;
-
 ALTER PROCEDURE InsertUser 
 @FullName                     NVARCHAR(50), 
 @PhoneNumber                  NVARCHAR(50), 
@@ -24,7 +16,7 @@ ALTER PROCEDURE InsertUser
 @PaymentType				  INT,
 @NumberOfEmployees			  INT,
 @Description				  NVARCHAR(MAX),
-@Address                      NVARCHAR(MAX),
+@Address        			  NVARCHAR(MAX),
 @NewId                        UNIQUEIDENTIFIER OUTPUT
 AS 
 BEGIN 
@@ -38,6 +30,29 @@ BEGIN
     (@NewId, @FullName, @PhoneNumber, @Email, @Password, @City, @UserRole, GETUTCDATE(), @Experience, @Price, @BirthDate, @PositionId, @Avatar, @PaymentType, @NumberOfEmployees, @Description, @Address);
     
     SELECT @NewId AS NewUserId;
+END
+GO;
+
+CREATE OR ALTER PROCEDURE GetBookingsByEmployee
+    @Id UNIQUEIDENTIFIER
+AS  
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT 
+    u.Id AS UserId,
+    u.FullName,
+	u.Avatar,
+	up.Amount,
+	up.StartDateTime,
+	up.EndDateTime,
+    u.[Address]
+    FROM 
+    dbo.UserPayment up
+    JOIN 
+    dbo.Users u ON up.UserId = u.Id
+    WHERE 
+    up.EmployeeId =@Id
 END
 GO;
 

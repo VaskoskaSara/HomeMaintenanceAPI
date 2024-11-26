@@ -8,5 +8,6 @@
         public int? Rating { get; set; }
         public string[]? Photos { get; set; }
         public string? Comment { get; set; }
+        public Guid UserPaymentId { get; set; }
     }
 }

@@ -3,6 +3,6 @@
     public class Position
     {
         public Guid Id { get; set; }
-        public string PositionName { get; set; }    
+        public required string PositionName { get; set; }    
     }
 }

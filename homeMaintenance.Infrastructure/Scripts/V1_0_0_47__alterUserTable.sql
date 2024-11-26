@@ -1,0 +1,10 @@
+﻿BEGIN TRANSACTION;
+GO
+
+ALTER TABLE dbo.Users
+ADD [Address] VARCHAR(MAX) NOT NULL DEFAULT 'Adresa'
+GO;
+
+COMMIT;
+
+GO;

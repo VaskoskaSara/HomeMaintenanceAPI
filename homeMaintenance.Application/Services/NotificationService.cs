@@ -24,7 +24,10 @@ public class NotificationService : INotificationService
         return unsentNotifications.Select(notification => new NotificationDto
         {
             PaymentId = notification.PaymentId,
-            EmployeeId = notification.EmployeeId
+            EmployeeId = notification.EmployeeId,
+            UserPaymentId = notification.UserPaymentId,
+            StartDate = notification.StartDateTime,
+            EndDate = notification.EndDateTime
         }).ToList();
     }
 }

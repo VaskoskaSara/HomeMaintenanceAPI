@@ -8,5 +8,8 @@
         public string PaymentId { get; set; }
         public string Message { get; set; }
         public DateTime CreatedAt { get; set; }
+        public DateTime StartDateTime { get; set; }
+        public DateTime EndDateTime { get; set; }
+        public Guid UserPaymentId { get; set; }
     }
 }

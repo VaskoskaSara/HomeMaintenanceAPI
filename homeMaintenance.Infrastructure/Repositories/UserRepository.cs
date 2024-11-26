@@ -54,6 +54,7 @@ namespace homeMaintenance.Infrastructure.Repositories
             parameters.Add("@PaymentType", user.PaymentType);
             parameters.Add("@NumberOfEmployees", user.NumberOfEmployees);
             parameters.Add("@Description", user.Description);
+            parameters.Add("@Address", user.Address);
 
             parameters.Add("@NewId", dbType: DbType.Guid, direction: ParameterDirection.Output);
 
@@ -242,18 +243,21 @@ namespace homeMaintenance.Infrastructure.Repositories
         public async Task<bool> AddReview(UserReview review)
         {
 
-            var response = await _dbConnection.ExecuteAsync("InsertReview",
-            new
-            {
-                review.Comment,
-                review.UserId,
-                review.Rating,
-                review.EmployeeId,
-                PaymentId = review.PaymentId == "null" ? null : review.PaymentId,
-              },
-              commandType: CommandType.StoredProcedure);
+            var parameters = new DynamicParameters();
 
-            var photoParameters = review.Photos?.Select(name => new { Image = name, ImageOrigin = ImageOrigin.Customer, review.UserId, review.EmployeeId }).ToList();
+            parameters.Add("@Comment", review.Comment);
+            parameters.Add("@UserId", review.UserId);
+            parameters.Add("@Rating", review.Rating);
+            parameters.Add("@EmployeeId", review.EmployeeId);
+            parameters.Add("@PaymentId", review.PaymentId == "null" ? null : review.PaymentId);
+            parameters.Add("@UserPaymentId", review.UserPaymentId);
+            parameters.Add("@NewId", dbType: DbType.Guid, direction: ParameterDirection.Output);
+
+            var response = await _dbConnection.ExecuteAsync("InsertReview", parameters, commandType: CommandType.StoredProcedure);
+
+            var newReviewId = parameters.Get<Guid>("@NewId");
+
+            var photoParameters = review.Photos?.Select(name => new { Image = name, ImageOrigin = ImageOrigin.Customer, review.UserId, review.EmployeeId, ReviewId = newReviewId}).ToList();
 
             int rows = await _dbConnection.ExecuteAsync("InsertImages",
                 photoParameters,

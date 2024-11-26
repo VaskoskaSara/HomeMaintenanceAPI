@@ -1,4 +1,6 @@
-﻿namespace homeMaintenance.Domain.Entities
+﻿using homeMaintenance.Domain.Enum;
+
+namespace homeMaintenance.Domain.Entities
 {
     public class EmployeeDto
     {
@@ -8,6 +10,7 @@
         public float Experience { get; set; }
         public Guid PositionId { get; set; }
         public float? Price { get; set; }
+        public PaymentType PaymentType { get; set; }
         public string Avatar { get; set; }
         public RatingObject Rating { get; set; }
     }
