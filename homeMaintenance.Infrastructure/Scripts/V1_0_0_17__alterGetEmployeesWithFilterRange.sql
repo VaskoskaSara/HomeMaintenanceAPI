@@ -14,4 +14,4 @@ BEGIN
       (@Price IS NULL OR Price <= @Price) AND
       (PaymentType IN (1, 2, 3) OR @excludeByContract = 1)
 	)
-END 
+END; GO; 

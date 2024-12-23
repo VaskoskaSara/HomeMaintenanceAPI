@@ -63,7 +63,7 @@ namespace homeMaintenance.Infrastructure.Repositories
             var newUserId = parameters.Get<Guid>("@NewId");
 
 
-            var photoParameters = user.Photos?.Select(name => new { Image = name, ImageOrigin = ImageOrigin.User, UserId = newUserId, EmployeeId = (Guid?)null }).ToList();
+            var photoParameters = user.Photos?.Select(name => new { Image = name, ImageOrigin = ImageOrigin.User, UserId = newUserId, EmployeeId = (Guid?)null, ReviewId = (Guid?)null }).ToList();
 
             int rows = await _dbConnection.ExecuteAsync("InsertImages",
                 photoParameters,

@@ -1,11 +1,4 @@
-﻿USE [homeMaintenance]
-GO
-
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-ALTER PROCEDURE [dbo].[GetEmployees]
+﻿ALTER PROCEDURE [dbo].[GetEmployees]
     @Cities NVARCHAR(MAX) = NULL,  
     @Experience INT = NULL,        
     @Price INT = NULL,             
@@ -18,7 +11,7 @@ BEGIN
     BEGIN
         INSERT INTO @CityList (City)
         SELECT value FROM STRING_SPLIT(@Cities, ','); 
-    END
+    END;
 
     SELECT Id, FullName, City, Experience, Price, PositionId, Avatar
     FROM dbo.Users users
@@ -41,4 +34,5 @@ BEGIN
                     ))
             )
     );
-END
+END; 
+GO;

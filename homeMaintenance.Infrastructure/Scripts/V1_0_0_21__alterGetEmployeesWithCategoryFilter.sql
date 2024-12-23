@@ -1,11 +1,4 @@
-﻿USE [homeMaintenance]
-GO
-
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-ALTER PROCEDURE [dbo].[GetEmployees]
+﻿ALTER PROCEDURE [dbo].[GetEmployees]
     @Cities NVARCHAR(MAX) = NULL,  
     @Experience INT = NULL,        
     @Price INT = NULL,             
@@ -20,14 +13,14 @@ BEGIN
     BEGIN
         INSERT INTO @CityList (City)
         SELECT value FROM STRING_SPLIT(@Cities, ','); 
-    END
+    END;
 
 	IF @CategoryIds IS NOT NULL
     BEGIN
         INSERT INTO @CategoryList (CategoryId)
         SELECT CAST(value AS UNIQUEIDENTIFIER) 
         FROM STRING_SPLIT(@CategoryIds, ','); 
-    END
+    END;
 
     SELECT Id, FullName, City, Experience, Price, PositionId, Avatar, PaymentType
     FROM dbo.Users users
@@ -51,4 +44,5 @@ BEGIN
             ) AND
             (@CategoryIds IS NULL OR PositionId IN (SELECT CategoryId FROM @CategoryList))
     );
-END
+END; 
+GO;

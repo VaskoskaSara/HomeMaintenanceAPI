@@ -28,7 +28,7 @@ namespace homeMaintenance.Infrastructure.Repositories
         public async Task MarkNotificationAsSent(int id)
         {
 
-            var notifications = await _dbConnection.QueryAsync<NotificationResult>("UpdateNotificationResults",
+            var notifications = await _dbConnection.QueryAsync<NotificationResult>("UpdateNotificationReviews",
             new
             {
                 Id = id

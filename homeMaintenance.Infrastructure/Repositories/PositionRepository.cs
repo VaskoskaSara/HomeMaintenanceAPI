@@ -40,7 +40,7 @@ namespace homeMaintenance.Infrastructure.Repositories
 };
 
             var existingPositionNames = existingPositions.Select(x => x.PositionName).ToList();
-            
+
             var newPositions = positions.Where(p => !existingPositionNames.Contains(p)).ToList();
 
             if (newPositions.Any())

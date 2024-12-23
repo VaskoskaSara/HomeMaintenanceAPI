@@ -23,8 +23,7 @@ SET NOCOUNT ON
 
 INSERT INTO dbo.UserImages (Id, Image, ImageOrigin) VALUES (NEWID(), @Image, @ImageOrigin)
 
-END;
-GO;
+END; GO;; GO;
 
 COMMIT;
 GO;

@@ -15,7 +15,7 @@ VALUES
 
 SELECT @NewId = Id FROM dbo.Positions WHERE PositionName = @PositionName;
 
-END
+END; GO;
 GO;
 
 COMMIT;

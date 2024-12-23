@@ -7,7 +7,6 @@ namespace HomeMaintenanceApp.Web.Extensions
 
         public static void RunApplicationMigrations(this IApplicationBuilder app)
         {
-            // vidi zoshto se pravi ova create scope
             using (var scope = app.ApplicationServices.CreateScope())
             {
                 var provider = scope.ServiceProvider;

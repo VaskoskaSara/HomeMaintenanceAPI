@@ -1,0 +1,2 @@
+ALTER TABLE dbo.Users 
+ALTER COLUMN Password VARCHAR(64)

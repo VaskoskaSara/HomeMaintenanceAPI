@@ -30,7 +30,7 @@ BEGIN
     (@NewId, @FullName, @PhoneNumber, @Email, @Password, @City, @UserRole, GETUTCDATE(), @Experience, @Price, @BirthDate, @PositionId, @Avatar, @PaymentType, @NumberOfEmployees, @Description, @Address);
     
     SELECT @NewId AS NewUserId;
-END
+END; GO;
 GO;
 
 CREATE OR ALTER PROCEDURE GetBookingsByEmployee
@@ -53,7 +53,11 @@ BEGIN
     dbo.Users u ON up.UserId = u.Id
     WHERE 
     up.EmployeeId =@Id
-END
+END; GO;
+GO;
+
+ALTER TABLE dbo.Users
+ALTER COLUMN PositionId UNIQUEIDENTIFIER NULL;
 GO;
 
 COMMIT;

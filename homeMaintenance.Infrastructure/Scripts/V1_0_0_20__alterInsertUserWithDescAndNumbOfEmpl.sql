@@ -38,7 +38,7 @@ BEGIN
     (@NewId, @FullName, @PhoneNumber, @Email, @Password, @City, @UserRole, GETUTCDATE(), @Experience, @Price, @BirthDate, @PositionId, @Avatar, @PaymentType, @NumberOfEmployees, @Description, @Address);
     
     SELECT @NewId AS NewUserId;
-END
+END; GO;
 GO;
 
 COMMIT;

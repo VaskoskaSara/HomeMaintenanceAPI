@@ -1,6 +1,10 @@
 ﻿BEGIN TRANSACTION;
 GO
 
+EXEC sp_rename 'dbo.Users.Image', 'Avatar', 'COLUMN';
+
+GO;
+
 ALTER PROCEDURE InsertUser 
 @FullName                     NVARCHAR(50), 
 @PhoneNumber                  NVARCHAR(50), 
@@ -12,16 +16,15 @@ ALTER PROCEDURE InsertUser
 @Price                        FLOAT,
 @BirthDate                    DATETIME,
 @PositionId					  UNIQUEIDENTIFIER,
-@Avatar						  NVARCHAR(MAX),
-@PaymentType				  INT
+@Avatar						  NVARCHAR(MAX)
 AS 
 BEGIN 
 SET NOCOUNT ON 
 
-INSERT INTO dbo.Users (FullName, PhoneNumber, Email, [Password], City, UserRole, CreatedAt, Experience, Price, BirthDate, PositionId, Avatar, PaymentType) VALUES 
-(@FullName, @PhoneNumber, @Email, @Password, @City, @UserRole, GETUTCDATE(), @Experience, @Price, @BirthDate, @PositionId, @Avatar, @PaymentType);
+INSERT INTO dbo.Users (FullName, PhoneNumber, Email, [Password], City, UserRole, CreatedAt, Experience, Price, BirthDate, PositionId, Avatar) VALUES 
+(@FullName, @PhoneNumber, @Email, @Password, @City, @UserRole, GETUTCDATE(), @Experience, @Price, @BirthDate, @PositionId, @Avatar);
 
-END; GO;
+END;
 GO;
 
 COMMIT;
