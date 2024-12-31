@@ -1,10 +1,10 @@
 ﻿using Amazon.S3;
 using Dapper;
+using homeMaintenance.Application.DTOs;
 using homeMaintenance.Application.Ports.Out;
 using homeMaintenance.Domain.Entities;
 using homeMaintenance.Domain.Enum;
-using HomeMaintenanceApp.Web;
-using Microsoft.IdentityModel.Tokens;
+using homeMaintenance.Infrastructure.Data;
 using System.Data;
 using System.Globalization;
 
@@ -12,31 +12,27 @@ namespace homeMaintenance.Infrastructure.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly IDbConnection _dbConnection;
+        private readonly IDbHelper _dbHelper;
         private readonly AmazonS3Client _awsClient;
 
-        public UserRepository(IDbConfig dbConfig)
+        public UserRepository(IDbHelper dbHelper, IAwsConfig awsConfig)
         {
-            _dbConnection = dbConfig.GetConnection();
-            _awsClient = dbConfig.GetAwsClient();
+            _dbHelper = dbHelper;
+            _awsClient = awsConfig.GetAwsClient();
         }
 
         public async Task<IEnumerable<Position>> GetPositionsAsync()
         {
-            var response = await _dbConnection.QueryAsync<Position>("GetPositions", commandType: CommandType.StoredProcedure);
-            return response;
+            return await _dbHelper.ExecuteQueryAsync<Position>("GetPositions");
         }
 
-        public async Task<UserLoginDto> GetUserByEmailAsync(string email)
+        public async Task<UserLogin> GetUserByEmailAsync(string email)
         {
-           return await _dbConnection.QueryFirstOrDefaultAsync<UserLoginDto>("GetUserByEmail", new
-            {
-                Email = email
-            }, commandType: CommandType.StoredProcedure);
-
+            var user = await _dbHelper.ExecuteQueryAsync<UserLogin>("GetUserByEmail", new { Email = email });
+            return user.FirstOrDefault();
         }
 
-        public async Task<UserLoginDto?> RegisterUser(User user)
+        public async Task<UserLogin?> RegisterUser(User user)
         {
             var parameters = new DynamicParameters();
 
@@ -55,21 +51,12 @@ namespace homeMaintenance.Infrastructure.Repositories
             parameters.Add("@NumberOfEmployees", user.NumberOfEmployees);
             parameters.Add("@Description", user.Description);
             parameters.Add("@Address", user.Address);
-
             parameters.Add("@NewId", dbType: DbType.Guid, direction: ParameterDirection.Output);
 
-            await _dbConnection.ExecuteAsync("InsertUser", parameters, commandType: CommandType.StoredProcedure);
-
+            await _dbHelper.ExecuteAsync("InsertUser", parameters);
             var newUserId = parameters.Get<Guid>("@NewId");
 
-
-            var photoParameters = user.Photos?.Select(name => new { Image = name, ImageOrigin = ImageOrigin.User, UserId = newUserId, EmployeeId = (Guid?)null, ReviewId = (Guid?)null }).ToList();
-
-            int rows = await _dbConnection.ExecuteAsync("InsertImages",
-                photoParameters,
-                commandType: CommandType.StoredProcedure);
-
-            return new UserLoginDto
+            return new UserLogin
             {
                 Id = newUserId,
                 UserRole = user.UserType,
@@ -77,14 +64,18 @@ namespace homeMaintenance.Infrastructure.Repositories
             };
         }
 
-        public AmazonS3Client GetAwsClient()
+        public async Task InsertUserPhotosAsync(IEnumerable<string>? photos, Guid userId)
         {
-            return _awsClient;
+            if (photos?.Any() == true)
+            {
+                var photoParameters = photos.Select(name => new { Image = name, ImageOrigin = ImageOrigin.User, UserId = userId, EmployeeId = (Guid?)null, ReviewId =(Guid?)null }).ToList();
+                await _dbHelper.ExecuteAsync("InsertImages", photoParameters);
+            }
         }
 
         public async Task<IList<User>> GetEmployeesAsync(string[]? cities, int? price, int? experience, bool? excludeByContract, Guid[] categoryIds)
         {
-            var response = await _dbConnection.QueryAsync<User>("GetEmployees",
+            var response = await _dbHelper.ExecuteQueryAsync<User>("GetEmployees",
                 new
                 {
                     @Cities = (cities != null && cities.Length > 0) ? string.Join(",", cities) : null,
@@ -92,25 +83,16 @@ namespace homeMaintenance.Infrastructure.Repositories
                     experience,
                     excludeByContract = (excludeByContract == null || excludeByContract == false) ? 0 : 1,
                     @CategoryIds = categoryIds.Length > 0 ? string.Join(",", categoryIds) : null
-                },
-                commandType: CommandType.StoredProcedure);
+                });
 
            return response.ToList();
         }
 
         public async Task<IEnumerable<int>> GetRatingByEmployeeId(Guid id)
         {
-            var response = await _dbConnection.QueryAsync<int>("GetRatingsByEmployeeId",
-              new
-              {
-                  @Id = id,
-
-              },
-              commandType: CommandType.StoredProcedure);
-
-            return response;
+            var parameters = new { Id = id };
+            return await _dbHelper.ExecuteQueryAsync<int>("GetRatingsByEmployeeId", parameters);
         }
-
 
         public async Task<Guid> InsertPosition(string newPosition)
         {
@@ -120,28 +102,22 @@ namespace homeMaintenance.Infrastructure.Repositories
             parameters.Add("@NewId", dbType: DbType.Guid, direction: ParameterDirection.Output);
 
 
-            await _dbConnection.ExecuteScalarAsync<Guid>("InsertPosition", parameters, commandType: CommandType.StoredProcedure);
+            await _dbHelper.ExecuteScalarAsync<Guid>("InsertPosition", parameters);
 
-            var response = parameters.Get<Guid>("@NewId");
-
-            return response;
+            return parameters.Get<Guid>("@NewId");
         }
 
         public async Task<IEnumerable<string>> GetCitiesAsync()
         {
-            var response = await _dbConnection.QueryAsync<string>("GetCities", commandType: CommandType.StoredProcedure);
-            return response;
+            return await _dbHelper.ExecuteQueryAsync<string>("GetCities");
         }
 
         public async Task<UserDetailsDto?> GetEmployeeByIdAsync(Guid id)
         {
+            var parameters = new { id };
 
-            var response = await _dbConnection.QueryMultipleAsync("GetEmployeeById",
-                new
-                {
-                    id
-                },
-                commandType: CommandType.StoredProcedure);
+            var response = await _dbHelper.ExecuteQueryMultipleAsync("GetEmployeeById",
+                parameters);
 
             if(response == null) return null;
 
@@ -156,93 +132,85 @@ namespace homeMaintenance.Infrastructure.Repositories
             return userDetails;
         }
 
-        public async Task<IEnumerable<BookingInfoDto?>> GetBookingsByEmployeeAsync(Guid id)
+        public async Task<IEnumerable<BookingInfo>> GetBookingsByEmployeeAsync(Guid id)
         {
-            var response = await _dbConnection.QueryAsync<BookingInfoDto>("GetBookingsByEmployee",
-               new
-               {
-                   id
-               },
-               commandType: CommandType.StoredProcedure);
+            var parameters = new { id };
 
-            return response;
+            return await _dbHelper.ExecuteQueryAsync<BookingInfo>("GetBookingsByEmployee",
+               parameters);
         }
 
         public async Task<bool> PostAvaliability(EmployeeDisableDates employeeDisableDates)
         {
-            var combinedDistinct = new List<DateTime>{ };
             var disabledEmployeeByUser = await GetDisabledDatesByEmployeeAsync(employeeDisableDates.UserId);
 
-            if (employeeDisableDates.IsEnabled == true)
-            {
-                combinedDistinct = employeeDisableDates.DisabledDates.ToList();
-            }
-            else
-            {
-                combinedDistinct = employeeDisableDates.DisabledDates
-               .Select(dt => dt)
-               .Concat(disabledEmployeeByUser.Select(it => it.ToDateTime(TimeOnly.MinValue)))
-               .Distinct()
-               .ToList();
-            }
+            var combinedDistinct = employeeDisableDates.IsEnabled.HasValue
+                ? (employeeDisableDates.IsEnabled.Value
+                    ? employeeDisableDates.DisabledDates.ToList()
+                    : employeeDisableDates.DisabledDates
+                        .Select(dt => dt)
+                        .Concat(disabledEmployeeByUser.Select(it => it.ToDateTime(TimeOnly.MinValue))) 
+                        .Distinct()
+                        .ToList())
+                : new List<DateTime>();
 
-            var response = await _dbConnection.ExecuteAsync("InsertEmployeeDisabledDates",
-              new
-              {
-                  id = employeeDisableDates.UserId,
-                  disabledDates = string.Join(",", combinedDistinct)
-              },
-              commandType: CommandType.StoredProcedure);
+            var parameters = new
+            {
+                id = employeeDisableDates.UserId,
+                disabledDates = string.Join(",", combinedDistinct) // Combine the dates into a single string
+            };
+
+            var response = await _dbHelper.ExecuteAsync("InsertEmployeeDisabledDates",
+              parameters);
 
             return response == -1;
         }
 
         public async Task<List<DateOnly>> GetDisabledDatesByEmployeeAsync(Guid id)
         {
-            var response = await _dbConnection.QueryFirstOrDefaultAsync<string>("GetDisabledDatesByEmployeeId",
+            var response = await _dbHelper.ExecuteQueryAsync<string>("GetDisabledDatesByEmployeeId",
             new
             {
                 id
-            },
-            commandType: CommandType.StoredProcedure);
+            });
+
             var dateList = new List<DateOnly>();
 
-            if (!response.IsNullOrEmpty())
+            if (string.IsNullOrEmpty(response.FirstOrDefault()))
             {
-                var dateStrings = response.Split(',');
-                var dateFormat = "dd/MM/yyyy HH:mm:ss";
+                return dateList;
+            }
 
-                foreach (var dateString in dateStrings)
+            var dateStrings = response.FirstOrDefault().Split(',');
+            var dateFormat = "dd/MM/yyyy HH:mm:ss";
+
+            foreach (var dateString in dateStrings)
+            {
+                if (DateOnly.TryParseExact(dateString.Trim(), dateFormat,
+                                CultureInfo.InvariantCulture, DateTimeStyles.None, out DateOnly date))
                 {
-                    if (DateOnly.TryParseExact(dateString.Trim(), dateFormat,
-                                    CultureInfo.InvariantCulture, DateTimeStyles.None, out DateOnly date))
-                    {
-                        dateList.Add(date);
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Invalid date format: {dateString}");
-                    }
+                    dateList.Add(date);
+                }
+                else
+                {
+                    Console.WriteLine($"Invalid date format: {dateString}");
                 }
             }
+
             return dateList;
         }
 
-        public async Task<IEnumerable<BookingInfoDto?>> GetBookingsByUserAsync(Guid id)
+        public async Task<IEnumerable<BookingInfo>> GetBookingsByUserAsync(Guid id)
         {
-            var response = await _dbConnection.QueryAsync<BookingInfoDto>("GetBookingsByUser",
+            return await _dbHelper.ExecuteQueryAsync<BookingInfo>("GetBookingsByUser",
               new
               {
                   id
-              },
-              commandType: CommandType.StoredProcedure);
-
-            return response;
+              });
         }
 
-        public async Task<bool> AddReview(UserReview review)
+        public async Task<bool> AddReview(AddUserReview review)
         {
-
             var parameters = new DynamicParameters();
 
             parameters.Add("@Comment", review.Comment);
@@ -253,41 +221,34 @@ namespace homeMaintenance.Infrastructure.Repositories
             parameters.Add("@UserPaymentId", review.UserPaymentId);
             parameters.Add("@NewId", dbType: DbType.Guid, direction: ParameterDirection.Output);
 
-            var response = await _dbConnection.ExecuteAsync("InsertReview", parameters, commandType: CommandType.StoredProcedure);
+            var response = await _dbHelper.ExecuteAsync("InsertReview", parameters);
 
             var newReviewId = parameters.Get<Guid>("@NewId");
 
             var photoParameters = review.Photos?.Select(name => new { Image = name, ImageOrigin = ImageOrigin.Customer, review.UserId, review.EmployeeId, ReviewId = newReviewId}).ToList();
 
-            int rows = await _dbConnection.ExecuteAsync("InsertImages",
-                photoParameters,
-                commandType: CommandType.StoredProcedure);
+            await _dbHelper.ExecuteAsync("InsertImages", photoParameters);
 
+            // number of rows
             return response > 0;
         }
 
-        public async Task<List<UserReviewsDto?>> GetReviewsByUserAsync(Guid id)
+        public async Task<IEnumerable<UserReview?>> GetReviewsByUserAsync(Guid id)
         {
-           var response = await _dbConnection.QueryAsync<UserReviews>("GetReviewsByUserId",
+          return await _dbHelper.ExecuteQueryAsync<UserReview>("GetReviewsByUserId",
            new
            {
                id
-           },
-           commandType: CommandType.StoredProcedure);
+           });
+        }
 
-            var groupedReviews = response
-            .GroupBy(r => new { r.UserId, r.PaymentId, r.Avatar, r.FullName, r.Comment, r.Rating })
-            .Select(g => new UserReviewsDto
+        public async Task<IEnumerable<string>> GetEmployeeNameById(Guid id)
+        {
+            return await _dbHelper.ExecuteQueryAsync<string>("GetUserNameById",
+            new
             {
-                UserId = g.Key.UserId,
-                FullName = g.Key.FullName,
-                Avatar = g.Key.Avatar,
-                Comment = g.Key.Comment,
-                Ratings = g.Key.Rating,
-                Photos = g.Any(x => x.Photo != null) ? g.Select(x => x.Photo).ToList() : null,
-            }).ToList();
-
-            return groupedReviews;
+                id
+            });
         }
     }
 }

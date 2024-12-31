@@ -1,4 +1,5 @@
-﻿using homeMaintenance.Domain.Entities;
+﻿using homeMaintenance.Application.DTOs;
+using homeMaintenance.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Stripe;
@@ -19,8 +20,14 @@ namespace HomeMaintenanceApp.Web.Controllers
         [HttpPost("create-intent")]
         public async Task<IActionResult> CreatePaymentIntent([FromBody] PaymentRequest request)
         {
-            if(request.PaymentMethodId == null && request.Amount == 0)
+            if (string.IsNullOrEmpty(request.PaymentMethodId) && request.Amount != 0)
             {
+                return BadRequest(new { error = "Payment method is required." });
+            }
+
+            if (request.Amount == 0)
+            {
+                // by contract
                 return Ok();
             }
 

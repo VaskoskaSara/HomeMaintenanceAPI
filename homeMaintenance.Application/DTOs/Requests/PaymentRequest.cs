@@ -1,4 +1,4 @@
-﻿namespace homeMaintenance.Domain.Entities
+﻿namespace homeMaintenance.Application.DTOs
 {
     public class PaymentRequest
     {

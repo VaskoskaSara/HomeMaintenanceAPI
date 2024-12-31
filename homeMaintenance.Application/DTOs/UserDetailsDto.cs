@@ -1,6 +1,6 @@
-﻿namespace homeMaintenance.Domain.Entities
+﻿namespace homeMaintenance.Application.DTOs
 {
-    public class UserDetails
+    public class UserDetailsDto
     {
         public Guid Id { get; set; }
         public string FullName { get; set; }
@@ -18,6 +18,5 @@
         public string? Description { get; set; }
         public List<string> Photos { get; set; } = new List<string>();
         public RatingObject Rating { get; set; }
-
     }
 }

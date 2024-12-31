@@ -9,9 +9,8 @@
         public DateTime EndDateTime { get; set; }
         public bool IsEmployeeReviewed { get; set; }
         public Guid EmployeeId { get; set; }
-        public string PaymentId { get; set; }
+        public string? PaymentId { get; set; }
         public Guid UserPaymentId  { get; set; }
         public string Address { get; set; }
-
     }
 }

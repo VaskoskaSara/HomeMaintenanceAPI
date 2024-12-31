@@ -7,19 +7,19 @@ namespace homeMaintenance.Application.Commands.UserLogin
 {
     public class TransactionInfoCommandHandler : IRequestHandler<TransactionInfoCommand, bool>
     {
-        private readonly IServiceContainer _serviceContainer;
+        private readonly IPaymentService _paymentService;
         private readonly IMapper _mapper;
 
-        public TransactionInfoCommandHandler(IServiceContainer serviceContainer, IMapper mapper)
+        public TransactionInfoCommandHandler(IPaymentService paymentService, IMapper mapper)
         {
-            _serviceContainer = serviceContainer;
+            _paymentService = paymentService;
             _mapper = mapper;
         }
 
         public async Task<bool> Handle(TransactionInfoCommand request, CancellationToken cancellationToken)
         {
             var transaction = _mapper.Map<TransactionInfo>(request);
-            var result = await _serviceContainer.PaymentService.SaveTransactionInfo(transaction, cancellationToken).ConfigureAwait(false);
+            var result = await _paymentService.SaveTransactionInfo(transaction, cancellationToken).ConfigureAwait(false);
 
             return result;
         }

@@ -1,7 +1,7 @@
 ﻿using Dapper;
 using homeMaintenance.Domain.Entities;
-using HomeMaintenanceApp.Web;
 using System.Data;
+using System.Linq;
 
 namespace homeMaintenance.Infrastructure.Repositories
 {
@@ -13,50 +13,60 @@ namespace homeMaintenance.Infrastructure.Repositories
         {
             _dbConnection = dbConfig.GetConnection();
         }
-        public async Task SeedPositions()
+
+        public async Task SeedPositionsAsync()
         {
-            var existingPositions = await _dbConnection.QueryAsync<Position>("GetPositions", commandType: CommandType.StoredProcedure);
-            var positions = new[]
+            try
             {
-    "Home Service Technician",
-    "Residential Maintenance Worker",
-    "Housekeeping Specialist",
-    "Property Manager",
-    "Plumber",
-    "Electrician",
-    "HVAC Technician",
-    "Landscaper",
-    "Painter",
-    "Handyman",
-    "Carpenter",
-    "Pest Control Technician",
-    "Security System Installer",
-    "Pool Maintenance Technician",
-    "Cleaning Supervisor",
-    "Home Appliance Repair Technician",
-    "Window Washer",
-    "Roofing Specialist",
-    "General Contractor"
-};
+                var existingPositions = await GetExistingPositionsAsync();
 
-            var existingPositionNames = existingPositions.Select(x => x.PositionName).ToList();
+                var predefinedPositions = GetPredefinedPositions();
+                var newPositions = predefinedPositions.Except(existingPositions).ToList();
 
-            var newPositions = positions.Where(p => !existingPositionNames.Contains(p)).ToList();
-
-            if (newPositions.Any())
-            {
-                var dataTable = new DataTable();
-                dataTable.Columns.Add("PositionName", typeof(string));
-
-                foreach (var position in newPositions)
+                if (newPositions.Any())
                 {
-                    dataTable.Rows.Add(position);
+                    await InsertNewPositionsAsync(newPositions);
                 }
-
-                var parameters = new { PositionNames = dataTable.AsTableValuedParameter("dbo.PositionNameTableType") };
-
-                await _dbConnection.ExecuteAsync("InsertPositionsBulk", parameters, commandType: CommandType.StoredProcedure);
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error while seeding positions: {ex.Message}");
+                throw;
+            }
+        }
+
+        private async Task<List<string>> GetExistingPositionsAsync()
+        {
+            var positions = await _dbConnection.QueryAsync<Position>("GetPositions", commandType: CommandType.StoredProcedure);
+
+            return positions.Select(p => p.PositionName).ToList();
+        }
+
+        private List<string> GetPredefinedPositions()
+        {
+            return new List<string>
+            {
+                "Home Service Technician", "Residential Maintenance Worker", "Housekeeping Specialist",
+                "Property Manager", "Plumber", "Electrician", "HVAC Technician", "Landscaper", "Painter",
+                "Handyman", "Carpenter", "Pest Control Technician", "Security System Installer",
+                "Pool Maintenance Technician", "Cleaning Supervisor", "Home Appliance Repair Technician",
+                "Window Washer", "Roofing Specialist", "General Contractor"
+            };
+        }
+
+        private async Task InsertNewPositionsAsync(List<string> newPositions)
+        {
+            var dataTable = new DataTable();
+            dataTable.Columns.Add("PositionName", typeof(string));
+
+            foreach (var position in newPositions)
+            {
+                dataTable.Rows.Add(position);
+            }
+
+            var parameters = new { PositionNames = dataTable.AsTableValuedParameter("dbo.PositionNameTableType") };
+
+            await _dbConnection.ExecuteAsync("InsertPositionsBulk", parameters, commandType: CommandType.StoredProcedure);
         }
     }
 }

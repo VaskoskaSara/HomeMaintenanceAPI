@@ -1,4 +1,4 @@
-﻿using homeMaintenance.Domain.Entities;
+﻿using homeMaintenance.Application.DTOs;
 using MediatR;
 
 namespace homeMaintenance.Application.Queries.GetPositions

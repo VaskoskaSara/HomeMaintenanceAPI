@@ -1,4 +1,4 @@
-﻿namespace homeMaintenance.Domain.Entities
+﻿namespace homeMaintenance.Application.DTOs
 {
     public class BookingInfoDto
     {
@@ -10,7 +10,7 @@
         public bool IsEmployeeReviewed { get; set; }
         public Guid EmployeeId { get; set; }
         public string? PaymentId { get; set; }
-        public Guid? UserPaymentId { get; set; }
+        public Guid UserPaymentId { get; set; }
         public string Address { get; set; }
     }
 }

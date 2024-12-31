@@ -1,19 +1,19 @@
-﻿using homeMaintenance.Application.Ports.In;
-using homeMaintenance.Domain.Entities;
+﻿using homeMaintenance.Application.DTOs;
+using homeMaintenance.Application.Ports.In;
 using MediatR;
 
 namespace homeMaintenance.Application.Queries.GetPositions
 {
-    public class BookingsByEmployeeQueryHandler : IRequestHandler<BookingsByEmployeeQuery, IEnumerable<BookingInfo>>
+    public class BookingsByEmployeeQueryHandler : IRequestHandler<BookingsByEmployeeQuery, IEnumerable<BookingInfoDto>>
     {
-        private readonly IServiceContainer _serviceContainer;
-        public BookingsByEmployeeQueryHandler(IServiceContainer serviceContainer) {
-            _serviceContainer = serviceContainer;
+        private readonly IEmployeeService _employeeService;
+        public BookingsByEmployeeQueryHandler(IEmployeeService employeeService) {
+            _employeeService = employeeService;
         }
 
-        public async Task<IEnumerable<BookingInfo>> Handle(BookingsByEmployeeQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<BookingInfoDto>> Handle(BookingsByEmployeeQuery request, CancellationToken cancellationToken)
         {
-            var response = await _serviceContainer.UserService.GetBookingsByEmployee(request.id, cancellationToken).ConfigureAwait(false);
+            var response = await _employeeService.GetBookingsByEmployee(request.id, cancellationToken).ConfigureAwait(false);
             return response;
         }
     }

@@ -1,11 +1,11 @@
-﻿using homeMaintenance.Domain.Entities;
+﻿using homeMaintenance.Application.DTOs;
 using homeMaintenance.Domain.Enum;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 
 namespace homeMaintenance.Application.Commands.UserRegistration
 {
-    public record UserRegistrationCommand : IRequest<LoggedUser?>
+    public record UserRegistrationCommand : IRequest<LoggedUserDto?>
     {
         public UserType UserType { get; set; }
         public string FullName { get; set; }

@@ -15,10 +15,10 @@ namespace HomeMaintenanceApp.Web.Extensions
                 var scriptsFolder = "Scripts";
                 var scriptsPath = Path.Combine(baseDirectory, scriptsFolder);
 
-                EnsureDatabase.For.SqlDatabase(dbMigration.GetConnectionString());
+                EnsureDatabase.For.SqlDatabase(dbMigration.GetConnection().ConnectionString);
 
                 var upgrader = DeployChanges.To
-                                .SqlDatabase(dbMigration.GetConnectionString())
+                                .SqlDatabase(dbMigration.GetConnection().ConnectionString)
                                 .WithScriptsFromFileSystem(scriptsPath)
                                 .LogToConsole()
                                 .Build();

@@ -2,6 +2,7 @@
 using AutoMapper;
 using homeMaintenance.Application.Commands.UserLogin;
 using homeMaintenance.Application.Commands.UserRegistration;
+using homeMaintenance.Application.DTOs;
 using homeMaintenance.Domain.Entities;
 using homeMaintenance.Domain.Enum;
 using System.Globalization;
@@ -30,9 +31,6 @@ namespace homeMaintenance.Application.Mappers
             CreateMap<UserLoginCommand, User>()
                 .ReverseMap();
 
-            CreateMap<UserDetails, UserDetailsDto>()
-            .ReverseMap();
-
             CreateMap<TransactionInfoCommand, TransactionInfo>()
             .ReverseMap();
 
@@ -42,7 +40,7 @@ namespace homeMaintenance.Application.Mappers
             CreateMap<EmployeeDisabledDates, EmployeeDisableDates>()
            .ReverseMap();
 
-            CreateMap<EmployeeReviewCommand, UserReview>()
+            CreateMap<EmployeeReviewCommand, AddUserReview>()
             .ForMember(dest => dest.Photos, opt => opt.MapFrom(src => src.Photos.Select(file => file.FileName).ToList()))
            .ReverseMap();
         }
@@ -55,7 +53,7 @@ namespace homeMaintenance.Application.Mappers
             
             DateTime dateTime = dateTimeOffset.DateTime;
 
-            Console.WriteLine("DateTime: " + dateTime); // Output: 21/03/1998 00:00:00
+            Console.WriteLine("DateTime: " + dateTime);
 
             return dateTime;
         }

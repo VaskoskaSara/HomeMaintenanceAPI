@@ -1,9 +1,9 @@
-﻿using homeMaintenance.Domain.Entities;
+﻿using homeMaintenance.Application.DTOs;
 using MediatR;
 
 namespace homeMaintenance.Application.Commands.UserLogin
 {
-    public record UserLoginCommand : IRequest<LoggedUser>
+    public record UserLoginCommand : IRequest<LoggedUserDto>
     {
         public string Email { get; set; }
         public string Password { get; set; }

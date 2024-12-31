@@ -1,6 +1,6 @@
 ﻿using homeMaintenance.Domain.Enum;
 
-namespace homeMaintenance.Domain.Entities
+namespace homeMaintenance.Application.DTOs
 {
     public class EmployeeDto
     {

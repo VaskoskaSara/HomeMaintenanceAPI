@@ -1,19 +1,20 @@
 ﻿using homeMaintenance.Application.Ports.In;
-using homeMaintenance.Domain.Entities;
+using homeMaintenance.Application.DTOs;
 using MediatR;
 
 namespace homeMaintenance.Application.Queries.GetPositions
 {
-    public class EmployeeQueryHandler : IRequestHandler<EmployeeQuery, UserDetails>
+    public class EmployeeQueryHandler : IRequestHandler<EmployeeQuery, UserDetailsDto>
     {
-        private readonly IServiceContainer _serviceContainer;
-        public EmployeeQueryHandler(IServiceContainer serviceContainer) {
-            _serviceContainer = serviceContainer;
+        private readonly IEmployeeService _employeeService;
+
+        public EmployeeQueryHandler(IEmployeeService employeeService) {
+            _employeeService = employeeService;
         }
 
-        public async Task<UserDetails> Handle(EmployeeQuery request, CancellationToken cancellationToken)
+        public async Task<UserDetailsDto> Handle(EmployeeQuery request, CancellationToken cancellationToken)
         {
-            var response = await _serviceContainer.UserService.GetEmployeeById(request.id).ConfigureAwait(false);
+            var response = await _employeeService.GetEmployeeById(request.id).ConfigureAwait(false);
             return response;
         }
     }

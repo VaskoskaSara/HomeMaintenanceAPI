@@ -1,19 +1,19 @@
-﻿using homeMaintenance.Application.Ports.In;
-using homeMaintenance.Domain.Entities;
+﻿using homeMaintenance.Application.DTOs;
+using homeMaintenance.Application.Ports.In;
 using MediatR;
 
 namespace homeMaintenance.Application.Queries.GetPositions
 {
-    public class BookingsByUserQueryHandler : IRequestHandler<BookingsByUserQuery, IEnumerable<BookingInfo>>
+    public class BookingsByUserQueryHandler : IRequestHandler<BookingsByUserQuery, IEnumerable<BookingInfoDto>>
     {
-        private readonly IServiceContainer _serviceContainer;
-        public BookingsByUserQueryHandler(IServiceContainer serviceContainer) {
-            _serviceContainer = serviceContainer;
+        private readonly IUserService _userService;
+        public BookingsByUserQueryHandler(IUserService userService) {
+            _userService = userService;
         }
 
-        public async Task<IEnumerable<BookingInfo>> Handle(BookingsByUserQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<BookingInfoDto>> Handle(BookingsByUserQuery request, CancellationToken cancellationToken)
         {
-            var response = await _serviceContainer.UserService.GetBookingsByUser(request.id, cancellationToken).ConfigureAwait(false);
+            var response = await _userService.GetBookingsByUser(request.id, cancellationToken).ConfigureAwait(false);
             return response;
         }
     }

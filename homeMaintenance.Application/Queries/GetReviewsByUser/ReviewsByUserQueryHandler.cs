@@ -1,19 +1,19 @@
-﻿using homeMaintenance.Application.Ports.In;
-using homeMaintenance.Domain.Entities;
+﻿using homeMaintenance.Application.DTOs;
+using homeMaintenance.Application.Ports.In;
 using MediatR;
 
 namespace homeMaintenance.Application.Queries.GetPositions
 {
     public class ReviewsByUserQueryHandler : IRequestHandler<ReviewsByUser, List<UserReviewsDto>>
     {
-        private readonly IServiceContainer _serviceContainer;
-        public ReviewsByUserQueryHandler(IServiceContainer serviceContainer) {
-            _serviceContainer = serviceContainer;
+        private readonly IReviewService _reviewService;
+        public ReviewsByUserQueryHandler(IReviewService reviewService) {
+            _reviewService = reviewService;
         }
 
         public async Task<List<UserReviewsDto>> Handle(ReviewsByUser request, CancellationToken cancellationToken)
         {
-            var response = await _serviceContainer.UserService.GetReviewsByUser(request.id, cancellationToken).ConfigureAwait(false);
+            var response = await _reviewService.GetReviewsByUser(request.id, cancellationToken).ConfigureAwait(false);
             return response;
         }
     }

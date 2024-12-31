@@ -1,8 +1,9 @@
-﻿using homeMaintenance.Domain.Enum;
+﻿using homeMaintenance.Domain.Entities;
+using homeMaintenance.Domain.Enum;
 
-namespace homeMaintenance.Domain.Entities
+namespace homeMaintenance.Application.DTOs
 {
-    public class LoggedUser
+    public class LoggedUserDto
     {
         public Guid Id { get; set; }
         public UserType UserRole { get; set; }

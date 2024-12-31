@@ -2,7 +2,7 @@
 
 namespace homeMaintenance.Domain.Entities
 {
-    public class UserLoginDto
+    public class UserLogin
     {
         public Guid Id { get; set; }
         public string Email { get; set; }

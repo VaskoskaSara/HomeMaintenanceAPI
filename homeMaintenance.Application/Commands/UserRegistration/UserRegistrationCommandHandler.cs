@@ -1,37 +1,40 @@
 ﻿using AutoMapper;
-using homeMaintenance.Application.Ports.In;
+using homeMaintenance.Application.DTOs;
+using homeMaintenance.Application.Interfaces;
 using homeMaintenance.Domain.Entities;
 using MediatR;
 
 namespace homeMaintenance.Application.Commands.UserRegistration
 {
-    public class UserRegistrationCommandHandler : IRequestHandler<UserRegistrationCommand, LoggedUser?>
+    public class UserRegistrationCommandHandler : IRequestHandler<UserRegistrationCommand, LoggedUserDto?>
     {
-        private readonly IServiceContainer _serviceContainer;
+        private readonly IUserRegistrationService _userRegistrationService;
+        private readonly IImageStorageService _imageStorageService;
         private readonly IMapper _mapper;
 
-        public UserRegistrationCommandHandler(IServiceContainer serviceContainer, IMapper mapper)
+        public UserRegistrationCommandHandler(IUserRegistrationService userRegistrationService, IImageStorageService imageStorageService, IMapper mapper)
         {
-            _serviceContainer = serviceContainer;
+            _userRegistrationService = userRegistrationService;
+            _imageStorageService = imageStorageService;
             _mapper = mapper;
         }
 
-        public async Task<LoggedUser?> Handle(UserRegistrationCommand request, CancellationToken cancellationToken)
+        public async Task<LoggedUserDto?> Handle(UserRegistrationCommand request, CancellationToken cancellationToken)
         {
             var user = _mapper.Map<User>(request);
             
-            var result = await _serviceContainer.UserService.RegistrationAsync(user, cancellationToken).ConfigureAwait(false);
+            var result = await _userRegistrationService.RegisterUserAsync(user, cancellationToken).ConfigureAwait(false);
 
             if (request.Avatar != null)
             {
-                await _serviceContainer.UserService.UploadImageToS3(request.Avatar);
+                await _imageStorageService.UploadImageAsync(request.Avatar);
             }
 
             if (request.Photos != null)
             {
                 request.Photos.ForEach(async photo =>
                 {
-                    await _serviceContainer.UserService.UploadImageToS3(photo);
+                    await _imageStorageService.UploadImageAsync(photo);
                 });
             }
 

@@ -5,14 +5,14 @@ namespace homeMaintenance.Application.Queries.GetPositions
 {
     public class CitiesQueryHandler : IRequestHandler<CitiesQuery, IEnumerable<string>>
     {
-        private readonly IServiceContainer _serviceContainer;
-        public CitiesQueryHandler(IServiceContainer serviceContainer) {
-            _serviceContainer = serviceContainer;
+        private readonly IUserService _userService;
+        public CitiesQueryHandler(IUserService userService) {
+            _userService = userService;
         }
 
         public async Task<IEnumerable<string>> Handle(CitiesQuery request, CancellationToken cancellationToken)
         {
-            var response = await _serviceContainer.UserService.GetCities(cancellationToken).ConfigureAwait(false);
+            var response = await _userService.GetCities(cancellationToken).ConfigureAwait(false);
             return response;
         }
     }

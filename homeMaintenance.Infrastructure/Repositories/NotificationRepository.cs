@@ -1,7 +1,6 @@
 ﻿using Dapper;
 using homeMaintenance.Application.Ports.Out;
 using homeMaintenance.Domain.Entities;
-using HomeMaintenanceApp.Web;
 using System.Data;
 
 namespace homeMaintenance.Infrastructure.Repositories

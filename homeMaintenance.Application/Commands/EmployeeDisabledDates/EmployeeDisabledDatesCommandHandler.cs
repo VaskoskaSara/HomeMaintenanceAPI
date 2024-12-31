@@ -7,19 +7,19 @@ namespace homeMaintenance.Application.Commands.UserLogin
 {
     public class EmployeeDisabledDatesCommandHandler : IRequestHandler<EmployeeDisabledDates, bool>
     {
-        private readonly IServiceContainer _serviceContainer;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public EmployeeDisabledDatesCommandHandler(IServiceContainer serviceContainer, IMapper mapper)
+        public EmployeeDisabledDatesCommandHandler(IUserService userService, IMapper mapper)
         {
-            _serviceContainer = serviceContainer;
+            _userService = userService;
             _mapper = mapper;
         }
 
         public async Task<bool> Handle(EmployeeDisabledDates request, CancellationToken cancellationToken)
         {
             var disableDates = _mapper.Map<EmployeeDisableDates>(request);
-            var result = await _serviceContainer.UserService.PostAvaliabilty(disableDates, cancellationToken).ConfigureAwait(false);
+            var result = await _userService.PostAvaliabilty(disableDates, cancellationToken).ConfigureAwait(false);
 
             return result;
         }

@@ -1,4 +1,4 @@
-﻿using homeMaintenance.Domain.Entities;
+﻿using homeMaintenance.Application.DTOs;
 
 namespace homeMaintenance.Application.Ports.In
 {
