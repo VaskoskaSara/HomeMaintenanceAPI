@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using homeMaintenance.Application.DTOs;
-using homeMaintenance.Application.Interfaces;
+using homeMaintenance.Application.Ports.In;
 using homeMaintenance.Domain.Entities;
 using MediatR;
 
 namespace homeMaintenance.Application.Commands.UserLogin
 {
-    public class UserLoginCommandHandler : IRequestHandler<UserLoginCommand, LoggedUserDto>
+    public class UserLoginCommandHandler : IRequestHandler<UserLoginCommand, LoggedUserDto?>
     {
         private readonly IUserAuthenticationService _authenticationService;
         private readonly IMapper _mapper;
@@ -17,7 +17,7 @@ namespace homeMaintenance.Application.Commands.UserLogin
             _mapper = mapper;
         }
 
-        public async Task<LoggedUserDto> Handle(UserLoginCommand request, CancellationToken cancellationToken)
+        public async Task<LoggedUserDto?> Handle(UserLoginCommand request, CancellationToken cancellationToken)
         {
             var user = _mapper.Map<User>(request);
             var result = await _authenticationService.AuthenticateUserAsync(user, cancellationToken).ConfigureAwait(false);

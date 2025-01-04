@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 
-namespace homeMaintenance.Application.Commands.UserRegistration
+namespace homeMaintenance.Application.Commands.EmployeeReview
 {
     public record EmployeeReviewCommand : IRequest<bool>
     {

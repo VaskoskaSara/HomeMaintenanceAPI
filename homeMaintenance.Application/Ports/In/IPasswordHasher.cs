@@ -1,4 +1,4 @@
-﻿namespace homeMaintenance.Application.Interfaces
+﻿namespace homeMaintenance.Application.Ports.In
 {
     public interface IPasswordHasher
     {

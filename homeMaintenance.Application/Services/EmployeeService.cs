@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using homeMaintenance.Application.Interfaces;
 using homeMaintenance.Application.Ports.In;
 using homeMaintenance.Application.Ports.Out;
 using homeMaintenance.Application.DTOs;

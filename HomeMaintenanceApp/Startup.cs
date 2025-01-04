@@ -1,20 +1,19 @@
 ﻿using homeMaintenance.Application.Configurations;
-using homeMaintenance.Application.Interfaces;
 using homeMaintenance.Application.Mappers;
 using homeMaintenance.Application.Ports.In;
 using homeMaintenance.Application.Ports.Out;
 using homeMaintenance.Application.Queries.GetPositions;
 using homeMaintenance.Application.Services;
 using homeMaintenance.Application.Services.Helpers;
-using homeMaintenance.Infrastructure.Data;
+using homeMaintenance.Infrastructure.Adapters.Db;
+using homeMaintenance.Infrastructure.Adapters.Repositories;
 using homeMaintenance.Infrastructure.HostedServices;
-using homeMaintenance.Infrastructure.Repositories;
 using HomeMaintenanceApp.Web.Extensions;
 using MediatR;
 using Stripe;
 using ReviewService = homeMaintenance.Application.Services.ReviewService;
 
-namespace HomeMaintenanceApp
+namespace homeMaintenanceApp.Web
 {
     public class Startup
     {
@@ -46,8 +45,8 @@ namespace HomeMaintenanceApp
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPaymentRepository, PaymentRepository>();
             services.AddScoped<INotificationRepository, NotificationRepository>();
-            services.AddTransient<PositionRepository>();
-            services.AddScoped<IDbHelper,DbHelper>();
+            services.AddScoped<PositionRepository>();
+            services.AddScoped<IDbHelper, DbHelper>();
 
             // Hosted Services
             services.AddHostedService<SeedDataHostedService>();

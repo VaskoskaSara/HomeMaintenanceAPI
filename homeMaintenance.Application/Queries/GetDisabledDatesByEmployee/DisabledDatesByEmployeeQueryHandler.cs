@@ -1,13 +1,14 @@
 ﻿using homeMaintenance.Application.Ports.In;
 using MediatR;
 
-namespace homeMaintenance.Application.Queries.GetPositions
+namespace homeMaintenance.Application.Queries.GetDisabledDatesByEmployee
 {
     public class DisabledDatesByEmployeeQueryHandler : IRequestHandler<DisabledDatesByEmployee, List<DateOnly>>
     {
         private readonly IEmployeeService _employeeService;
 
-        public DisabledDatesByEmployeeQueryHandler(IEmployeeService employeeService) {
+        public DisabledDatesByEmployeeQueryHandler(IEmployeeService employeeService)
+        {
             _employeeService = employeeService;
         }
 

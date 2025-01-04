@@ -4,11 +4,11 @@ using homeMaintenance.Application.DTOs;
 using homeMaintenance.Application.Ports.Out;
 using homeMaintenance.Domain.Entities;
 using homeMaintenance.Domain.Enum;
-using homeMaintenance.Infrastructure.Data;
+using homeMaintenance.Infrastructure.Adapters.Db;
 using System.Data;
 using System.Globalization;
 
-namespace homeMaintenance.Infrastructure.Repositories
+namespace homeMaintenance.Infrastructure.Adapters.Repositories
 {
     public class UserRepository : IUserRepository
     {
@@ -68,7 +68,7 @@ namespace homeMaintenance.Infrastructure.Repositories
         {
             if (photos?.Any() == true)
             {
-                var photoParameters = photos.Select(name => new { Image = name, ImageOrigin = ImageOrigin.User, UserId = userId, EmployeeId = (Guid?)null, ReviewId =(Guid?)null }).ToList();
+                var photoParameters = photos.Select(name => new { Image = name, ImageOrigin = ImageOrigin.User, UserId = userId, EmployeeId = (Guid?)null, ReviewId = (Guid?)null }).ToList();
                 await _dbHelper.ExecuteAsync("InsertImages", photoParameters);
             }
         }
@@ -78,14 +78,14 @@ namespace homeMaintenance.Infrastructure.Repositories
             var response = await _dbHelper.ExecuteQueryAsync<User>("GetEmployees",
                 new
                 {
-                    @Cities = (cities != null && cities.Length > 0) ? string.Join(",", cities) : null,
+                    @Cities = cities != null && cities.Length > 0 ? string.Join(",", cities) : null,
                     price,
                     experience,
-                    excludeByContract = (excludeByContract == null || excludeByContract == false) ? 0 : 1,
+                    excludeByContract = excludeByContract == null || excludeByContract == false ? 0 : 1,
                     @CategoryIds = categoryIds.Length > 0 ? string.Join(",", categoryIds) : null
                 });
 
-           return response.ToList();
+            return response.ToList();
         }
 
         public async Task<IEnumerable<int>> GetRatingByEmployeeId(Guid id)
@@ -119,7 +119,7 @@ namespace homeMaintenance.Infrastructure.Repositories
             var response = await _dbHelper.ExecuteQueryMultipleAsync("GetEmployeeById",
                 parameters);
 
-            if(response == null) return null;
+            if (response == null) return null;
 
             var userDetails = await response.ReadSingleOrDefaultAsync<UserDetailsDto>();
             var userImages = await response.ReadAsync<UserImage>();
@@ -145,13 +145,13 @@ namespace homeMaintenance.Infrastructure.Repositories
             var disabledEmployeeByUser = await GetDisabledDatesByEmployeeAsync(employeeDisableDates.UserId);
 
             var combinedDistinct = employeeDisableDates.IsEnabled.HasValue
-                ? (employeeDisableDates.IsEnabled.Value
+                ? employeeDisableDates.IsEnabled.Value
                     ? employeeDisableDates.DisabledDates.ToList()
                     : employeeDisableDates.DisabledDates
                         .Select(dt => dt)
-                        .Concat(disabledEmployeeByUser.Select(it => it.ToDateTime(TimeOnly.MinValue))) 
+                        .Concat(disabledEmployeeByUser.Select(it => it.ToDateTime(TimeOnly.MinValue)))
                         .Distinct()
-                        .ToList())
+                        .ToList()
                 : new List<DateTime>();
 
             var parameters = new
@@ -225,7 +225,7 @@ namespace homeMaintenance.Infrastructure.Repositories
 
             var newReviewId = parameters.Get<Guid>("@NewId");
 
-            var photoParameters = review.Photos?.Select(name => new { Image = name, ImageOrigin = ImageOrigin.Customer, review.UserId, review.EmployeeId, ReviewId = newReviewId}).ToList();
+            var photoParameters = review.Photos?.Select(name => new { Image = name, ImageOrigin = ImageOrigin.Customer, review.UserId, review.EmployeeId, ReviewId = newReviewId }).ToList();
 
             await _dbHelper.ExecuteAsync("InsertImages", photoParameters);
 
@@ -235,11 +235,11 @@ namespace homeMaintenance.Infrastructure.Repositories
 
         public async Task<IEnumerable<UserReview?>> GetReviewsByUserAsync(Guid id)
         {
-          return await _dbHelper.ExecuteQueryAsync<UserReview>("GetReviewsByUserId",
-           new
-           {
-               id
-           });
+            return await _dbHelper.ExecuteQueryAsync<UserReview>("GetReviewsByUserId",
+             new
+             {
+                 id
+             });
         }
 
         public async Task<IEnumerable<string>> GetEmployeeNameById(Guid id)

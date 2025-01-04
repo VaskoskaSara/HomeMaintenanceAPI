@@ -3,7 +3,6 @@ using homeMaintenance.Application.Ports.Out;
 using homeMaintenance.Domain.Entities;
 using homeMaintenance.Application.DTOs;
 using AutoMapper;
-using homeMaintenance.Application.Interfaces;
 
 namespace homeMaintenance.Application.Services
 {

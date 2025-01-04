@@ -1,7 +1,7 @@
 ﻿using Dapper;
 using System.Data;
 
-namespace homeMaintenance.Infrastructure.Data
+namespace homeMaintenance.Infrastructure.Adapters.Db
 {
     public class DbHelper : IDbHelper
     {

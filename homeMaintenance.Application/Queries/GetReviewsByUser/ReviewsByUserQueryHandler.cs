@@ -2,12 +2,13 @@
 using homeMaintenance.Application.Ports.In;
 using MediatR;
 
-namespace homeMaintenance.Application.Queries.GetPositions
+namespace homeMaintenance.Application.Queries.GetReviewsByUser
 {
     public class ReviewsByUserQueryHandler : IRequestHandler<ReviewsByUser, List<UserReviewsDto>>
     {
         private readonly IReviewService _reviewService;
-        public ReviewsByUserQueryHandler(IReviewService reviewService) {
+        public ReviewsByUserQueryHandler(IReviewService reviewService)
+        {
             _reviewService = reviewService;
         }
 

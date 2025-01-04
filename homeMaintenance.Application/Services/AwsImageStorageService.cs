@@ -2,7 +2,7 @@
 using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Model;
-using homeMaintenance.Application.Interfaces;
+using homeMaintenance.Application.Ports.In;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System.Net;

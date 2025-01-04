@@ -2,12 +2,13 @@
 using homeMaintenance.Application.Ports.In;
 using MediatR;
 
-namespace homeMaintenance.Application.Queries.GetPositions
+namespace homeMaintenance.Application.Queries.GetBookingsByEmployee
 {
     public class BookingsByEmployeeQueryHandler : IRequestHandler<BookingsByEmployeeQuery, IEnumerable<BookingInfoDto>>
     {
         private readonly IEmployeeService _employeeService;
-        public BookingsByEmployeeQueryHandler(IEmployeeService employeeService) {
+        public BookingsByEmployeeQueryHandler(IEmployeeService employeeService)
+        {
             _employeeService = employeeService;
         }
 

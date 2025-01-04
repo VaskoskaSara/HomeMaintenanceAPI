@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
-using homeMaintenance.Application.Interfaces;
 using homeMaintenance.Application.Ports.In;
 using homeMaintenance.Domain.Entities;
 using MediatR;
 
-namespace homeMaintenance.Application.Commands.UserRegistration
+namespace homeMaintenance.Application.Commands.EmployeeReview
 {
     public class EmployeeReviewCommandHandler : IRequestHandler<EmployeeReviewCommand, bool>
     {
@@ -22,9 +21,9 @@ namespace homeMaintenance.Application.Commands.UserRegistration
         public async Task<bool> Handle(EmployeeReviewCommand request, CancellationToken cancellationToken)
         {
             var userReview = _mapper.Map<AddUserReview>(request);
-            
+
             var result = await _reviewService.AddReview(userReview, cancellationToken).ConfigureAwait(false);
-            
+
             if (!result) return false;
 
             if (request.Photos != null)

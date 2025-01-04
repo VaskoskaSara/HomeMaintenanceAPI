@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace homeMaintenance.Application.Interfaces
+namespace homeMaintenance.Application.Ports.In
 {
     public interface IImageStorageService
     {

@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace homeMaintenance.Domain.Entities
+namespace homeMaintenance.Application.Commands.TransactionInformation
 {
     public class TransactionInfoCommand : IRequest<bool>
     {

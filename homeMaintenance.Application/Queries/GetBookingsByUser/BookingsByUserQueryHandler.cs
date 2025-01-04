@@ -2,12 +2,13 @@
 using homeMaintenance.Application.Ports.In;
 using MediatR;
 
-namespace homeMaintenance.Application.Queries.GetPositions
+namespace homeMaintenance.Application.Queries.GetBookingsByUser
 {
     public class BookingsByUserQueryHandler : IRequestHandler<BookingsByUserQuery, IEnumerable<BookingInfoDto>>
     {
         private readonly IUserService _userService;
-        public BookingsByUserQueryHandler(IUserService userService) {
+        public BookingsByUserQueryHandler(IUserService userService)
+        {
             _userService = userService;
         }
 

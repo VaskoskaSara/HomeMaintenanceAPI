@@ -1,5 +1,5 @@
-﻿using homeMaintenance.Application.DTOs;
-using homeMaintenance.Domain.Entities;
+﻿using homeMaintenance.Application.Commands.TransactionInformation;
+using homeMaintenance.Application.DTOs.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Stripe;

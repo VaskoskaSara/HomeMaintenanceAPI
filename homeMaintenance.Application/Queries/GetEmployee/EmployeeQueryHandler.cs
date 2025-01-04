@@ -2,13 +2,14 @@
 using homeMaintenance.Application.DTOs;
 using MediatR;
 
-namespace homeMaintenance.Application.Queries.GetPositions
+namespace homeMaintenance.Application.Queries.GetEmployee
 {
     public class EmployeeQueryHandler : IRequestHandler<EmployeeQuery, UserDetailsDto>
     {
         private readonly IEmployeeService _employeeService;
 
-        public EmployeeQueryHandler(IEmployeeService employeeService) {
+        public EmployeeQueryHandler(IEmployeeService employeeService)
+        {
             _employeeService = employeeService;
         }
 

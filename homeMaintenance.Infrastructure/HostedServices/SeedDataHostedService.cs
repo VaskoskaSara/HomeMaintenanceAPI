@@ -1,20 +1,26 @@
-﻿using homeMaintenance.Infrastructure.Repositories;
+﻿using homeMaintenance.Infrastructure.Adapters.Repositories;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace homeMaintenance.Infrastructure.HostedServices
 {
     public class SeedDataHostedService : IHostedService
     {
-        private readonly PositionRepository _positionRepository;
+        private readonly IServiceProvider _serviceProvider;
 
-        public SeedDataHostedService(PositionRepository positionRepository)
+        public SeedDataHostedService(IServiceProvider serviceProvider)
         {
-            _positionRepository = positionRepository;
+            _serviceProvider = serviceProvider;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            await _positionRepository.SeedPositionsAsync();
+            using (var scope = _serviceProvider.CreateScope())
+            {
+                var positionRepository = scope.ServiceProvider.GetRequiredService<PositionRepository>();
+
+                await positionRepository.SeedPositionsAsync();
+            }        
         }
 
         public Task StopAsync(CancellationToken cancellationToken)

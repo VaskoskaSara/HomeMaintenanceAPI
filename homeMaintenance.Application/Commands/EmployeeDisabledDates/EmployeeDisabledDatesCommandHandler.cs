@@ -3,7 +3,7 @@ using homeMaintenance.Application.Ports.In;
 using homeMaintenance.Domain.Entities;
 using MediatR;
 
-namespace homeMaintenance.Application.Commands.UserLogin
+namespace homeMaintenance.Application.Commands.EmployeeDisabledDates
 {
     public class EmployeeDisabledDatesCommandHandler : IRequestHandler<EmployeeDisabledDates, bool>
     {

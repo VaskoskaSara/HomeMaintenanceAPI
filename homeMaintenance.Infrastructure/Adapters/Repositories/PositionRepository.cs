@@ -1,17 +1,17 @@
 ﻿using Dapper;
 using homeMaintenance.Domain.Entities;
+using homeMaintenance.Infrastructure.Adapters.Db;
 using System.Data;
-using System.Linq;
 
-namespace homeMaintenance.Infrastructure.Repositories
+namespace homeMaintenance.Infrastructure.Adapters.Repositories
 {
     public class PositionRepository
     {
-        private readonly IDbConnection _dbConnection;
+        private readonly IDbHelper _dbHelper;
 
-        public PositionRepository(IDbConfig dbConfig)
+        public PositionRepository(IDbHelper dbHelper)
         {
-            _dbConnection = dbConfig.GetConnection();
+            _dbHelper = dbHelper;
         }
 
         public async Task SeedPositionsAsync()
@@ -37,7 +37,7 @@ namespace homeMaintenance.Infrastructure.Repositories
 
         private async Task<List<string>> GetExistingPositionsAsync()
         {
-            var positions = await _dbConnection.QueryAsync<Position>("GetPositions", commandType: CommandType.StoredProcedure);
+            var positions = await _dbHelper.ExecuteQueryAsync<Position>("GetPositions");
 
             return positions.Select(p => p.PositionName).ToList();
         }
@@ -66,7 +66,7 @@ namespace homeMaintenance.Infrastructure.Repositories
 
             var parameters = new { PositionNames = dataTable.AsTableValuedParameter("dbo.PositionNameTableType") };
 
-            await _dbConnection.ExecuteAsync("InsertPositionsBulk", parameters, commandType: CommandType.StoredProcedure);
+            await _dbHelper.ExecuteAsync("InsertPositionsBulk", parameters);
         }
     }
 }

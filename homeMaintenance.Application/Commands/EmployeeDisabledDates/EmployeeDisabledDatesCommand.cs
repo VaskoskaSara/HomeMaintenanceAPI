@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace homeMaintenance.Application.Commands.UserLogin
+namespace homeMaintenance.Application.Commands.EmployeeDisabledDates
 {
     public record EmployeeDisabledDates : IRequest<bool>
     {

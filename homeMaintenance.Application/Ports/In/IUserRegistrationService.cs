@@ -1,7 +1,7 @@
 ﻿using homeMaintenance.Application.DTOs;
 using homeMaintenance.Domain.Entities;
 
-namespace homeMaintenance.Application.Interfaces
+namespace homeMaintenance.Application.Ports.In
 {
     public interface IUserRegistrationService
     {

@@ -1,6 +1,6 @@
 ﻿using Dapper;
 
-namespace homeMaintenance.Infrastructure.Data
+namespace homeMaintenance.Infrastructure.Adapters.Db
 {
     public interface IDbHelper
     {

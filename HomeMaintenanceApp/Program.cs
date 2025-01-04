@@ -1,7 +1,6 @@
-using HomeMaintenanceApp;
 using Serilog;
 
-namespace TicketApp
+namespace homeMaintenanceApp.Web
 {
     public class Program
     {
