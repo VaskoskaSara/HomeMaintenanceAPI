@@ -1,50 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="bin\**" />
     <Compile Remove="Models\**" />
+    <Compile Remove="obj\**" />
+    <EmbeddedResource Remove="bin\**" />
     <EmbeddedResource Remove="Models\**" />
+    <EmbeddedResource Remove="obj\**" />
+    <None Remove="bin\**" />
     <None Remove="Models\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="obj\Debug\net7.0\.NETCoreApp,Version=v7.0.AssemblyAttributes.cs" />
-    <Compile Include="obj\Debug\net7.0\homeMaintenance.Application.AssemblyInfo.cs" />
-    <Compile Include="obj\Debug\net7.0\homeMaintenance.Application.GlobalUsings.g.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="bin\Debug\net7.0\homeMaintenance.Application.deps.json" />
-    <Content Include="obj\Debug\net7.0\homeMaintenance.Application.csproj.FileListAbsolute.txt" />
-    <Content Include="obj\Debug\net7.0\homeMaintenance.Application.sourcelink.json" />
-    <Content Include="obj\homeMaintenance.Application.csproj.nuget.dgspec.json" />
-    <Content Include="obj\project.assets.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="bin\Debug\net7.0\homeMaintenance.Application.dll" />
-    <None Include="bin\Debug\net7.0\homeMaintenance.Application.pdb" />
-    <None Include="bin\Debug\net7.0\homeMaintenance.Domain.dll" />
-    <None Include="bin\Debug\net7.0\homeMaintenance.Domain.pdb" />
-    <None Include="obj\Debug\net7.0\homeMain.34756D14.Up2Date" />
-    <None Include="obj\Debug\net7.0\homeMaintenance.Application.AssemblyInfoInputs.cache" />
-    <None Include="obj\Debug\net7.0\homeMaintenance.Application.assets.cache" />
-    <None Include="obj\Debug\net7.0\homeMaintenance.Application.csproj.AssemblyReference.cache" />
-    <None Include="obj\Debug\net7.0\homeMaintenance.Application.csproj.BuildWithSkipAnalyzers" />
-    <None Include="obj\Debug\net7.0\homeMaintenance.Application.csproj.CoreCompileInputs.cache" />
-    <None Include="obj\Debug\net7.0\homeMaintenance.Application.dll" />
-    <None Include="obj\Debug\net7.0\homeMaintenance.Application.GeneratedMSBuildEditorConfig.editorconfig" />
-    <None Include="obj\Debug\net7.0\homeMaintenance.Application.pdb" />
-    <None Include="obj\Debug\net7.0\refint\homeMaintenance.Application.dll" />
-    <None Include="obj\Debug\net7.0\ref\homeMaintenance.Application.dll" />
-    <None Include="obj\homeMaintenance.Application.csproj.nuget.g.props" />
-    <None Include="obj\homeMaintenance.Application.csproj.nuget.g.targets" />
-    <None Include="obj\project.nuget.cache" />
+    <None Remove="obj\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -54,9 +25,11 @@
     <PackageReference Include="Konscious.Security.Cryptography.Argon2" Version="1.3.1" />
     <PackageReference Include="MediatR" Version="11.1.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.12" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.3.1" />
   </ItemGroup>
 
   <ItemGroup>

@@ -11,7 +11,7 @@ namespace homeMaintenance.Application.Services
         private readonly IImageStorageService _imageStorageService;
         private readonly INotificationService _notificationService;
         private readonly IPasswordHasher _passwordHasher;
-        
+
         public UserAuthenticationService(
             IUserRepository userRepository,
             IImageStorageService imageStorageService,
@@ -22,7 +22,7 @@ namespace homeMaintenance.Application.Services
             _imageStorageService = imageStorageService;
             _notificationService = notificationService;
             _passwordHasher = passwordHasher;
-        }
+    }
 
         public async Task<LoggedUserDto?> AuthenticateUserAsync(User loginUser, CancellationToken cancellationToken = default)
         {

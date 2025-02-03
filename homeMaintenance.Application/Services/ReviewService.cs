@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using homeMaintenance.Application.DTOs;
+﻿using homeMaintenance.Application.DTOs;
 using homeMaintenance.Application.Ports.In;
 using homeMaintenance.Application.Ports.Out;
 using homeMaintenance.Domain.Entities;
@@ -10,14 +9,12 @@ namespace homeMaintenance.Application.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IImageStorageService _imageStorageService;
-        private readonly IMapper _mapper;
 
 
-        public ReviewService(IUserRepository userRepository, IImageStorageService imageStorageService, IMapper mapper)
+        public ReviewService(IUserRepository userRepository, IImageStorageService imageStorageService)
         {
             _userRepository = userRepository;
             _imageStorageService = imageStorageService;
-            _mapper = mapper;
         }
         public async Task<bool> AddReview(AddUserReview user, CancellationToken cancellationToken = default)
         {

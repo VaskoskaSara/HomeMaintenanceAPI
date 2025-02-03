@@ -4,7 +4,7 @@ using homeMaintenance.Application.Ports.In;
 using homeMaintenance.Domain.Entities;
 using MediatR;
 
-namespace homeMaintenance.Application.Commands.UserLogin
+namespace homeMaintenance.Application.Commands.UserLogIn
 {
     public class UserLoginCommandHandler : IRequestHandler<UserLoginCommand, LoggedUserDto?>
     {

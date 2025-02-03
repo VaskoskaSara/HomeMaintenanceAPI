@@ -1,6 +1,6 @@
 ﻿namespace homeMaintenance.Domain.Entities
 {
-    public class EmployeeDisableDates
+    public class DisabledDatesByEmployee
     {
         public Guid UserId { get; set; }
         public DateTime[]? DisabledDates { get; set; }

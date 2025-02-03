@@ -1,11 +1,14 @@
 ﻿using System.Data;
 
-public interface IDbConfig
+namespace homeMaintenance.Application.Ports.In.Config
 {
-    string DatabaseName { get; }
-    string ServerName { get; }
-    string Username { get; }
-    string Password { get; }
-    int ConnectionTimeout { get; }
-    IDbConnection GetConnection();
+    public interface IDbConfig
+    {
+        string DatabaseName { get; }
+        string ServerName { get; }
+        string Username { get; }
+        string Password { get; }
+        int ConnectionTimeout { get; }
+        IDbConnection GetConnection();
+    }
 }

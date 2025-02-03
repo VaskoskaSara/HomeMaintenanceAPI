@@ -18,7 +18,7 @@ namespace homeMaintenance.Application.Commands.EmployeeDisabledDates
 
         public async Task<bool> Handle(EmployeeDisabledDates request, CancellationToken cancellationToken)
         {
-            var disableDates = _mapper.Map<EmployeeDisableDates>(request);
+            var disableDates = _mapper.Map<DisabledDatesByEmployee>(request);
             var result = await _userService.PostAvaliabilty(disableDates, cancellationToken).ConfigureAwait(false);
 
             return result;

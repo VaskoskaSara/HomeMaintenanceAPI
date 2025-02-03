@@ -1,8 +1,12 @@
 ﻿using Amazon.S3;
 
-public interface IAwsConfig
+namespace homeMaintenance.Application.Ports.In.Config
 {
-    string AwsAccessKey { get; }
-    string AwsSecretKey { get; }
-    AmazonS3Client GetAwsClient();
+    public interface IAwsConfig
+    {
+        string AwsAccessKey { get; }
+        string AwsSecretKey { get; }
+        AmazonS3Client GetAwsClient();
+        string GetBucketName();
+    }
 }

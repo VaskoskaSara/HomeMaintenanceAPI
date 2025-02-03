@@ -1,8 +1,7 @@
-﻿using Amazon;
-using Amazon.Runtime;
-using Amazon.S3;
+﻿using Amazon.S3;
 using Amazon.S3.Model;
 using homeMaintenance.Application.Ports.In;
+using homeMaintenance.Application.Ports.In.Config;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System.Net;
@@ -14,14 +13,10 @@ namespace homeMaintenance.Application.Services
         private readonly AmazonS3Client _s3Client;
         private readonly string _bucketName;
 
-        public AwsImageStorageService(IConfiguration configuration)
+        public AwsImageStorageService(IConfiguration configuration, IAwsConfig aws)
         {
-            var awsAccessKey = configuration["AwsConfiguration:AWSAccessKey"];
-            var awsSecretKey = configuration["AwsConfiguration:AWSSecretKey"];
-            _bucketName = configuration["AwsConfiguration:BucketName"];
-
-            var credentials = new BasicAWSCredentials(awsAccessKey, awsSecretKey);
-            _s3Client = new AmazonS3Client(credentials, RegionEndpoint.USEast1);
+            _s3Client = aws.GetAwsClient();
+            _bucketName = aws.GetBucketName();
         }
 
         public string GetImageUrl(string key)
@@ -30,13 +25,13 @@ namespace homeMaintenance.Application.Services
             {
                 BucketName = _bucketName,
                 Key = key,
-                Expires = DateTime.UtcNow.AddMinutes(30)
+                Expires = DateTime.UtcNow.AddHours(24)
             };
 
             return _s3Client.GetPreSignedURL(request);
         }
 
-        public async Task<string> UploadImageAsync(IFormFile file)
+        public async Task<string> UploadImageAsync(IFormFile file, string imageName)
         {
             if (!file.ContentType.Contains("image"))
             {
@@ -57,16 +52,14 @@ namespace homeMaintenance.Application.Services
                 fileBytes = memoryStream.ToArray();
             }
 
-            var uniqueFileName = $"{Guid.NewGuid()}_{file.FileName}";
             using (var stream = new MemoryStream(fileBytes))
             {
                 var request = new PutObjectRequest
                 {
                     BucketName = _bucketName,
-                    Key = uniqueFileName,
+                    Key = imageName,
                     InputStream = stream,
-                    ContentType = file.ContentType,
-                    CannedACL = S3CannedACL.NoACL
+                    ContentType = file.ContentType
                 };
 
                 try
@@ -74,7 +67,7 @@ namespace homeMaintenance.Application.Services
                     var response = await _s3Client.PutObjectAsync(request);
                     if (response.HttpStatusCode == HttpStatusCode.OK)
                     {
-                        return uniqueFileName;
+                        return imageName;
                     }
                     else
                     {

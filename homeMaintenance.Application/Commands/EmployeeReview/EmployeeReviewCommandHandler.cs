@@ -22,17 +22,27 @@ namespace homeMaintenance.Application.Commands.EmployeeReview
         {
             var userReview = _mapper.Map<AddUserReview>(request);
 
+            if (request.Photos != null)
+            {
+                userReview.Photos = new string[request.Photos.Count];
+                for (int i = 0; i < request.Photos.Count; i++)
+                {
+                    string imageName = GenerateFileNameWithGuid(request.Photos[i].FileName);
+                    userReview.Photos[i] = imageName;
+                    await _imageStorageService.UploadImageAsync(request.Photos[i], imageName);
+                }
+            }
+
             var result = await _reviewService.AddReview(userReview, cancellationToken).ConfigureAwait(false);
 
             if (!result) return false;
 
-            if (request.Photos != null)
-            {
-                var uploadTasks = request.Photos.Select(_imageStorageService.UploadImageAsync).ToArray();
-                await Task.WhenAll(uploadTasks);
-            }
-
             return true;
+        }
+
+        private static string GenerateFileNameWithGuid(string originalFileName)
+        {
+            return $"{Guid.NewGuid()}_{originalFileName}";
         }
     }
 }

@@ -13,7 +13,7 @@ namespace homeMaintenance.Application.Ports.Out
         Task<IEnumerable<string>> GetCitiesAsync();
         Task<UserDetailsDto?> GetEmployeeByIdAsync(Guid id);
         Task<IEnumerable<BookingInfo>> GetBookingsByEmployeeAsync(Guid id);
-        Task<bool> PostAvaliability(EmployeeDisableDates employeeDisableDates);
+        Task<bool> PostAvaliability(DisabledDatesByEmployee employeeDisableDates);
         Task<List<DateOnly>> GetDisabledDatesByEmployeeAsync(Guid id);
         Task<IEnumerable<BookingInfo>> GetBookingsByUserAsync(Guid id);
         Task<bool> AddReview(AddUserReview user);

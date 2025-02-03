@@ -2,7 +2,7 @@
 using homeMaintenance.Application.Commands.EmployeeDisabledDates;
 using homeMaintenance.Application.Commands.EmployeeReview;
 using homeMaintenance.Application.Commands.TransactionInformation;
-using homeMaintenance.Application.Commands.UserLogin;
+using homeMaintenance.Application.Commands.UserLogIn;
 using homeMaintenance.Application.Commands.UserRegistration;
 using homeMaintenance.Application.DTOs;
 using homeMaintenance.Domain.Entities;
@@ -39,7 +39,7 @@ namespace homeMaintenance.Application.Mappers
             CreateMap<BookingInfo, BookingInfoDto>()
             .ReverseMap();
 
-            CreateMap<EmployeeDisabledDates, EmployeeDisableDates>()
+            CreateMap<EmployeeDisabledDates, DisabledDatesByEmployee>()
            .ReverseMap();
 
             CreateMap<EmployeeReviewCommand, AddUserReview>()

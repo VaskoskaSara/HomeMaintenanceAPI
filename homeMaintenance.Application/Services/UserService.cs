@@ -10,18 +10,14 @@ namespace homeMaintenance.Application.Services
     {
         private readonly IImageStorageService _imageStorageService;
         private readonly IUserRepository _userRepository;
-        private readonly INotificationService _notificationService;
-        private readonly IPasswordHasher _passwordHasher;
         private readonly IMapper _mapper;
 
 
-        public UserService(IUserRepository userRepository, IMapper mapper, INotificationService notificationService, IImageStorageService s3Service, IPasswordHasher passwordHasher)
+        public UserService(IUserRepository userRepository, IMapper mapper,IImageStorageService s3Service)
         {
             _userRepository = userRepository;
             _mapper = mapper;
-            _notificationService = notificationService;
             _imageStorageService = s3Service;
-            _passwordHasher = passwordHasher;
         }
 
         public async Task<IEnumerable<Position>?> GetPositions(CancellationToken cancellationToken = default)
@@ -32,7 +28,7 @@ namespace homeMaintenance.Application.Services
         {
             return await _userRepository.GetCitiesAsync();
         }
-        public async Task<bool> PostAvaliabilty(EmployeeDisableDates employeeDisableDates, CancellationToken cancellationToken = default)
+        public async Task<bool> PostAvaliabilty(DisabledDatesByEmployee employeeDisableDates, CancellationToken cancellationToken = default)
         {
             return await _userRepository.PostAvaliability(employeeDisableDates);
         }

@@ -1,21 +1,33 @@
-﻿using Amazon.S3;
+﻿using Amazon;
+using Amazon.Runtime;
+using Amazon.S3;
+using homeMaintenance.Application.Ports.In.Config;
 using Microsoft.Extensions.Configuration;
 
-public class AwsConfig : IAwsConfig
+namespace homeMaintenance.Infrastructure.Configuration
 {
-    private readonly IConfiguration _configuration;
-
-    public AwsConfig(IConfiguration configuration)
+    public class AwsConfig : IAwsConfig
     {
-        _configuration = configuration;
-    }
+        private readonly IConfiguration _configuration;
 
-    public string AwsAccessKey => _configuration["AwsConfiguration:AWSAccessKey"];
-    public string AwsSecretKey => _configuration["AwsConfiguration:AWSSecretKey"];
+        public AwsConfig(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
 
-    public AmazonS3Client GetAwsClient()
-    {
-        var client = new AmazonS3Client(AwsAccessKey, AwsSecretKey, Amazon.RegionEndpoint.EUCentral1);
-        return client;
+        public string AwsAccessKey => _configuration["AwsConfiguration:AWSAccessKey"];
+        public string AwsSecretKey => _configuration["AwsConfiguration:AWSSecretKey"];
+
+        public AmazonS3Client GetAwsClient()
+        {
+            var credentials = new BasicAWSCredentials(AwsAccessKey, AwsSecretKey);
+            var client = new AmazonS3Client(credentials, RegionEndpoint.USEast1);
+            return client;
+        }
+
+        public string GetBucketName()
+        {
+            return _configuration["AwsConfiguration:BucketName"];
+        }
     }
 }

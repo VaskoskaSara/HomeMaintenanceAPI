@@ -1,12 +1,7 @@
 ﻿using homeMaintenance.Application.DTOs;
 using MediatR;
 
-namespace homeMaintenance.Application.Commands.UserLogin
+namespace homeMaintenance.Application.Commands.UserLogIn
 {
-    public record UserLoginCommand : IRequest<LoggedUserDto?>
-    {
-        public string Email { get; set; }
-        public string Password { get; set; }
-
-    }
+    public record UserLoginCommand(string Email, string Password) : IRequest<LoggedUserDto?>;
 }

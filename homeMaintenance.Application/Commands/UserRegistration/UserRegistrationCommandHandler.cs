@@ -9,36 +9,48 @@ namespace homeMaintenance.Application.Commands.UserRegistration
     public class UserRegistrationCommandHandler : IRequestHandler<UserRegistrationCommand, LoggedUserDto?>
     {
         private readonly IUserRegistrationService _userRegistrationService;
+        private readonly IUserAuthenticationService _authenticationService;
         private readonly IImageStorageService _imageStorageService;
         private readonly IMapper _mapper;
 
-        public UserRegistrationCommandHandler(IUserRegistrationService userRegistrationService, IImageStorageService imageStorageService, IMapper mapper)
+        public UserRegistrationCommandHandler(IUserRegistrationService userRegistrationService, IImageStorageService imageStorageService, IMapper mapper, IUserAuthenticationService authenticationService)
         {
             _userRegistrationService = userRegistrationService;
             _imageStorageService = imageStorageService;
             _mapper = mapper;
+            _authenticationService = authenticationService;
         }
 
         public async Task<LoggedUserDto?> Handle(UserRegistrationCommand request, CancellationToken cancellationToken)
         {
             var user = _mapper.Map<User>(request);
-            
-            var result = await _userRegistrationService.RegisterUserAsync(user, cancellationToken).ConfigureAwait(false);
 
             if (request.Avatar != null)
             {
-                await _imageStorageService.UploadImageAsync(request.Avatar);
+                string avatarImageName = GenerateFileNameWithGuid(request.Avatar.FileName);
+                user.Avatar = avatarImageName;
+                await _imageStorageService.UploadImageAsync(request.Avatar, avatarImageName);
             }
 
             if (request.Photos != null)
             {
-                request.Photos.ForEach(async photo =>
+                user.Photos = new string[request.Photos.Count];
+                for (int i = 0; i < request.Photos.Count; i++)
                 {
-                    await _imageStorageService.UploadImageAsync(photo);
-                });
+                    string photoImageName = GenerateFileNameWithGuid(request.Photos[i].FileName);
+                    user.Photos[i] = photoImageName;
+                    await _imageStorageService.UploadImageAsync(request.Photos[i], photoImageName);
+                }
             }
 
+            var result = await _userRegistrationService.RegisterUserAsync(user, cancellationToken).ConfigureAwait(false);
+
             return result;
+        }
+
+        private static string GenerateFileNameWithGuid(string originalFileName)
+        {
+            return $"{Guid.NewGuid()}_{originalFileName}";
         }
     }
 }

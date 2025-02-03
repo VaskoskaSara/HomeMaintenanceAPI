@@ -1,5 +1,7 @@
 ﻿using homeMaintenance.Application.Ports.In;
+using homeMaintenance.Domain.Exceptions;
 using Konscious.Security.Cryptography;
+using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -39,7 +41,7 @@ namespace homeMaintenance.Application.Services.Helpers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new CustomException(HttpStatusCode.InternalServerError, "There is some issue on password saving");
             }
         }
 
@@ -65,12 +67,9 @@ namespace homeMaintenance.Application.Services.Helpers
 
         public byte[] GenerateSalt()
         {
-            using (var rng = new RNGCryptoServiceProvider())
-            {
-                byte[] salt = new byte[16];
-                rng.GetBytes(salt);
-                return salt;
-            }
+            byte[] salt = new byte[16];
+            RandomNumberGenerator.Fill(salt);
+            return salt;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Amazon.S3;
 using Dapper;
 using homeMaintenance.Application.DTOs;
+using homeMaintenance.Application.Ports.In.Config;
 using homeMaintenance.Application.Ports.Out;
 using homeMaintenance.Domain.Entities;
 using homeMaintenance.Domain.Enum;
@@ -13,12 +14,10 @@ namespace homeMaintenance.Infrastructure.Adapters.Repositories
     public class UserRepository : IUserRepository
     {
         private readonly IDbHelper _dbHelper;
-        private readonly AmazonS3Client _awsClient;
 
         public UserRepository(IDbHelper dbHelper, IAwsConfig awsConfig)
         {
             _dbHelper = dbHelper;
-            _awsClient = awsConfig.GetAwsClient();
         }
 
         public async Task<IEnumerable<Position>> GetPositionsAsync()
@@ -140,7 +139,7 @@ namespace homeMaintenance.Infrastructure.Adapters.Repositories
                parameters);
         }
 
-        public async Task<bool> PostAvaliability(EmployeeDisableDates employeeDisableDates)
+        public async Task<bool> PostAvaliability(DisabledDatesByEmployee employeeDisableDates)
         {
             var disabledEmployeeByUser = await GetDisabledDatesByEmployeeAsync(employeeDisableDates.UserId);
 

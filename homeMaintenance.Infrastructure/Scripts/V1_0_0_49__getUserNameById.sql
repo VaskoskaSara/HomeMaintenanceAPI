@@ -1,6 +1,21 @@
 ﻿BEGIN TRANSACTION;
 GO
 
+CREATE OR ALTER PROCEDURE GetUserNameById
+    @Id UNIQUEIDENTIFIER
+AS  
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT 
+    FullName
+    FROM 
+    dbo.Users
+    WHERE 
+    Id = @Id
+END; 
+GO;
+
 ALTER PROCEDURE GetBookingsByUser @Id UNIQUEIDENTIFIER
 AS
 BEGIN
@@ -15,6 +30,7 @@ SELECT u.Id AS EmployeeId
 	,up.PaymentId as PaymentId
 	,up.Id as UserPaymentId
 	,r.PaymentId as rg
+	,u.[Address]
 	,CASE 
 		WHEN r.EmployeeId IS NOT NULL
 			THEN 1
@@ -27,21 +43,6 @@ AND (r.PaymentId = up.PaymentId OR (r.PaymentId IS NULL AND up.PaymentId IS NULL
 WHERE up.UserId = @Id
 END;
 GO;
-
-  ALTER PROCEDURE InsertReview
-  @Comment VARCHAR(MAX),
-  @UserId UNIQUEIDENTIFIER, 
-  @Rating INT,
-  @EmployeeId UNIQUEIDENTIFIER,
-  @PaymentId VARCHAR(MAX),
-  @UserPaymentId UNIQUEIDENTIFIER
-  AS 
-  BEGIN
-   
-   INSERT INTO dbo.Reviews(Comment, UserId, Rating, EmployeeId, PaymentId, CreatedAt, UserPaymentId)
-   VALUES (@Comment, @UserId, @Rating, @EmployeeId, @PaymentId, GETDATE(), @UserPaymentId)
-  END; GO;
-  GO;
 
 COMMIT;
 GO;
