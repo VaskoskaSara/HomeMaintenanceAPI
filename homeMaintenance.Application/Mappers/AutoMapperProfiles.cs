@@ -45,6 +45,8 @@ namespace homeMaintenance.Application.Mappers
             CreateMap<EmployeeReviewCommand, AddUserReview>()
             .ForMember(dest => dest.Photos, opt => opt.MapFrom(src => src.Photos.Select(file => file.FileName).ToList()))
            .ReverseMap();
+
+            CreateMap<Position, PositionDto>().ReverseMap();
         }
 
         private DateTime? ParseDate(string dateString)

@@ -3,5 +3,5 @@ using MediatR;
 
 namespace homeMaintenance.Application.Queries.GetPositions
 {
-    public record PositionsQuery : IRequest<IEnumerable<PositionDto>>;
+    public record PositionsQuery : IRequest<List<PositionDto>>;
 }

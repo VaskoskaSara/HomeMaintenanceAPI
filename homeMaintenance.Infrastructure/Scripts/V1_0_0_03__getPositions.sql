@@ -2,4 +2,5 @@
 AS  
 BEGIN
     SELECT * FROM dbo.Positions  
-END; GO;
+END; 
+GO;

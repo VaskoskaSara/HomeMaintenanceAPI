@@ -1,22 +1,16 @@
 ﻿BEGIN TRANSACTION;
 GO
 
-ALTER TABLE dbo.UserImages 
-ADD ReviewId UNIQUEIDENTIFIER
-GO;
-
 ALTER TABLE dbo.UserImages
 ADD CONSTRAINT FK_UserImages_Reviews FOREIGN KEY (ReviewId) REFERENCES dbo.Reviews(Id);
 GO;
 
-
-  ALTER PROCEDURE InsertReview
+  ALTER PROCEDURE [dbo].[InsertReview]
   @Comment VARCHAR(MAX),
   @UserId UNIQUEIDENTIFIER, 
   @Rating INT,
   @EmployeeId UNIQUEIDENTIFIER,
-  @PaymentId VARCHAR(MAX),
-  @UserPaymentId UNIQUEIDENTIFIER,
+  @UserPaymentId VARCHAR(MAX),
   @NewId         UNIQUEIDENTIFIER OUTPUT
   AS 
   BEGIN
@@ -24,11 +18,11 @@ GO;
 
    SET @NewId = NEWID();
 
-   INSERT INTO dbo.Reviews(Id, Comment, UserId, Rating, EmployeeId, PaymentId, CreatedAt, UserPaymentId)
-   VALUES (@NewId, @Comment, @UserId, @Rating, @EmployeeId, @PaymentId, GETDATE(), @UserPaymentId)
+   INSERT INTO dbo.Reviews(Id, Comment, UserId, Rating, EmployeeId, UserPaymentId, CreatedAt)
+   VALUES (@NewId, @Comment, @UserId, @Rating, @EmployeeId, @UserPaymentId, GETDATE())
 
     SELECT @NewId;
-  END; GO;
+  END;
   GO;
 
   

@@ -1,12 +1,6 @@
 ﻿BEGIN TRANSACTION;
 GO
 
-CREATE TYPE dbo.PositionNameTableType AS TABLE
-(
-    PositionName NVARCHAR(100)
-);
-GO
-
 CREATE OR ALTER PROCEDURE InsertPositionsBulk
 @PositionNames dbo.PositionNameTableType READONLY
 AS

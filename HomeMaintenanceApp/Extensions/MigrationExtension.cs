@@ -6,9 +6,9 @@ namespace HomeMaintenanceApp.Web.Extensions
     public static partial class MigrationExtension
     {
 
-        public static void RunApplicationMigrations(this IApplicationBuilder app)
+        public static void RunApplicationMigrations(this IServiceProvider services)
         {
-            using (var scope = app.ApplicationServices.CreateScope())
+            using (var scope = services.CreateScope())
             {
                 var provider = scope.ServiceProvider;
                 var dbMigration = provider.GetRequiredService<IDbConfig>();

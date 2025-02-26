@@ -19,7 +19,7 @@ BEGIN
     IF EXISTS (SELECT 1 FROM dbo.UserPayment WHERE CAST(EndDateTime AS DATE) = @Yesterday)
     BEGIN
         INSERT INTO NotificationReviews (UserId, EmployeeId, PaymentId, Message, CreatedAt, StartDateTime, EndDateTime)
-        SELECT UserId, EmployeeId, PaymentId, 'Condition met!', GETDATE(), StartDateTime, EndDateTime
+        SELECT UserId, EmployeeId, Id, 'Condition met!', GETDATE(), StartDateTime, EndDateTime
         FROM dbo.UserPayment
         WHERE CAST(EndDateTime AS DATE) = @Yesterday;
     END;

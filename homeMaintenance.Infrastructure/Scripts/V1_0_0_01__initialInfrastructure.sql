@@ -110,7 +110,6 @@ CREATE TABLE dbo.Reviews
 	Id uniqueidentifier DEFAULT NEWID() NOT NULL,
 	Comment nvarchar(4000) NULL,
 	EmployeeId uniqueidentifier NOT NULL,
-	PaymentId varchar(max),
 	UserId uniqueidentifier NOT NULL,
 	Rating decimal(18, 0) NOT NULL,
 	CreatedAt datetime NOT NULL
@@ -134,6 +133,17 @@ ALTER TABLE dbo.Reviews ADD CONSTRAINT
 	) ON UPDATE  NO ACTION 
 	 ON DELETE  NO ACTION 
 GO	
+
+ALTER TABLE dbo.Reviews ADD CONSTRAINT
+	FK_Reviews_UsersEmployees FOREIGN KEY
+	(
+	EmployeeId
+	) REFERENCES dbo.Users
+	(
+	Id
+	) ON UPDATE  NO ACTION 
+	 ON DELETE  NO ACTION 
+GO
 
 CREATE TABLE dbo.ReviewImages
 	(

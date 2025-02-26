@@ -25,7 +25,6 @@ namespace homeMaintenance.Application.Services
 
             return unsentNotifications.Select(notification => new NotificationDto
             {
-                PaymentId = notification.PaymentId,
                 EmployeeId = notification.EmployeeId,
                 UserPaymentId = notification.UserPaymentId,
                 StartDate = notification.StartDateTime,

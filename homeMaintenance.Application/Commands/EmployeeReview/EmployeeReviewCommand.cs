@@ -5,11 +5,10 @@ namespace homeMaintenance.Application.Commands.EmployeeReview
 {
  public record EmployeeReviewCommand(
         Guid UserId,
-        string? PaymentId,
+        Guid PaymentId,
         Guid EmployeeId,
         int? Rating,
         List<IFormFile>? Photos,
-        string? Comment,
-        Guid UserPaymentId
+        string? Comment
     ) : IRequest<bool>;
 }

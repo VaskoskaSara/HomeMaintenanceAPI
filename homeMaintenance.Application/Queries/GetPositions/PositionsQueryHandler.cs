@@ -5,7 +5,7 @@ using MediatR;
 
 namespace homeMaintenance.Application.Queries.GetPositions
 {
-    public class PositionsQueryHandler : IRequestHandler<PositionsQuery, IEnumerable<PositionDto>>
+    public class PositionsQueryHandler : IRequestHandler<PositionsQuery, List<PositionDto>>
     {
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
@@ -15,10 +15,10 @@ namespace homeMaintenance.Application.Queries.GetPositions
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<PositionDto>> Handle(PositionsQuery request, CancellationToken cancellationToken)
+        public async Task<List<PositionDto>> Handle(PositionsQuery request, CancellationToken cancellationToken)
         {
             var response = await _userService.GetPositions(cancellationToken).ConfigureAwait(false);
-            return (IEnumerable<PositionDto>)_mapper.Map<PositionDto>(response);
+            return response != null ? _mapper.Map<List<PositionDto>>(response) : [];
         }
     }
 }

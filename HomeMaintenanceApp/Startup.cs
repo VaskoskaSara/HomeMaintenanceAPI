@@ -50,9 +50,6 @@ namespace homeMaintenanceApp.Web
             services.AddScoped<PositionRepository>();
             services.AddScoped<IDbHelper, DbHelper>();
 
-            // Hosted Services
-            services.AddHostedService<SeedDataHostedService>();
-
             // Congfiguration
             services.AddSingleton<IDbConfig, DbConfig>();
             services.AddSingleton<IAwsConfig, AwsConfig>();
@@ -70,12 +67,19 @@ namespace homeMaintenanceApp.Web
                 options.AddPolicy("AllowAllOrigins",
                     builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             });
+
+            using (var scope = services.BuildServiceProvider().CreateScope())
+            {
+                var serviceProvider = scope.ServiceProvider;
+                serviceProvider.RunApplicationMigrations();
+
+                // Hosted Services
+                services.AddHostedService<SeedDataHostedService>();
+            }
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.RunApplicationMigrations();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

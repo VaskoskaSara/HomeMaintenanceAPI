@@ -216,8 +216,7 @@ namespace homeMaintenance.Infrastructure.Adapters.Repositories
             parameters.Add("@UserId", review.UserId);
             parameters.Add("@Rating", review.Rating);
             parameters.Add("@EmployeeId", review.EmployeeId);
-            parameters.Add("@PaymentId", review.PaymentId == "null" ? null : review.PaymentId);
-            parameters.Add("@UserPaymentId", review.UserPaymentId);
+            parameters.Add("@UserPaymentId", review.PaymentId);
             parameters.Add("@NewId", dbType: DbType.Guid, direction: ParameterDirection.Output);
 
             var response = await _dbHelper.ExecuteAsync("InsertReview", parameters);

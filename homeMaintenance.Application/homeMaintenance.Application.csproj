@@ -10,12 +10,15 @@
     <Compile Remove="bin\**" />
     <Compile Remove="Models\**" />
     <Compile Remove="obj\**" />
+    <Compile Remove="Queries\GetCurrentUser\**" />
     <EmbeddedResource Remove="bin\**" />
     <EmbeddedResource Remove="Models\**" />
     <EmbeddedResource Remove="obj\**" />
+    <EmbeddedResource Remove="Queries\GetCurrentUser\**" />
     <None Remove="bin\**" />
     <None Remove="Models\**" />
     <None Remove="obj\**" />
+    <None Remove="Queries\GetCurrentUser\**" />
   </ItemGroup>
 
   <ItemGroup>
